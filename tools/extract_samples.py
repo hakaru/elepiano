@@ -3,12 +3,15 @@
 extract_samples.py - SpCA (.db) からサンプルを抽出・デコードするツール
 
 対象:
-  pattern1  : Rhodes - Classic Pattern 1 サンプル (38ファイル, XOR暗号化なし)
-  sustain   : Rhodes - Classic Sustain サンプル  (1615ファイル, XOR暗号化あり)
+  pattern1      : Rhodes - Classic Pattern 1 サンプル (38ファイル, XOR暗号化なし)
+  rhodes-attack : Rhodes - Classic CLR attack サンプル (1615ファイル, XOR暗号化なし)
+  sustain       : Rhodes - Classic Sustain サンプル  (1615ファイル, XOR暗号化あり)
+  wurl200a      : Wurlitzer 200A アタックサンプル    (1024ファイル, XOR暗号化なし)
+  vvep          : Vintage Vibe EP アタックサンプル   (1539ファイル, XOR暗号化なし)
 
 SpCA フォーマット:
   - SpCA magic → fLaC に置換
-  - Sustain フレーム1以降: XOR キー [ef 42 12 bc] の4通りローテーションを適用
+  - sustain のみフレーム1以降: XOR キー [ef 42 12 bc] の4通りローテーションを適用
 """
 
 import struct
@@ -38,6 +41,20 @@ SUSTAIN_RE = re.compile(
     re.IGNORECASE
 )
 
+# Wurlitzer 200A アタックのパターン: "NMWurl 60 a 50-64-o.wav"
+# note=60, vel_min=50, vel_max=64
+WURL200A_RE = re.compile(
+    r"NMWurl\s+(\d+)\s+\w+\s+(\d+)-(\d+)-o\.wav$",
+    re.IGNORECASE
+)
+
+# Vintage Vibe EP アタックのパターン: "RR01_SL01 VVEP r06_60 v12.wav"
+# 高速バリアント: "RR01_SL01 VVEP r06_60 v15+.wav" (+ は RR=2, - は RR=3)
+VVEP_RE = re.compile(
+    r"RR(\d+)_SL\d+\s+VVEP\s+r\d+_(\d+)\s+v(\d+)([+-]?)\.wav$",
+    re.IGNORECASE
+)
+
 # ============================================================
 # データクラス
 # ============================================================
@@ -53,6 +70,9 @@ class SampleMeta:
     velocity_idx: int
     round_robin:  int
     file_entry:   FileEntry
+    # 明示的な velocity 範囲 (wurl200a など)。-1 = build_velocity_range で自動計算
+    vel_min_explicit: int = -1
+    vel_max_explicit: int = -1
 
 # ============================================================
 # XML ヘッダーパース
@@ -278,6 +298,48 @@ def parse_sustain_name(name: str) -> SampleMeta | None:
     return SampleMeta(midi_note=note, velocity_idx=vel, round_robin=rr, file_entry=None)
 
 
+def parse_vvep_name(name: str) -> SampleMeta | None:
+    """
+    "RR01_SL01 VVEP r06_60 v12.wav"  → SampleMeta(midi_note=60, velocity_idx=12, round_robin=1)
+    "RR01_SL01 VVEP r06_60 v15+.wav" → SampleMeta(midi_note=60, velocity_idx=15, round_robin=2)
+    "RR01_SL01 VVEP r06_60 v19-.wav" → SampleMeta(midi_note=60, velocity_idx=19, round_robin=3)
+    """
+    m = VVEP_RE.search(name)
+    if not m:
+        return None
+    rr_base = int(m.group(1))
+    note    = int(m.group(2))
+    vel     = int(m.group(3))
+    suffix  = m.group(4)
+    # +/- バリアントはラウンドロビン2/3として扱う
+    if suffix == "+":
+        rr = 2
+    elif suffix == "-":
+        rr = 3
+    else:
+        rr = rr_base
+    return SampleMeta(midi_note=note, velocity_idx=vel, round_robin=rr, file_entry=None)
+
+
+def parse_wurl200a_name(name: str) -> SampleMeta | None:
+    """
+    "NMWurl 60 a 50-64-o.wav" → SampleMeta(midi_note=60, velocity_idx=50,
+                                             vel_min_explicit=50, vel_max_explicit=64)
+    velocity_idx には vel_min を使い、ファイル名生成に利用する。
+    """
+    m = WURL200A_RE.search(name)
+    if not m:
+        return None
+    note    = int(m.group(1))
+    vel_min = int(m.group(2))
+    vel_max = int(m.group(3))
+    return SampleMeta(
+        midi_note=note, velocity_idx=vel_min, round_robin=1,
+        file_entry=None,
+        vel_min_explicit=vel_min, vel_max_explicit=vel_max
+    )
+
+
 # ============================================================
 # 速度マッピング（等分割）
 # ============================================================
@@ -317,10 +379,22 @@ def extract(db_path: Path, output_dir: Path, mode: str = "pattern1") -> None:
         parse_fn  = parse_pattern1_name
         encrypted = False
         label     = "Pattern 1"
+    elif mode == "rhodes-attack":
+        parse_fn  = parse_sustain_name
+        encrypted = False
+        label     = "Rhodes Attack"
     elif mode == "sustain":
         parse_fn  = parse_sustain_name
         encrypted = True
         label     = "Sustain"
+    elif mode == "wurl200a":
+        parse_fn  = parse_wurl200a_name
+        encrypted = False
+        label     = "Wurlitzer 200A"
+    elif mode == "vvep":
+        parse_fn  = parse_vvep_name
+        encrypted = False
+        label     = "Vintage Vibe EP"
     else:
         raise ValueError(f"未知のモード: {mode}")
 
@@ -339,8 +413,13 @@ def extract(db_path: Path, output_dir: Path, mode: str = "pattern1") -> None:
             print(f"  {e.name}")
         return
 
-    vel_indices = [m.velocity_idx for m in metas]
-    vel_ranges  = build_velocity_range(vel_indices)
+    # velocity 範囲の決定
+    # 明示的な vel_min/vel_max を持つ場合はそちらを優先し、
+    # ない場合は build_velocity_range で自動計算する
+    use_explicit_range = all(m.vel_min_explicit >= 0 for m in metas)
+    if not use_explicit_range:
+        vel_indices = [m.velocity_idx for m in metas]
+        vel_ranges  = build_velocity_range(vel_indices)
 
     audio_dir = output_dir / "audio"
     audio_dir.mkdir(parents=True, exist_ok=True)
@@ -362,7 +441,12 @@ def extract(db_path: Path, output_dir: Path, mode: str = "pattern1") -> None:
             flac_bytes = decode_spca(spca_bytes, encrypted=encrypted)
             flac_path.write_bytes(flac_bytes)
 
-            vel_min, vel_max = vel_ranges[meta.velocity_idx]
+            if use_explicit_range:
+                vel_min = meta.vel_min_explicit
+                vel_max = meta.vel_max_explicit
+            else:
+                vel_min, vel_max = vel_ranges[meta.velocity_idx]
+
             samples_info.append({
                 "midi_note":    meta.midi_note,
                 "velocity_min": vel_min,
@@ -377,8 +461,15 @@ def extract(db_path: Path, output_dir: Path, mode: str = "pattern1") -> None:
             errors.append((entry.name, str(e)))
 
     # samples.json 出力
+    instrument_name = {
+        "pattern1":     "rhodes-classic",
+        "rhodes-attack":"rhodes-classic",
+        "sustain":      "rhodes-classic-sustain",
+        "wurl200a":     "wurlitzer-200a",
+        "vvep":         "vintage-vibe-ep",
+    }.get(mode, mode)
     samples_json = {
-        "instrument":   "rhodes-classic",
+        "instrument":   instrument_name,
         "sample_rate":  44100,
         "bit_depth":    24,
         "pattern":      mode,

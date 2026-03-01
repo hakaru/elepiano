@@ -1,14 +1,12 @@
-# Keyscape サンプル抽出ガイド
+# Keyscape サンプル抽出
 
-> 解析日: 2026-03-01
-> 対象: Spectrasonics Keyscape (STEAM ライブラリ)
-> ツール: `tools/extract_samples.py`
+`docs/keyscape-sample-extraction.md` のガイドに従って Keyscape .db ファイルからサンプルを抽出する。
 
 ---
 
 ## 前提・注意
 
-- **Keyscape のライセンスを所持していること**が前提です
+- **Keyscape のライセンスを所持していること**が前提
 - 抽出したサンプルは個人使用の範囲に限ること
 - 再配布・商用利用は Spectrasonics ライセンス条項に従うこと
 
@@ -98,24 +96,6 @@ for rot in range(4):
 # 適用:
 key = BASE_KEY[rot:] + BASE_KEY[:rot]
 decrypted = bytes(b ^ key[i % 4] for i, b in enumerate(segment))
-```
-
-### フレーム構造 (FLAC)
-
-```
-FLACメタデータブロック群:
-  STREAMINFO (必須)
-    - サンプルレート: 44100 Hz
-    - ビット深度: 24-bit
-    - チャンネル: 1 (モノ)
-    - ブロックサイズ: 4096 サンプル
-  VORBIS_COMMENT
-  SEEKTABLE
-  PADDING
-
-FLACオーディオフレーム:
-  フレーム0: 平文 (CRC-16 破損あり、FFmpeg/libFLAC は許容)
-  フレーム1以降: Sustain は XOR 暗号化
 ```
 
 ---
@@ -221,7 +201,7 @@ data/rhodes-classic/
 ├── samples.json                   ← MIDI ノート/速度マッピング
 └── audio/
     ├── rr1_vel001_n021.flac       ← ノート21 (A0), vel_idx=1
-    ├── rr1_vel002_n021.flac       ← ノート21, vel_idx=2
+    ├── rr1_vel002_n021.flac
     ├── ...
     └── rr1_vel019_n108.flac       ← ノート108 (C8), vel_idx=19
     (計 1615 本)
@@ -251,7 +231,7 @@ data/wurlitzer-200a/
     (計 1024 本)
 ```
 
-- Attack サンプルのみ（Release = `Rls-o.wav` は除外）
+- Attack サンプルのみ抽出（Release = `Rls-o.wav` は除外）
 - XOR 暗号化なし、magic 置換のみ
 
 ### samples.json の形式
@@ -312,12 +292,10 @@ while xml_end < len(data) and data[xml_end] in (0x0A, 0x0D, 0x20):
 Sustain サンプルで `_find_encrypted_frame1()` の探索範囲（デフォルト 200,000 バイト）内にフレーム1が見つからない場合。
 → `max_scan` パラメーターを増やして再試行。
 
-### FLAC デコードが空になる / `flac` コマンドで LOST_SYNC エラー
+### FLAC デコードが空になる
 
-SpCA フォーマット由来の CRC 不整合が原因。`flac` コマンドや `ffmpeg` は厳格なため失敗するが、これは**正常**。
-C++ デコーダー (`src/flac_decoder.cpp`) の `error_cb` が LOST_SYNC/BAD_HEADER を意図的に無視するため、Pi 上の合成エンジンでは問題なく動作する。
-
-また `FLAC__stream_decoder_set_md5_checking(false)` も設定済み（`decode_flac_file()` 内）。
+libFLAC が CRC エラーで全フレームをスキップしている可能性。
+`snd-usb-audio` の `MD5_CHECKING` を `false` に設定（`decode_flac_file()` 内で実装済み）。
 
 ---
 

@@ -1,0 +1,8200 @@
+{
+  "instrument": "wurlitzer-200a",
+  "sample_rate": 44100,
+  "bit_depth": 24,
+  "pattern": "wurl200a",
+  "samples": [
+    {
+      "midi_note": 33,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n033.flac"
+    },
+    {
+      "midi_note": 33,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n033.flac"
+    },
+    {
+      "midi_note": 33,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n033.flac"
+    },
+    {
+      "midi_note": 33,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n033.flac"
+    },
+    {
+      "midi_note": 33,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n033.flac"
+    },
+    {
+      "midi_note": 33,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n033.flac"
+    },
+    {
+      "midi_note": 33,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n033.flac"
+    },
+    {
+      "midi_note": 33,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n033.flac"
+    },
+    {
+      "midi_note": 33,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n033.flac"
+    },
+    {
+      "midi_note": 33,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n033.flac"
+    },
+    {
+      "midi_note": 33,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n033.flac"
+    },
+    {
+      "midi_note": 33,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n033.flac"
+    },
+    {
+      "midi_note": 33,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n033.flac"
+    },
+    {
+      "midi_note": 33,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n033.flac"
+    },
+    {
+      "midi_note": 33,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n033.flac"
+    },
+    {
+      "midi_note": 33,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n033.flac"
+    },
+    {
+      "midi_note": 34,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n034.flac"
+    },
+    {
+      "midi_note": 34,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n034.flac"
+    },
+    {
+      "midi_note": 34,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n034.flac"
+    },
+    {
+      "midi_note": 34,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n034.flac"
+    },
+    {
+      "midi_note": 34,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n034.flac"
+    },
+    {
+      "midi_note": 34,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n034.flac"
+    },
+    {
+      "midi_note": 34,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n034.flac"
+    },
+    {
+      "midi_note": 34,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n034.flac"
+    },
+    {
+      "midi_note": 34,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n034.flac"
+    },
+    {
+      "midi_note": 34,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n034.flac"
+    },
+    {
+      "midi_note": 34,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n034.flac"
+    },
+    {
+      "midi_note": 34,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n034.flac"
+    },
+    {
+      "midi_note": 34,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n034.flac"
+    },
+    {
+      "midi_note": 34,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n034.flac"
+    },
+    {
+      "midi_note": 34,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n034.flac"
+    },
+    {
+      "midi_note": 34,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n034.flac"
+    },
+    {
+      "midi_note": 35,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n035.flac"
+    },
+    {
+      "midi_note": 35,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n035.flac"
+    },
+    {
+      "midi_note": 35,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n035.flac"
+    },
+    {
+      "midi_note": 35,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n035.flac"
+    },
+    {
+      "midi_note": 35,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n035.flac"
+    },
+    {
+      "midi_note": 35,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n035.flac"
+    },
+    {
+      "midi_note": 35,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n035.flac"
+    },
+    {
+      "midi_note": 35,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n035.flac"
+    },
+    {
+      "midi_note": 35,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n035.flac"
+    },
+    {
+      "midi_note": 35,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n035.flac"
+    },
+    {
+      "midi_note": 35,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n035.flac"
+    },
+    {
+      "midi_note": 35,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n035.flac"
+    },
+    {
+      "midi_note": 35,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n035.flac"
+    },
+    {
+      "midi_note": 35,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n035.flac"
+    },
+    {
+      "midi_note": 35,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n035.flac"
+    },
+    {
+      "midi_note": 35,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n035.flac"
+    },
+    {
+      "midi_note": 36,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n036.flac"
+    },
+    {
+      "midi_note": 36,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n036.flac"
+    },
+    {
+      "midi_note": 36,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n036.flac"
+    },
+    {
+      "midi_note": 36,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n036.flac"
+    },
+    {
+      "midi_note": 36,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n036.flac"
+    },
+    {
+      "midi_note": 36,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n036.flac"
+    },
+    {
+      "midi_note": 36,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n036.flac"
+    },
+    {
+      "midi_note": 36,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n036.flac"
+    },
+    {
+      "midi_note": 36,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n036.flac"
+    },
+    {
+      "midi_note": 36,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n036.flac"
+    },
+    {
+      "midi_note": 36,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n036.flac"
+    },
+    {
+      "midi_note": 36,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n036.flac"
+    },
+    {
+      "midi_note": 36,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n036.flac"
+    },
+    {
+      "midi_note": 36,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n036.flac"
+    },
+    {
+      "midi_note": 36,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n036.flac"
+    },
+    {
+      "midi_note": 36,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n036.flac"
+    },
+    {
+      "midi_note": 37,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n037.flac"
+    },
+    {
+      "midi_note": 37,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n037.flac"
+    },
+    {
+      "midi_note": 37,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n037.flac"
+    },
+    {
+      "midi_note": 37,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n037.flac"
+    },
+    {
+      "midi_note": 37,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n037.flac"
+    },
+    {
+      "midi_note": 37,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n037.flac"
+    },
+    {
+      "midi_note": 37,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n037.flac"
+    },
+    {
+      "midi_note": 37,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n037.flac"
+    },
+    {
+      "midi_note": 37,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n037.flac"
+    },
+    {
+      "midi_note": 37,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n037.flac"
+    },
+    {
+      "midi_note": 37,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n037.flac"
+    },
+    {
+      "midi_note": 37,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n037.flac"
+    },
+    {
+      "midi_note": 37,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n037.flac"
+    },
+    {
+      "midi_note": 37,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n037.flac"
+    },
+    {
+      "midi_note": 37,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n037.flac"
+    },
+    {
+      "midi_note": 37,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n037.flac"
+    },
+    {
+      "midi_note": 38,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n038.flac"
+    },
+    {
+      "midi_note": 38,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n038.flac"
+    },
+    {
+      "midi_note": 38,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n038.flac"
+    },
+    {
+      "midi_note": 38,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n038.flac"
+    },
+    {
+      "midi_note": 38,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n038.flac"
+    },
+    {
+      "midi_note": 38,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n038.flac"
+    },
+    {
+      "midi_note": 38,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n038.flac"
+    },
+    {
+      "midi_note": 38,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n038.flac"
+    },
+    {
+      "midi_note": 38,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n038.flac"
+    },
+    {
+      "midi_note": 38,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n038.flac"
+    },
+    {
+      "midi_note": 38,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n038.flac"
+    },
+    {
+      "midi_note": 38,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n038.flac"
+    },
+    {
+      "midi_note": 38,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n038.flac"
+    },
+    {
+      "midi_note": 38,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n038.flac"
+    },
+    {
+      "midi_note": 38,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n038.flac"
+    },
+    {
+      "midi_note": 38,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n038.flac"
+    },
+    {
+      "midi_note": 39,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n039.flac"
+    },
+    {
+      "midi_note": 39,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n039.flac"
+    },
+    {
+      "midi_note": 39,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n039.flac"
+    },
+    {
+      "midi_note": 39,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n039.flac"
+    },
+    {
+      "midi_note": 39,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n039.flac"
+    },
+    {
+      "midi_note": 39,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n039.flac"
+    },
+    {
+      "midi_note": 39,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n039.flac"
+    },
+    {
+      "midi_note": 39,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n039.flac"
+    },
+    {
+      "midi_note": 39,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n039.flac"
+    },
+    {
+      "midi_note": 39,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n039.flac"
+    },
+    {
+      "midi_note": 39,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n039.flac"
+    },
+    {
+      "midi_note": 39,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n039.flac"
+    },
+    {
+      "midi_note": 39,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n039.flac"
+    },
+    {
+      "midi_note": 39,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n039.flac"
+    },
+    {
+      "midi_note": 39,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n039.flac"
+    },
+    {
+      "midi_note": 39,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n039.flac"
+    },
+    {
+      "midi_note": 40,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n040.flac"
+    },
+    {
+      "midi_note": 40,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n040.flac"
+    },
+    {
+      "midi_note": 40,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n040.flac"
+    },
+    {
+      "midi_note": 40,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n040.flac"
+    },
+    {
+      "midi_note": 40,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n040.flac"
+    },
+    {
+      "midi_note": 40,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n040.flac"
+    },
+    {
+      "midi_note": 40,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n040.flac"
+    },
+    {
+      "midi_note": 40,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n040.flac"
+    },
+    {
+      "midi_note": 40,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n040.flac"
+    },
+    {
+      "midi_note": 40,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n040.flac"
+    },
+    {
+      "midi_note": 40,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n040.flac"
+    },
+    {
+      "midi_note": 40,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n040.flac"
+    },
+    {
+      "midi_note": 40,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n040.flac"
+    },
+    {
+      "midi_note": 40,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n040.flac"
+    },
+    {
+      "midi_note": 40,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n040.flac"
+    },
+    {
+      "midi_note": 40,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n040.flac"
+    },
+    {
+      "midi_note": 41,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n041.flac"
+    },
+    {
+      "midi_note": 41,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n041.flac"
+    },
+    {
+      "midi_note": 41,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n041.flac"
+    },
+    {
+      "midi_note": 41,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n041.flac"
+    },
+    {
+      "midi_note": 41,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n041.flac"
+    },
+    {
+      "midi_note": 41,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n041.flac"
+    },
+    {
+      "midi_note": 41,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n041.flac"
+    },
+    {
+      "midi_note": 41,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n041.flac"
+    },
+    {
+      "midi_note": 41,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n041.flac"
+    },
+    {
+      "midi_note": 41,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n041.flac"
+    },
+    {
+      "midi_note": 41,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n041.flac"
+    },
+    {
+      "midi_note": 41,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n041.flac"
+    },
+    {
+      "midi_note": 41,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n041.flac"
+    },
+    {
+      "midi_note": 41,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n041.flac"
+    },
+    {
+      "midi_note": 41,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n041.flac"
+    },
+    {
+      "midi_note": 41,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n041.flac"
+    },
+    {
+      "midi_note": 42,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n042.flac"
+    },
+    {
+      "midi_note": 42,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n042.flac"
+    },
+    {
+      "midi_note": 42,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n042.flac"
+    },
+    {
+      "midi_note": 42,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n042.flac"
+    },
+    {
+      "midi_note": 42,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n042.flac"
+    },
+    {
+      "midi_note": 42,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n042.flac"
+    },
+    {
+      "midi_note": 42,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n042.flac"
+    },
+    {
+      "midi_note": 42,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n042.flac"
+    },
+    {
+      "midi_note": 42,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n042.flac"
+    },
+    {
+      "midi_note": 42,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n042.flac"
+    },
+    {
+      "midi_note": 42,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n042.flac"
+    },
+    {
+      "midi_note": 42,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n042.flac"
+    },
+    {
+      "midi_note": 42,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n042.flac"
+    },
+    {
+      "midi_note": 42,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n042.flac"
+    },
+    {
+      "midi_note": 42,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n042.flac"
+    },
+    {
+      "midi_note": 42,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n042.flac"
+    },
+    {
+      "midi_note": 43,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n043.flac"
+    },
+    {
+      "midi_note": 43,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n043.flac"
+    },
+    {
+      "midi_note": 43,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n043.flac"
+    },
+    {
+      "midi_note": 43,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n043.flac"
+    },
+    {
+      "midi_note": 43,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n043.flac"
+    },
+    {
+      "midi_note": 43,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n043.flac"
+    },
+    {
+      "midi_note": 43,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n043.flac"
+    },
+    {
+      "midi_note": 43,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n043.flac"
+    },
+    {
+      "midi_note": 43,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n043.flac"
+    },
+    {
+      "midi_note": 43,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n043.flac"
+    },
+    {
+      "midi_note": 43,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n043.flac"
+    },
+    {
+      "midi_note": 43,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n043.flac"
+    },
+    {
+      "midi_note": 43,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n043.flac"
+    },
+    {
+      "midi_note": 43,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n043.flac"
+    },
+    {
+      "midi_note": 43,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n043.flac"
+    },
+    {
+      "midi_note": 43,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n043.flac"
+    },
+    {
+      "midi_note": 44,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n044.flac"
+    },
+    {
+      "midi_note": 44,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n044.flac"
+    },
+    {
+      "midi_note": 44,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n044.flac"
+    },
+    {
+      "midi_note": 44,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n044.flac"
+    },
+    {
+      "midi_note": 44,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n044.flac"
+    },
+    {
+      "midi_note": 44,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n044.flac"
+    },
+    {
+      "midi_note": 44,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n044.flac"
+    },
+    {
+      "midi_note": 44,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n044.flac"
+    },
+    {
+      "midi_note": 44,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n044.flac"
+    },
+    {
+      "midi_note": 44,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n044.flac"
+    },
+    {
+      "midi_note": 44,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n044.flac"
+    },
+    {
+      "midi_note": 44,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n044.flac"
+    },
+    {
+      "midi_note": 44,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n044.flac"
+    },
+    {
+      "midi_note": 44,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n044.flac"
+    },
+    {
+      "midi_note": 44,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n044.flac"
+    },
+    {
+      "midi_note": 44,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n044.flac"
+    },
+    {
+      "midi_note": 45,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n045.flac"
+    },
+    {
+      "midi_note": 45,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n045.flac"
+    },
+    {
+      "midi_note": 45,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n045.flac"
+    },
+    {
+      "midi_note": 45,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n045.flac"
+    },
+    {
+      "midi_note": 45,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n045.flac"
+    },
+    {
+      "midi_note": 45,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n045.flac"
+    },
+    {
+      "midi_note": 45,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n045.flac"
+    },
+    {
+      "midi_note": 45,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n045.flac"
+    },
+    {
+      "midi_note": 45,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n045.flac"
+    },
+    {
+      "midi_note": 45,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n045.flac"
+    },
+    {
+      "midi_note": 45,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n045.flac"
+    },
+    {
+      "midi_note": 45,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n045.flac"
+    },
+    {
+      "midi_note": 45,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n045.flac"
+    },
+    {
+      "midi_note": 45,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n045.flac"
+    },
+    {
+      "midi_note": 45,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n045.flac"
+    },
+    {
+      "midi_note": 45,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n045.flac"
+    },
+    {
+      "midi_note": 46,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n046.flac"
+    },
+    {
+      "midi_note": 46,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n046.flac"
+    },
+    {
+      "midi_note": 46,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n046.flac"
+    },
+    {
+      "midi_note": 46,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n046.flac"
+    },
+    {
+      "midi_note": 46,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n046.flac"
+    },
+    {
+      "midi_note": 46,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n046.flac"
+    },
+    {
+      "midi_note": 46,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n046.flac"
+    },
+    {
+      "midi_note": 46,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n046.flac"
+    },
+    {
+      "midi_note": 46,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n046.flac"
+    },
+    {
+      "midi_note": 46,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n046.flac"
+    },
+    {
+      "midi_note": 46,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n046.flac"
+    },
+    {
+      "midi_note": 46,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n046.flac"
+    },
+    {
+      "midi_note": 46,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n046.flac"
+    },
+    {
+      "midi_note": 46,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n046.flac"
+    },
+    {
+      "midi_note": 46,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n046.flac"
+    },
+    {
+      "midi_note": 46,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n046.flac"
+    },
+    {
+      "midi_note": 47,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n047.flac"
+    },
+    {
+      "midi_note": 47,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n047.flac"
+    },
+    {
+      "midi_note": 47,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n047.flac"
+    },
+    {
+      "midi_note": 47,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n047.flac"
+    },
+    {
+      "midi_note": 47,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n047.flac"
+    },
+    {
+      "midi_note": 47,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n047.flac"
+    },
+    {
+      "midi_note": 47,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n047.flac"
+    },
+    {
+      "midi_note": 47,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n047.flac"
+    },
+    {
+      "midi_note": 47,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n047.flac"
+    },
+    {
+      "midi_note": 47,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n047.flac"
+    },
+    {
+      "midi_note": 47,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n047.flac"
+    },
+    {
+      "midi_note": 47,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n047.flac"
+    },
+    {
+      "midi_note": 47,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n047.flac"
+    },
+    {
+      "midi_note": 47,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n047.flac"
+    },
+    {
+      "midi_note": 47,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n047.flac"
+    },
+    {
+      "midi_note": 47,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n047.flac"
+    },
+    {
+      "midi_note": 48,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n048.flac"
+    },
+    {
+      "midi_note": 48,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n048.flac"
+    },
+    {
+      "midi_note": 48,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n048.flac"
+    },
+    {
+      "midi_note": 48,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n048.flac"
+    },
+    {
+      "midi_note": 48,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n048.flac"
+    },
+    {
+      "midi_note": 48,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n048.flac"
+    },
+    {
+      "midi_note": 48,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n048.flac"
+    },
+    {
+      "midi_note": 48,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n048.flac"
+    },
+    {
+      "midi_note": 48,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n048.flac"
+    },
+    {
+      "midi_note": 48,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n048.flac"
+    },
+    {
+      "midi_note": 48,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n048.flac"
+    },
+    {
+      "midi_note": 48,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n048.flac"
+    },
+    {
+      "midi_note": 48,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n048.flac"
+    },
+    {
+      "midi_note": 48,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n048.flac"
+    },
+    {
+      "midi_note": 48,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n048.flac"
+    },
+    {
+      "midi_note": 48,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n048.flac"
+    },
+    {
+      "midi_note": 49,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n049.flac"
+    },
+    {
+      "midi_note": 49,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n049.flac"
+    },
+    {
+      "midi_note": 49,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n049.flac"
+    },
+    {
+      "midi_note": 49,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n049.flac"
+    },
+    {
+      "midi_note": 49,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n049.flac"
+    },
+    {
+      "midi_note": 49,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n049.flac"
+    },
+    {
+      "midi_note": 49,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n049.flac"
+    },
+    {
+      "midi_note": 49,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n049.flac"
+    },
+    {
+      "midi_note": 49,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n049.flac"
+    },
+    {
+      "midi_note": 49,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n049.flac"
+    },
+    {
+      "midi_note": 49,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n049.flac"
+    },
+    {
+      "midi_note": 49,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n049.flac"
+    },
+    {
+      "midi_note": 49,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n049.flac"
+    },
+    {
+      "midi_note": 49,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n049.flac"
+    },
+    {
+      "midi_note": 49,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n049.flac"
+    },
+    {
+      "midi_note": 49,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n049.flac"
+    },
+    {
+      "midi_note": 50,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n050.flac"
+    },
+    {
+      "midi_note": 50,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n050.flac"
+    },
+    {
+      "midi_note": 50,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n050.flac"
+    },
+    {
+      "midi_note": 50,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n050.flac"
+    },
+    {
+      "midi_note": 50,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n050.flac"
+    },
+    {
+      "midi_note": 50,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n050.flac"
+    },
+    {
+      "midi_note": 50,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n050.flac"
+    },
+    {
+      "midi_note": 50,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n050.flac"
+    },
+    {
+      "midi_note": 50,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n050.flac"
+    },
+    {
+      "midi_note": 50,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n050.flac"
+    },
+    {
+      "midi_note": 50,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n050.flac"
+    },
+    {
+      "midi_note": 50,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n050.flac"
+    },
+    {
+      "midi_note": 50,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n050.flac"
+    },
+    {
+      "midi_note": 50,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n050.flac"
+    },
+    {
+      "midi_note": 50,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n050.flac"
+    },
+    {
+      "midi_note": 50,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n050.flac"
+    },
+    {
+      "midi_note": 51,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n051.flac"
+    },
+    {
+      "midi_note": 51,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n051.flac"
+    },
+    {
+      "midi_note": 51,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n051.flac"
+    },
+    {
+      "midi_note": 51,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n051.flac"
+    },
+    {
+      "midi_note": 51,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n051.flac"
+    },
+    {
+      "midi_note": 51,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n051.flac"
+    },
+    {
+      "midi_note": 51,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n051.flac"
+    },
+    {
+      "midi_note": 51,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n051.flac"
+    },
+    {
+      "midi_note": 51,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n051.flac"
+    },
+    {
+      "midi_note": 51,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n051.flac"
+    },
+    {
+      "midi_note": 51,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n051.flac"
+    },
+    {
+      "midi_note": 51,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n051.flac"
+    },
+    {
+      "midi_note": 51,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n051.flac"
+    },
+    {
+      "midi_note": 51,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n051.flac"
+    },
+    {
+      "midi_note": 51,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n051.flac"
+    },
+    {
+      "midi_note": 51,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n051.flac"
+    },
+    {
+      "midi_note": 52,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n052.flac"
+    },
+    {
+      "midi_note": 52,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n052.flac"
+    },
+    {
+      "midi_note": 52,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n052.flac"
+    },
+    {
+      "midi_note": 52,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n052.flac"
+    },
+    {
+      "midi_note": 52,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n052.flac"
+    },
+    {
+      "midi_note": 52,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n052.flac"
+    },
+    {
+      "midi_note": 52,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n052.flac"
+    },
+    {
+      "midi_note": 52,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n052.flac"
+    },
+    {
+      "midi_note": 52,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n052.flac"
+    },
+    {
+      "midi_note": 52,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n052.flac"
+    },
+    {
+      "midi_note": 52,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n052.flac"
+    },
+    {
+      "midi_note": 52,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n052.flac"
+    },
+    {
+      "midi_note": 52,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n052.flac"
+    },
+    {
+      "midi_note": 52,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n052.flac"
+    },
+    {
+      "midi_note": 52,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n052.flac"
+    },
+    {
+      "midi_note": 52,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n052.flac"
+    },
+    {
+      "midi_note": 53,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n053.flac"
+    },
+    {
+      "midi_note": 53,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n053.flac"
+    },
+    {
+      "midi_note": 53,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n053.flac"
+    },
+    {
+      "midi_note": 53,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n053.flac"
+    },
+    {
+      "midi_note": 53,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n053.flac"
+    },
+    {
+      "midi_note": 53,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n053.flac"
+    },
+    {
+      "midi_note": 53,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n053.flac"
+    },
+    {
+      "midi_note": 53,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n053.flac"
+    },
+    {
+      "midi_note": 53,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n053.flac"
+    },
+    {
+      "midi_note": 53,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n053.flac"
+    },
+    {
+      "midi_note": 53,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n053.flac"
+    },
+    {
+      "midi_note": 53,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n053.flac"
+    },
+    {
+      "midi_note": 53,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n053.flac"
+    },
+    {
+      "midi_note": 53,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n053.flac"
+    },
+    {
+      "midi_note": 53,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n053.flac"
+    },
+    {
+      "midi_note": 53,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n053.flac"
+    },
+    {
+      "midi_note": 54,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n054.flac"
+    },
+    {
+      "midi_note": 54,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n054.flac"
+    },
+    {
+      "midi_note": 54,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n054.flac"
+    },
+    {
+      "midi_note": 54,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n054.flac"
+    },
+    {
+      "midi_note": 54,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n054.flac"
+    },
+    {
+      "midi_note": 54,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n054.flac"
+    },
+    {
+      "midi_note": 54,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n054.flac"
+    },
+    {
+      "midi_note": 54,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n054.flac"
+    },
+    {
+      "midi_note": 54,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n054.flac"
+    },
+    {
+      "midi_note": 54,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n054.flac"
+    },
+    {
+      "midi_note": 54,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n054.flac"
+    },
+    {
+      "midi_note": 54,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n054.flac"
+    },
+    {
+      "midi_note": 54,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n054.flac"
+    },
+    {
+      "midi_note": 54,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n054.flac"
+    },
+    {
+      "midi_note": 54,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n054.flac"
+    },
+    {
+      "midi_note": 54,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n054.flac"
+    },
+    {
+      "midi_note": 55,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n055.flac"
+    },
+    {
+      "midi_note": 55,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n055.flac"
+    },
+    {
+      "midi_note": 55,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n055.flac"
+    },
+    {
+      "midi_note": 55,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n055.flac"
+    },
+    {
+      "midi_note": 55,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n055.flac"
+    },
+    {
+      "midi_note": 55,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n055.flac"
+    },
+    {
+      "midi_note": 55,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n055.flac"
+    },
+    {
+      "midi_note": 55,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n055.flac"
+    },
+    {
+      "midi_note": 55,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n055.flac"
+    },
+    {
+      "midi_note": 55,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n055.flac"
+    },
+    {
+      "midi_note": 55,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n055.flac"
+    },
+    {
+      "midi_note": 55,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n055.flac"
+    },
+    {
+      "midi_note": 55,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n055.flac"
+    },
+    {
+      "midi_note": 55,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n055.flac"
+    },
+    {
+      "midi_note": 55,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n055.flac"
+    },
+    {
+      "midi_note": 55,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n055.flac"
+    },
+    {
+      "midi_note": 56,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n056.flac"
+    },
+    {
+      "midi_note": 56,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n056.flac"
+    },
+    {
+      "midi_note": 56,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n056.flac"
+    },
+    {
+      "midi_note": 56,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n056.flac"
+    },
+    {
+      "midi_note": 56,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n056.flac"
+    },
+    {
+      "midi_note": 56,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n056.flac"
+    },
+    {
+      "midi_note": 56,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n056.flac"
+    },
+    {
+      "midi_note": 56,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n056.flac"
+    },
+    {
+      "midi_note": 56,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n056.flac"
+    },
+    {
+      "midi_note": 56,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n056.flac"
+    },
+    {
+      "midi_note": 56,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n056.flac"
+    },
+    {
+      "midi_note": 56,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n056.flac"
+    },
+    {
+      "midi_note": 56,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n056.flac"
+    },
+    {
+      "midi_note": 56,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n056.flac"
+    },
+    {
+      "midi_note": 56,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n056.flac"
+    },
+    {
+      "midi_note": 56,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n056.flac"
+    },
+    {
+      "midi_note": 57,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n057.flac"
+    },
+    {
+      "midi_note": 57,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n057.flac"
+    },
+    {
+      "midi_note": 57,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n057.flac"
+    },
+    {
+      "midi_note": 57,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n057.flac"
+    },
+    {
+      "midi_note": 57,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n057.flac"
+    },
+    {
+      "midi_note": 57,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n057.flac"
+    },
+    {
+      "midi_note": 57,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n057.flac"
+    },
+    {
+      "midi_note": 57,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n057.flac"
+    },
+    {
+      "midi_note": 57,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n057.flac"
+    },
+    {
+      "midi_note": 57,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n057.flac"
+    },
+    {
+      "midi_note": 57,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n057.flac"
+    },
+    {
+      "midi_note": 57,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n057.flac"
+    },
+    {
+      "midi_note": 57,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n057.flac"
+    },
+    {
+      "midi_note": 57,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n057.flac"
+    },
+    {
+      "midi_note": 57,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n057.flac"
+    },
+    {
+      "midi_note": 57,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n057.flac"
+    },
+    {
+      "midi_note": 58,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n058.flac"
+    },
+    {
+      "midi_note": 58,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n058.flac"
+    },
+    {
+      "midi_note": 58,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n058.flac"
+    },
+    {
+      "midi_note": 58,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n058.flac"
+    },
+    {
+      "midi_note": 58,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n058.flac"
+    },
+    {
+      "midi_note": 58,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n058.flac"
+    },
+    {
+      "midi_note": 58,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n058.flac"
+    },
+    {
+      "midi_note": 58,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n058.flac"
+    },
+    {
+      "midi_note": 58,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n058.flac"
+    },
+    {
+      "midi_note": 58,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n058.flac"
+    },
+    {
+      "midi_note": 58,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n058.flac"
+    },
+    {
+      "midi_note": 58,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n058.flac"
+    },
+    {
+      "midi_note": 58,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n058.flac"
+    },
+    {
+      "midi_note": 58,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n058.flac"
+    },
+    {
+      "midi_note": 58,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n058.flac"
+    },
+    {
+      "midi_note": 58,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n058.flac"
+    },
+    {
+      "midi_note": 59,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n059.flac"
+    },
+    {
+      "midi_note": 59,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n059.flac"
+    },
+    {
+      "midi_note": 59,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n059.flac"
+    },
+    {
+      "midi_note": 59,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n059.flac"
+    },
+    {
+      "midi_note": 59,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n059.flac"
+    },
+    {
+      "midi_note": 59,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n059.flac"
+    },
+    {
+      "midi_note": 59,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n059.flac"
+    },
+    {
+      "midi_note": 59,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n059.flac"
+    },
+    {
+      "midi_note": 59,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n059.flac"
+    },
+    {
+      "midi_note": 59,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n059.flac"
+    },
+    {
+      "midi_note": 59,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n059.flac"
+    },
+    {
+      "midi_note": 59,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n059.flac"
+    },
+    {
+      "midi_note": 59,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n059.flac"
+    },
+    {
+      "midi_note": 59,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n059.flac"
+    },
+    {
+      "midi_note": 59,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n059.flac"
+    },
+    {
+      "midi_note": 59,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n059.flac"
+    },
+    {
+      "midi_note": 60,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n060.flac"
+    },
+    {
+      "midi_note": 60,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n060.flac"
+    },
+    {
+      "midi_note": 60,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n060.flac"
+    },
+    {
+      "midi_note": 60,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n060.flac"
+    },
+    {
+      "midi_note": 60,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n060.flac"
+    },
+    {
+      "midi_note": 60,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n060.flac"
+    },
+    {
+      "midi_note": 60,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n060.flac"
+    },
+    {
+      "midi_note": 60,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n060.flac"
+    },
+    {
+      "midi_note": 60,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n060.flac"
+    },
+    {
+      "midi_note": 60,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n060.flac"
+    },
+    {
+      "midi_note": 60,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n060.flac"
+    },
+    {
+      "midi_note": 60,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n060.flac"
+    },
+    {
+      "midi_note": 60,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n060.flac"
+    },
+    {
+      "midi_note": 60,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n060.flac"
+    },
+    {
+      "midi_note": 60,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n060.flac"
+    },
+    {
+      "midi_note": 60,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n060.flac"
+    },
+    {
+      "midi_note": 61,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n061.flac"
+    },
+    {
+      "midi_note": 61,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n061.flac"
+    },
+    {
+      "midi_note": 61,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n061.flac"
+    },
+    {
+      "midi_note": 61,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n061.flac"
+    },
+    {
+      "midi_note": 61,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n061.flac"
+    },
+    {
+      "midi_note": 61,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n061.flac"
+    },
+    {
+      "midi_note": 61,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n061.flac"
+    },
+    {
+      "midi_note": 61,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n061.flac"
+    },
+    {
+      "midi_note": 61,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n061.flac"
+    },
+    {
+      "midi_note": 61,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n061.flac"
+    },
+    {
+      "midi_note": 61,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n061.flac"
+    },
+    {
+      "midi_note": 61,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n061.flac"
+    },
+    {
+      "midi_note": 61,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n061.flac"
+    },
+    {
+      "midi_note": 61,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n061.flac"
+    },
+    {
+      "midi_note": 61,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n061.flac"
+    },
+    {
+      "midi_note": 61,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n061.flac"
+    },
+    {
+      "midi_note": 62,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n062.flac"
+    },
+    {
+      "midi_note": 62,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n062.flac"
+    },
+    {
+      "midi_note": 62,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n062.flac"
+    },
+    {
+      "midi_note": 62,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n062.flac"
+    },
+    {
+      "midi_note": 62,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n062.flac"
+    },
+    {
+      "midi_note": 62,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n062.flac"
+    },
+    {
+      "midi_note": 62,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n062.flac"
+    },
+    {
+      "midi_note": 62,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n062.flac"
+    },
+    {
+      "midi_note": 62,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n062.flac"
+    },
+    {
+      "midi_note": 62,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n062.flac"
+    },
+    {
+      "midi_note": 62,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n062.flac"
+    },
+    {
+      "midi_note": 62,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n062.flac"
+    },
+    {
+      "midi_note": 62,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n062.flac"
+    },
+    {
+      "midi_note": 62,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n062.flac"
+    },
+    {
+      "midi_note": 62,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n062.flac"
+    },
+    {
+      "midi_note": 62,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n062.flac"
+    },
+    {
+      "midi_note": 63,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n063.flac"
+    },
+    {
+      "midi_note": 63,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n063.flac"
+    },
+    {
+      "midi_note": 63,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n063.flac"
+    },
+    {
+      "midi_note": 63,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n063.flac"
+    },
+    {
+      "midi_note": 63,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n063.flac"
+    },
+    {
+      "midi_note": 63,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n063.flac"
+    },
+    {
+      "midi_note": 63,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n063.flac"
+    },
+    {
+      "midi_note": 63,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n063.flac"
+    },
+    {
+      "midi_note": 63,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n063.flac"
+    },
+    {
+      "midi_note": 63,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n063.flac"
+    },
+    {
+      "midi_note": 63,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n063.flac"
+    },
+    {
+      "midi_note": 63,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n063.flac"
+    },
+    {
+      "midi_note": 63,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n063.flac"
+    },
+    {
+      "midi_note": 63,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n063.flac"
+    },
+    {
+      "midi_note": 63,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n063.flac"
+    },
+    {
+      "midi_note": 63,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n063.flac"
+    },
+    {
+      "midi_note": 64,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n064.flac"
+    },
+    {
+      "midi_note": 64,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n064.flac"
+    },
+    {
+      "midi_note": 64,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n064.flac"
+    },
+    {
+      "midi_note": 64,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n064.flac"
+    },
+    {
+      "midi_note": 64,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n064.flac"
+    },
+    {
+      "midi_note": 64,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n064.flac"
+    },
+    {
+      "midi_note": 64,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n064.flac"
+    },
+    {
+      "midi_note": 64,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n064.flac"
+    },
+    {
+      "midi_note": 64,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n064.flac"
+    },
+    {
+      "midi_note": 64,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n064.flac"
+    },
+    {
+      "midi_note": 64,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n064.flac"
+    },
+    {
+      "midi_note": 64,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n064.flac"
+    },
+    {
+      "midi_note": 64,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n064.flac"
+    },
+    {
+      "midi_note": 64,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n064.flac"
+    },
+    {
+      "midi_note": 64,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n064.flac"
+    },
+    {
+      "midi_note": 64,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n064.flac"
+    },
+    {
+      "midi_note": 65,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n065.flac"
+    },
+    {
+      "midi_note": 65,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n065.flac"
+    },
+    {
+      "midi_note": 65,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n065.flac"
+    },
+    {
+      "midi_note": 65,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n065.flac"
+    },
+    {
+      "midi_note": 65,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n065.flac"
+    },
+    {
+      "midi_note": 65,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n065.flac"
+    },
+    {
+      "midi_note": 65,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n065.flac"
+    },
+    {
+      "midi_note": 65,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n065.flac"
+    },
+    {
+      "midi_note": 65,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n065.flac"
+    },
+    {
+      "midi_note": 65,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n065.flac"
+    },
+    {
+      "midi_note": 65,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n065.flac"
+    },
+    {
+      "midi_note": 65,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n065.flac"
+    },
+    {
+      "midi_note": 65,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n065.flac"
+    },
+    {
+      "midi_note": 65,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n065.flac"
+    },
+    {
+      "midi_note": 65,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n065.flac"
+    },
+    {
+      "midi_note": 65,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n065.flac"
+    },
+    {
+      "midi_note": 66,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n066.flac"
+    },
+    {
+      "midi_note": 66,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n066.flac"
+    },
+    {
+      "midi_note": 66,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n066.flac"
+    },
+    {
+      "midi_note": 66,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n066.flac"
+    },
+    {
+      "midi_note": 66,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n066.flac"
+    },
+    {
+      "midi_note": 66,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n066.flac"
+    },
+    {
+      "midi_note": 66,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n066.flac"
+    },
+    {
+      "midi_note": 66,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n066.flac"
+    },
+    {
+      "midi_note": 66,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n066.flac"
+    },
+    {
+      "midi_note": 66,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n066.flac"
+    },
+    {
+      "midi_note": 66,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n066.flac"
+    },
+    {
+      "midi_note": 66,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n066.flac"
+    },
+    {
+      "midi_note": 66,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n066.flac"
+    },
+    {
+      "midi_note": 66,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n066.flac"
+    },
+    {
+      "midi_note": 66,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n066.flac"
+    },
+    {
+      "midi_note": 66,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n066.flac"
+    },
+    {
+      "midi_note": 67,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n067.flac"
+    },
+    {
+      "midi_note": 67,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n067.flac"
+    },
+    {
+      "midi_note": 67,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n067.flac"
+    },
+    {
+      "midi_note": 67,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n067.flac"
+    },
+    {
+      "midi_note": 67,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n067.flac"
+    },
+    {
+      "midi_note": 67,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n067.flac"
+    },
+    {
+      "midi_note": 67,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n067.flac"
+    },
+    {
+      "midi_note": 67,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n067.flac"
+    },
+    {
+      "midi_note": 67,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n067.flac"
+    },
+    {
+      "midi_note": 67,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n067.flac"
+    },
+    {
+      "midi_note": 67,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n067.flac"
+    },
+    {
+      "midi_note": 67,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n067.flac"
+    },
+    {
+      "midi_note": 67,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n067.flac"
+    },
+    {
+      "midi_note": 67,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n067.flac"
+    },
+    {
+      "midi_note": 67,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n067.flac"
+    },
+    {
+      "midi_note": 67,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n067.flac"
+    },
+    {
+      "midi_note": 68,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n068.flac"
+    },
+    {
+      "midi_note": 68,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n068.flac"
+    },
+    {
+      "midi_note": 68,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n068.flac"
+    },
+    {
+      "midi_note": 68,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n068.flac"
+    },
+    {
+      "midi_note": 68,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n068.flac"
+    },
+    {
+      "midi_note": 68,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n068.flac"
+    },
+    {
+      "midi_note": 68,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n068.flac"
+    },
+    {
+      "midi_note": 68,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n068.flac"
+    },
+    {
+      "midi_note": 68,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n068.flac"
+    },
+    {
+      "midi_note": 68,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n068.flac"
+    },
+    {
+      "midi_note": 68,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n068.flac"
+    },
+    {
+      "midi_note": 68,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n068.flac"
+    },
+    {
+      "midi_note": 68,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n068.flac"
+    },
+    {
+      "midi_note": 68,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n068.flac"
+    },
+    {
+      "midi_note": 68,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n068.flac"
+    },
+    {
+      "midi_note": 68,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n068.flac"
+    },
+    {
+      "midi_note": 69,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n069.flac"
+    },
+    {
+      "midi_note": 69,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n069.flac"
+    },
+    {
+      "midi_note": 69,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n069.flac"
+    },
+    {
+      "midi_note": 69,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n069.flac"
+    },
+    {
+      "midi_note": 69,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n069.flac"
+    },
+    {
+      "midi_note": 69,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n069.flac"
+    },
+    {
+      "midi_note": 69,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n069.flac"
+    },
+    {
+      "midi_note": 69,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n069.flac"
+    },
+    {
+      "midi_note": 69,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n069.flac"
+    },
+    {
+      "midi_note": 69,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n069.flac"
+    },
+    {
+      "midi_note": 69,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n069.flac"
+    },
+    {
+      "midi_note": 69,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n069.flac"
+    },
+    {
+      "midi_note": 69,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n069.flac"
+    },
+    {
+      "midi_note": 69,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n069.flac"
+    },
+    {
+      "midi_note": 69,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n069.flac"
+    },
+    {
+      "midi_note": 69,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n069.flac"
+    },
+    {
+      "midi_note": 70,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n070.flac"
+    },
+    {
+      "midi_note": 70,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n070.flac"
+    },
+    {
+      "midi_note": 70,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n070.flac"
+    },
+    {
+      "midi_note": 70,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n070.flac"
+    },
+    {
+      "midi_note": 70,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n070.flac"
+    },
+    {
+      "midi_note": 70,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n070.flac"
+    },
+    {
+      "midi_note": 70,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n070.flac"
+    },
+    {
+      "midi_note": 70,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n070.flac"
+    },
+    {
+      "midi_note": 70,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n070.flac"
+    },
+    {
+      "midi_note": 70,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n070.flac"
+    },
+    {
+      "midi_note": 70,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n070.flac"
+    },
+    {
+      "midi_note": 70,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n070.flac"
+    },
+    {
+      "midi_note": 70,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n070.flac"
+    },
+    {
+      "midi_note": 70,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n070.flac"
+    },
+    {
+      "midi_note": 70,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n070.flac"
+    },
+    {
+      "midi_note": 70,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n070.flac"
+    },
+    {
+      "midi_note": 71,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n071.flac"
+    },
+    {
+      "midi_note": 71,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n071.flac"
+    },
+    {
+      "midi_note": 71,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n071.flac"
+    },
+    {
+      "midi_note": 71,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n071.flac"
+    },
+    {
+      "midi_note": 71,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n071.flac"
+    },
+    {
+      "midi_note": 71,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n071.flac"
+    },
+    {
+      "midi_note": 71,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n071.flac"
+    },
+    {
+      "midi_note": 71,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n071.flac"
+    },
+    {
+      "midi_note": 71,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n071.flac"
+    },
+    {
+      "midi_note": 71,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n071.flac"
+    },
+    {
+      "midi_note": 71,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n071.flac"
+    },
+    {
+      "midi_note": 71,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n071.flac"
+    },
+    {
+      "midi_note": 71,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n071.flac"
+    },
+    {
+      "midi_note": 71,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n071.flac"
+    },
+    {
+      "midi_note": 71,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n071.flac"
+    },
+    {
+      "midi_note": 71,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n071.flac"
+    },
+    {
+      "midi_note": 72,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n072.flac"
+    },
+    {
+      "midi_note": 72,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n072.flac"
+    },
+    {
+      "midi_note": 72,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n072.flac"
+    },
+    {
+      "midi_note": 72,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n072.flac"
+    },
+    {
+      "midi_note": 72,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n072.flac"
+    },
+    {
+      "midi_note": 72,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n072.flac"
+    },
+    {
+      "midi_note": 72,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n072.flac"
+    },
+    {
+      "midi_note": 72,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n072.flac"
+    },
+    {
+      "midi_note": 72,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n072.flac"
+    },
+    {
+      "midi_note": 72,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n072.flac"
+    },
+    {
+      "midi_note": 72,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n072.flac"
+    },
+    {
+      "midi_note": 72,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n072.flac"
+    },
+    {
+      "midi_note": 72,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n072.flac"
+    },
+    {
+      "midi_note": 72,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n072.flac"
+    },
+    {
+      "midi_note": 72,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n072.flac"
+    },
+    {
+      "midi_note": 72,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n072.flac"
+    },
+    {
+      "midi_note": 73,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n073.flac"
+    },
+    {
+      "midi_note": 73,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n073.flac"
+    },
+    {
+      "midi_note": 73,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n073.flac"
+    },
+    {
+      "midi_note": 73,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n073.flac"
+    },
+    {
+      "midi_note": 73,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n073.flac"
+    },
+    {
+      "midi_note": 73,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n073.flac"
+    },
+    {
+      "midi_note": 73,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n073.flac"
+    },
+    {
+      "midi_note": 73,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n073.flac"
+    },
+    {
+      "midi_note": 73,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n073.flac"
+    },
+    {
+      "midi_note": 73,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n073.flac"
+    },
+    {
+      "midi_note": 73,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n073.flac"
+    },
+    {
+      "midi_note": 73,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n073.flac"
+    },
+    {
+      "midi_note": 73,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n073.flac"
+    },
+    {
+      "midi_note": 73,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n073.flac"
+    },
+    {
+      "midi_note": 73,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n073.flac"
+    },
+    {
+      "midi_note": 73,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n073.flac"
+    },
+    {
+      "midi_note": 74,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n074.flac"
+    },
+    {
+      "midi_note": 74,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n074.flac"
+    },
+    {
+      "midi_note": 74,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n074.flac"
+    },
+    {
+      "midi_note": 74,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n074.flac"
+    },
+    {
+      "midi_note": 74,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n074.flac"
+    },
+    {
+      "midi_note": 74,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n074.flac"
+    },
+    {
+      "midi_note": 74,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n074.flac"
+    },
+    {
+      "midi_note": 74,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n074.flac"
+    },
+    {
+      "midi_note": 74,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n074.flac"
+    },
+    {
+      "midi_note": 74,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n074.flac"
+    },
+    {
+      "midi_note": 74,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n074.flac"
+    },
+    {
+      "midi_note": 74,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n074.flac"
+    },
+    {
+      "midi_note": 74,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n074.flac"
+    },
+    {
+      "midi_note": 74,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n074.flac"
+    },
+    {
+      "midi_note": 74,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n074.flac"
+    },
+    {
+      "midi_note": 74,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n074.flac"
+    },
+    {
+      "midi_note": 75,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n075.flac"
+    },
+    {
+      "midi_note": 75,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n075.flac"
+    },
+    {
+      "midi_note": 75,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n075.flac"
+    },
+    {
+      "midi_note": 75,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n075.flac"
+    },
+    {
+      "midi_note": 75,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n075.flac"
+    },
+    {
+      "midi_note": 75,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n075.flac"
+    },
+    {
+      "midi_note": 75,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n075.flac"
+    },
+    {
+      "midi_note": 75,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n075.flac"
+    },
+    {
+      "midi_note": 75,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n075.flac"
+    },
+    {
+      "midi_note": 75,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n075.flac"
+    },
+    {
+      "midi_note": 75,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n075.flac"
+    },
+    {
+      "midi_note": 75,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n075.flac"
+    },
+    {
+      "midi_note": 75,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n075.flac"
+    },
+    {
+      "midi_note": 75,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n075.flac"
+    },
+    {
+      "midi_note": 75,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n075.flac"
+    },
+    {
+      "midi_note": 75,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n075.flac"
+    },
+    {
+      "midi_note": 76,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n076.flac"
+    },
+    {
+      "midi_note": 76,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n076.flac"
+    },
+    {
+      "midi_note": 76,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n076.flac"
+    },
+    {
+      "midi_note": 76,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n076.flac"
+    },
+    {
+      "midi_note": 76,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n076.flac"
+    },
+    {
+      "midi_note": 76,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n076.flac"
+    },
+    {
+      "midi_note": 76,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n076.flac"
+    },
+    {
+      "midi_note": 76,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n076.flac"
+    },
+    {
+      "midi_note": 76,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n076.flac"
+    },
+    {
+      "midi_note": 76,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n076.flac"
+    },
+    {
+      "midi_note": 76,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n076.flac"
+    },
+    {
+      "midi_note": 76,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n076.flac"
+    },
+    {
+      "midi_note": 76,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n076.flac"
+    },
+    {
+      "midi_note": 76,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n076.flac"
+    },
+    {
+      "midi_note": 76,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n076.flac"
+    },
+    {
+      "midi_note": 76,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n076.flac"
+    },
+    {
+      "midi_note": 77,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n077.flac"
+    },
+    {
+      "midi_note": 77,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n077.flac"
+    },
+    {
+      "midi_note": 77,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n077.flac"
+    },
+    {
+      "midi_note": 77,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n077.flac"
+    },
+    {
+      "midi_note": 77,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n077.flac"
+    },
+    {
+      "midi_note": 77,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n077.flac"
+    },
+    {
+      "midi_note": 77,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n077.flac"
+    },
+    {
+      "midi_note": 77,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n077.flac"
+    },
+    {
+      "midi_note": 77,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n077.flac"
+    },
+    {
+      "midi_note": 77,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n077.flac"
+    },
+    {
+      "midi_note": 77,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n077.flac"
+    },
+    {
+      "midi_note": 77,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n077.flac"
+    },
+    {
+      "midi_note": 77,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n077.flac"
+    },
+    {
+      "midi_note": 77,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n077.flac"
+    },
+    {
+      "midi_note": 77,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n077.flac"
+    },
+    {
+      "midi_note": 77,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n077.flac"
+    },
+    {
+      "midi_note": 78,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n078.flac"
+    },
+    {
+      "midi_note": 78,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n078.flac"
+    },
+    {
+      "midi_note": 78,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n078.flac"
+    },
+    {
+      "midi_note": 78,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n078.flac"
+    },
+    {
+      "midi_note": 78,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n078.flac"
+    },
+    {
+      "midi_note": 78,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n078.flac"
+    },
+    {
+      "midi_note": 78,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n078.flac"
+    },
+    {
+      "midi_note": 78,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n078.flac"
+    },
+    {
+      "midi_note": 78,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n078.flac"
+    },
+    {
+      "midi_note": 78,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n078.flac"
+    },
+    {
+      "midi_note": 78,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n078.flac"
+    },
+    {
+      "midi_note": 78,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n078.flac"
+    },
+    {
+      "midi_note": 78,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n078.flac"
+    },
+    {
+      "midi_note": 78,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n078.flac"
+    },
+    {
+      "midi_note": 78,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n078.flac"
+    },
+    {
+      "midi_note": 78,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n078.flac"
+    },
+    {
+      "midi_note": 79,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n079.flac"
+    },
+    {
+      "midi_note": 79,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n079.flac"
+    },
+    {
+      "midi_note": 79,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n079.flac"
+    },
+    {
+      "midi_note": 79,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n079.flac"
+    },
+    {
+      "midi_note": 79,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n079.flac"
+    },
+    {
+      "midi_note": 79,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n079.flac"
+    },
+    {
+      "midi_note": 79,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n079.flac"
+    },
+    {
+      "midi_note": 79,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n079.flac"
+    },
+    {
+      "midi_note": 79,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n079.flac"
+    },
+    {
+      "midi_note": 79,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n079.flac"
+    },
+    {
+      "midi_note": 79,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n079.flac"
+    },
+    {
+      "midi_note": 79,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n079.flac"
+    },
+    {
+      "midi_note": 79,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n079.flac"
+    },
+    {
+      "midi_note": 79,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n079.flac"
+    },
+    {
+      "midi_note": 79,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n079.flac"
+    },
+    {
+      "midi_note": 79,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n079.flac"
+    },
+    {
+      "midi_note": 80,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n080.flac"
+    },
+    {
+      "midi_note": 80,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n080.flac"
+    },
+    {
+      "midi_note": 80,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n080.flac"
+    },
+    {
+      "midi_note": 80,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n080.flac"
+    },
+    {
+      "midi_note": 80,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n080.flac"
+    },
+    {
+      "midi_note": 80,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n080.flac"
+    },
+    {
+      "midi_note": 80,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n080.flac"
+    },
+    {
+      "midi_note": 80,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n080.flac"
+    },
+    {
+      "midi_note": 80,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n080.flac"
+    },
+    {
+      "midi_note": 80,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n080.flac"
+    },
+    {
+      "midi_note": 80,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n080.flac"
+    },
+    {
+      "midi_note": 80,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n080.flac"
+    },
+    {
+      "midi_note": 80,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n080.flac"
+    },
+    {
+      "midi_note": 80,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n080.flac"
+    },
+    {
+      "midi_note": 80,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n080.flac"
+    },
+    {
+      "midi_note": 80,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n080.flac"
+    },
+    {
+      "midi_note": 81,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n081.flac"
+    },
+    {
+      "midi_note": 81,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n081.flac"
+    },
+    {
+      "midi_note": 81,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n081.flac"
+    },
+    {
+      "midi_note": 81,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n081.flac"
+    },
+    {
+      "midi_note": 81,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n081.flac"
+    },
+    {
+      "midi_note": 81,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n081.flac"
+    },
+    {
+      "midi_note": 81,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n081.flac"
+    },
+    {
+      "midi_note": 81,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n081.flac"
+    },
+    {
+      "midi_note": 81,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n081.flac"
+    },
+    {
+      "midi_note": 81,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n081.flac"
+    },
+    {
+      "midi_note": 81,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n081.flac"
+    },
+    {
+      "midi_note": 81,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n081.flac"
+    },
+    {
+      "midi_note": 81,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n081.flac"
+    },
+    {
+      "midi_note": 81,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n081.flac"
+    },
+    {
+      "midi_note": 81,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n081.flac"
+    },
+    {
+      "midi_note": 81,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n081.flac"
+    },
+    {
+      "midi_note": 82,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n082.flac"
+    },
+    {
+      "midi_note": 82,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n082.flac"
+    },
+    {
+      "midi_note": 82,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n082.flac"
+    },
+    {
+      "midi_note": 82,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n082.flac"
+    },
+    {
+      "midi_note": 82,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n082.flac"
+    },
+    {
+      "midi_note": 82,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n082.flac"
+    },
+    {
+      "midi_note": 82,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n082.flac"
+    },
+    {
+      "midi_note": 82,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n082.flac"
+    },
+    {
+      "midi_note": 82,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n082.flac"
+    },
+    {
+      "midi_note": 82,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n082.flac"
+    },
+    {
+      "midi_note": 82,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n082.flac"
+    },
+    {
+      "midi_note": 82,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n082.flac"
+    },
+    {
+      "midi_note": 82,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n082.flac"
+    },
+    {
+      "midi_note": 82,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n082.flac"
+    },
+    {
+      "midi_note": 82,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n082.flac"
+    },
+    {
+      "midi_note": 82,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n082.flac"
+    },
+    {
+      "midi_note": 83,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n083.flac"
+    },
+    {
+      "midi_note": 83,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n083.flac"
+    },
+    {
+      "midi_note": 83,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n083.flac"
+    },
+    {
+      "midi_note": 83,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n083.flac"
+    },
+    {
+      "midi_note": 83,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n083.flac"
+    },
+    {
+      "midi_note": 83,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n083.flac"
+    },
+    {
+      "midi_note": 83,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n083.flac"
+    },
+    {
+      "midi_note": 83,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n083.flac"
+    },
+    {
+      "midi_note": 83,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n083.flac"
+    },
+    {
+      "midi_note": 83,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n083.flac"
+    },
+    {
+      "midi_note": 83,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n083.flac"
+    },
+    {
+      "midi_note": 83,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n083.flac"
+    },
+    {
+      "midi_note": 83,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n083.flac"
+    },
+    {
+      "midi_note": 83,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n083.flac"
+    },
+    {
+      "midi_note": 83,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n083.flac"
+    },
+    {
+      "midi_note": 83,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n083.flac"
+    },
+    {
+      "midi_note": 84,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n084.flac"
+    },
+    {
+      "midi_note": 84,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n084.flac"
+    },
+    {
+      "midi_note": 84,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n084.flac"
+    },
+    {
+      "midi_note": 84,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n084.flac"
+    },
+    {
+      "midi_note": 84,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n084.flac"
+    },
+    {
+      "midi_note": 84,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n084.flac"
+    },
+    {
+      "midi_note": 84,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n084.flac"
+    },
+    {
+      "midi_note": 84,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n084.flac"
+    },
+    {
+      "midi_note": 84,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n084.flac"
+    },
+    {
+      "midi_note": 84,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n084.flac"
+    },
+    {
+      "midi_note": 84,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n084.flac"
+    },
+    {
+      "midi_note": 84,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n084.flac"
+    },
+    {
+      "midi_note": 84,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n084.flac"
+    },
+    {
+      "midi_note": 84,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n084.flac"
+    },
+    {
+      "midi_note": 84,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n084.flac"
+    },
+    {
+      "midi_note": 84,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n084.flac"
+    },
+    {
+      "midi_note": 85,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n085.flac"
+    },
+    {
+      "midi_note": 85,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n085.flac"
+    },
+    {
+      "midi_note": 85,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n085.flac"
+    },
+    {
+      "midi_note": 85,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n085.flac"
+    },
+    {
+      "midi_note": 85,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n085.flac"
+    },
+    {
+      "midi_note": 85,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n085.flac"
+    },
+    {
+      "midi_note": 85,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n085.flac"
+    },
+    {
+      "midi_note": 85,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n085.flac"
+    },
+    {
+      "midi_note": 85,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n085.flac"
+    },
+    {
+      "midi_note": 85,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n085.flac"
+    },
+    {
+      "midi_note": 85,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n085.flac"
+    },
+    {
+      "midi_note": 85,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n085.flac"
+    },
+    {
+      "midi_note": 85,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n085.flac"
+    },
+    {
+      "midi_note": 85,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n085.flac"
+    },
+    {
+      "midi_note": 85,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n085.flac"
+    },
+    {
+      "midi_note": 85,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n085.flac"
+    },
+    {
+      "midi_note": 86,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n086.flac"
+    },
+    {
+      "midi_note": 86,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n086.flac"
+    },
+    {
+      "midi_note": 86,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n086.flac"
+    },
+    {
+      "midi_note": 86,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n086.flac"
+    },
+    {
+      "midi_note": 86,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n086.flac"
+    },
+    {
+      "midi_note": 86,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n086.flac"
+    },
+    {
+      "midi_note": 86,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n086.flac"
+    },
+    {
+      "midi_note": 86,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n086.flac"
+    },
+    {
+      "midi_note": 86,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n086.flac"
+    },
+    {
+      "midi_note": 86,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n086.flac"
+    },
+    {
+      "midi_note": 86,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n086.flac"
+    },
+    {
+      "midi_note": 86,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n086.flac"
+    },
+    {
+      "midi_note": 86,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n086.flac"
+    },
+    {
+      "midi_note": 86,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n086.flac"
+    },
+    {
+      "midi_note": 86,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n086.flac"
+    },
+    {
+      "midi_note": 86,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n086.flac"
+    },
+    {
+      "midi_note": 87,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n087.flac"
+    },
+    {
+      "midi_note": 87,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n087.flac"
+    },
+    {
+      "midi_note": 87,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n087.flac"
+    },
+    {
+      "midi_note": 87,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n087.flac"
+    },
+    {
+      "midi_note": 87,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n087.flac"
+    },
+    {
+      "midi_note": 87,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n087.flac"
+    },
+    {
+      "midi_note": 87,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n087.flac"
+    },
+    {
+      "midi_note": 87,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n087.flac"
+    },
+    {
+      "midi_note": 87,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n087.flac"
+    },
+    {
+      "midi_note": 87,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n087.flac"
+    },
+    {
+      "midi_note": 87,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n087.flac"
+    },
+    {
+      "midi_note": 87,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n087.flac"
+    },
+    {
+      "midi_note": 87,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n087.flac"
+    },
+    {
+      "midi_note": 87,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n087.flac"
+    },
+    {
+      "midi_note": 87,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n087.flac"
+    },
+    {
+      "midi_note": 87,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n087.flac"
+    },
+    {
+      "midi_note": 88,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n088.flac"
+    },
+    {
+      "midi_note": 88,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n088.flac"
+    },
+    {
+      "midi_note": 88,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n088.flac"
+    },
+    {
+      "midi_note": 88,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n088.flac"
+    },
+    {
+      "midi_note": 88,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n088.flac"
+    },
+    {
+      "midi_note": 88,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n088.flac"
+    },
+    {
+      "midi_note": 88,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n088.flac"
+    },
+    {
+      "midi_note": 88,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n088.flac"
+    },
+    {
+      "midi_note": 88,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n088.flac"
+    },
+    {
+      "midi_note": 88,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n088.flac"
+    },
+    {
+      "midi_note": 88,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n088.flac"
+    },
+    {
+      "midi_note": 88,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n088.flac"
+    },
+    {
+      "midi_note": 88,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n088.flac"
+    },
+    {
+      "midi_note": 88,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n088.flac"
+    },
+    {
+      "midi_note": 88,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n088.flac"
+    },
+    {
+      "midi_note": 88,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n088.flac"
+    },
+    {
+      "midi_note": 89,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n089.flac"
+    },
+    {
+      "midi_note": 89,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n089.flac"
+    },
+    {
+      "midi_note": 89,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n089.flac"
+    },
+    {
+      "midi_note": 89,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n089.flac"
+    },
+    {
+      "midi_note": 89,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n089.flac"
+    },
+    {
+      "midi_note": 89,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n089.flac"
+    },
+    {
+      "midi_note": 89,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n089.flac"
+    },
+    {
+      "midi_note": 89,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n089.flac"
+    },
+    {
+      "midi_note": 89,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n089.flac"
+    },
+    {
+      "midi_note": 89,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n089.flac"
+    },
+    {
+      "midi_note": 89,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n089.flac"
+    },
+    {
+      "midi_note": 89,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n089.flac"
+    },
+    {
+      "midi_note": 89,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n089.flac"
+    },
+    {
+      "midi_note": 89,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n089.flac"
+    },
+    {
+      "midi_note": 89,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n089.flac"
+    },
+    {
+      "midi_note": 89,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n089.flac"
+    },
+    {
+      "midi_note": 90,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n090.flac"
+    },
+    {
+      "midi_note": 90,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n090.flac"
+    },
+    {
+      "midi_note": 90,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n090.flac"
+    },
+    {
+      "midi_note": 90,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n090.flac"
+    },
+    {
+      "midi_note": 90,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n090.flac"
+    },
+    {
+      "midi_note": 90,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n090.flac"
+    },
+    {
+      "midi_note": 90,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n090.flac"
+    },
+    {
+      "midi_note": 90,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n090.flac"
+    },
+    {
+      "midi_note": 90,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n090.flac"
+    },
+    {
+      "midi_note": 90,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n090.flac"
+    },
+    {
+      "midi_note": 90,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n090.flac"
+    },
+    {
+      "midi_note": 90,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n090.flac"
+    },
+    {
+      "midi_note": 90,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n090.flac"
+    },
+    {
+      "midi_note": 90,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n090.flac"
+    },
+    {
+      "midi_note": 90,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n090.flac"
+    },
+    {
+      "midi_note": 90,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n090.flac"
+    },
+    {
+      "midi_note": 91,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n091.flac"
+    },
+    {
+      "midi_note": 91,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n091.flac"
+    },
+    {
+      "midi_note": 91,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n091.flac"
+    },
+    {
+      "midi_note": 91,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n091.flac"
+    },
+    {
+      "midi_note": 91,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n091.flac"
+    },
+    {
+      "midi_note": 91,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n091.flac"
+    },
+    {
+      "midi_note": 91,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n091.flac"
+    },
+    {
+      "midi_note": 91,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n091.flac"
+    },
+    {
+      "midi_note": 91,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n091.flac"
+    },
+    {
+      "midi_note": 91,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n091.flac"
+    },
+    {
+      "midi_note": 91,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n091.flac"
+    },
+    {
+      "midi_note": 91,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n091.flac"
+    },
+    {
+      "midi_note": 91,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n091.flac"
+    },
+    {
+      "midi_note": 91,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n091.flac"
+    },
+    {
+      "midi_note": 91,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n091.flac"
+    },
+    {
+      "midi_note": 91,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n091.flac"
+    },
+    {
+      "midi_note": 92,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n092.flac"
+    },
+    {
+      "midi_note": 92,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n092.flac"
+    },
+    {
+      "midi_note": 92,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n092.flac"
+    },
+    {
+      "midi_note": 92,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n092.flac"
+    },
+    {
+      "midi_note": 92,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n092.flac"
+    },
+    {
+      "midi_note": 92,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n092.flac"
+    },
+    {
+      "midi_note": 92,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n092.flac"
+    },
+    {
+      "midi_note": 92,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n092.flac"
+    },
+    {
+      "midi_note": 92,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n092.flac"
+    },
+    {
+      "midi_note": 92,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n092.flac"
+    },
+    {
+      "midi_note": 92,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n092.flac"
+    },
+    {
+      "midi_note": 92,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n092.flac"
+    },
+    {
+      "midi_note": 92,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n092.flac"
+    },
+    {
+      "midi_note": 92,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n092.flac"
+    },
+    {
+      "midi_note": 92,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n092.flac"
+    },
+    {
+      "midi_note": 92,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n092.flac"
+    },
+    {
+      "midi_note": 93,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n093.flac"
+    },
+    {
+      "midi_note": 93,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n093.flac"
+    },
+    {
+      "midi_note": 93,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n093.flac"
+    },
+    {
+      "midi_note": 93,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n093.flac"
+    },
+    {
+      "midi_note": 93,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n093.flac"
+    },
+    {
+      "midi_note": 93,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n093.flac"
+    },
+    {
+      "midi_note": 93,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n093.flac"
+    },
+    {
+      "midi_note": 93,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n093.flac"
+    },
+    {
+      "midi_note": 93,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n093.flac"
+    },
+    {
+      "midi_note": 93,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n093.flac"
+    },
+    {
+      "midi_note": 93,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n093.flac"
+    },
+    {
+      "midi_note": 93,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n093.flac"
+    },
+    {
+      "midi_note": 93,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n093.flac"
+    },
+    {
+      "midi_note": 93,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n093.flac"
+    },
+    {
+      "midi_note": 93,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n093.flac"
+    },
+    {
+      "midi_note": 93,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n093.flac"
+    },
+    {
+      "midi_note": 94,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n094.flac"
+    },
+    {
+      "midi_note": 94,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n094.flac"
+    },
+    {
+      "midi_note": 94,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n094.flac"
+    },
+    {
+      "midi_note": 94,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n094.flac"
+    },
+    {
+      "midi_note": 94,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n094.flac"
+    },
+    {
+      "midi_note": 94,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n094.flac"
+    },
+    {
+      "midi_note": 94,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n094.flac"
+    },
+    {
+      "midi_note": 94,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n094.flac"
+    },
+    {
+      "midi_note": 94,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n094.flac"
+    },
+    {
+      "midi_note": 94,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n094.flac"
+    },
+    {
+      "midi_note": 94,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n094.flac"
+    },
+    {
+      "midi_note": 94,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n094.flac"
+    },
+    {
+      "midi_note": 94,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n094.flac"
+    },
+    {
+      "midi_note": 94,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n094.flac"
+    },
+    {
+      "midi_note": 94,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n094.flac"
+    },
+    {
+      "midi_note": 94,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n094.flac"
+    },
+    {
+      "midi_note": 95,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n095.flac"
+    },
+    {
+      "midi_note": 95,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n095.flac"
+    },
+    {
+      "midi_note": 95,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n095.flac"
+    },
+    {
+      "midi_note": 95,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n095.flac"
+    },
+    {
+      "midi_note": 95,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n095.flac"
+    },
+    {
+      "midi_note": 95,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n095.flac"
+    },
+    {
+      "midi_note": 95,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n095.flac"
+    },
+    {
+      "midi_note": 95,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n095.flac"
+    },
+    {
+      "midi_note": 95,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n095.flac"
+    },
+    {
+      "midi_note": 95,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n095.flac"
+    },
+    {
+      "midi_note": 95,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n095.flac"
+    },
+    {
+      "midi_note": 95,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n095.flac"
+    },
+    {
+      "midi_note": 95,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n095.flac"
+    },
+    {
+      "midi_note": 95,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n095.flac"
+    },
+    {
+      "midi_note": 95,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n095.flac"
+    },
+    {
+      "midi_note": 95,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n095.flac"
+    },
+    {
+      "midi_note": 96,
+      "velocity_min": 0,
+      "velocity_max": 14,
+      "velocity_idx": 0,
+      "round_robin": 1,
+      "file": "audio/rr1_vel000_n096.flac"
+    },
+    {
+      "midi_note": 96,
+      "velocity_min": 15,
+      "velocity_max": 24,
+      "velocity_idx": 15,
+      "round_robin": 1,
+      "file": "audio/rr1_vel015_n096.flac"
+    },
+    {
+      "midi_note": 96,
+      "velocity_min": 25,
+      "velocity_max": 29,
+      "velocity_idx": 25,
+      "round_robin": 1,
+      "file": "audio/rr1_vel025_n096.flac"
+    },
+    {
+      "midi_note": 96,
+      "velocity_min": 30,
+      "velocity_max": 34,
+      "velocity_idx": 30,
+      "round_robin": 1,
+      "file": "audio/rr1_vel030_n096.flac"
+    },
+    {
+      "midi_note": 96,
+      "velocity_min": 35,
+      "velocity_max": 39,
+      "velocity_idx": 35,
+      "round_robin": 1,
+      "file": "audio/rr1_vel035_n096.flac"
+    },
+    {
+      "midi_note": 96,
+      "velocity_min": 40,
+      "velocity_max": 44,
+      "velocity_idx": 40,
+      "round_robin": 1,
+      "file": "audio/rr1_vel040_n096.flac"
+    },
+    {
+      "midi_note": 96,
+      "velocity_min": 45,
+      "velocity_max": 49,
+      "velocity_idx": 45,
+      "round_robin": 1,
+      "file": "audio/rr1_vel045_n096.flac"
+    },
+    {
+      "midi_note": 96,
+      "velocity_min": 50,
+      "velocity_max": 64,
+      "velocity_idx": 50,
+      "round_robin": 1,
+      "file": "audio/rr1_vel050_n096.flac"
+    },
+    {
+      "midi_note": 96,
+      "velocity_min": 65,
+      "velocity_max": 79,
+      "velocity_idx": 65,
+      "round_robin": 1,
+      "file": "audio/rr1_vel065_n096.flac"
+    },
+    {
+      "midi_note": 96,
+      "velocity_min": 80,
+      "velocity_max": 89,
+      "velocity_idx": 80,
+      "round_robin": 1,
+      "file": "audio/rr1_vel080_n096.flac"
+    },
+    {
+      "midi_note": 96,
+      "velocity_min": 90,
+      "velocity_max": 99,
+      "velocity_idx": 90,
+      "round_robin": 1,
+      "file": "audio/rr1_vel090_n096.flac"
+    },
+    {
+      "midi_note": 96,
+      "velocity_min": 100,
+      "velocity_max": 104,
+      "velocity_idx": 100,
+      "round_robin": 1,
+      "file": "audio/rr1_vel100_n096.flac"
+    },
+    {
+      "midi_note": 96,
+      "velocity_min": 105,
+      "velocity_max": 109,
+      "velocity_idx": 105,
+      "round_robin": 1,
+      "file": "audio/rr1_vel105_n096.flac"
+    },
+    {
+      "midi_note": 96,
+      "velocity_min": 110,
+      "velocity_max": 118,
+      "velocity_idx": 110,
+      "round_robin": 1,
+      "file": "audio/rr1_vel110_n096.flac"
+    },
+    {
+      "midi_note": 96,
+      "velocity_min": 119,
+      "velocity_max": 125,
+      "velocity_idx": 119,
+      "round_robin": 1,
+      "file": "audio/rr1_vel119_n096.flac"
+    },
+    {
+      "midi_note": 96,
+      "velocity_min": 126,
+      "velocity_max": 127,
+      "velocity_idx": 126,
+      "round_robin": 1,
+      "file": "audio/rr1_vel126_n096.flac"
+    }
+  ]
+}
