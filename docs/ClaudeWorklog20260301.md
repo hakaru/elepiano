@@ -244,3 +244,11 @@
 決定事項: docs/midi2-pe-setup.md を新規作成
 次のTODO: commit push
 ---
+
+---
+2026-03-02 01:28
+作業項目: Keyscape サンプル抽出方法のドキュメント作成
+追加機能の説明: SpCAフォーマット解析結果・抽出手順をdocs/keyscape-sample-extraction.mdに記録
+決定事項: docs/keyscape-sample-extraction.md を新規作成
+次のTODO: commit push
+---
