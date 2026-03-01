@@ -194,3 +194,53 @@
 決定事項: 変更ファイルは docs/ClaudeWorklog20260301.md のみ
 次のTODO: -
 ---
+
+---
+2026-03-02 00:30
+作業項目: MIDI2Kit 採用検討・問題点調査
+追加機能の説明: MIDI2Kit (midi2kit.dev) の elepiano への採用可否を調査
+決定事項: 3つの根本的問題を特定
+次のTODO: ユーザーの意図確認
+---
+
+---
+2026-03-02 00:33
+作業項目: MIDI2Kit 採用不可の確定・代替案提示
+追加機能の説明: ユーザーが「Pi側シンセ本体に組み込みたい」と確認→採用不可を確定
+決定事項: MIDI2Kit は Pi (Linux) に採用不可。AM_MIDI2.0Lib が代替候補
+次のTODO: ユーザーの判断待ち
+---
+
+---
+2026-03-02 00:35
+作業項目: Pi 5 USB接続 + MIDI 2.0 Property Exchange 送信の問題点調査
+追加機能の説明: Pi 5をUSBガジェットモードで MIDI 2.0 デバイスとして動作させPEを送信する構成の課題を調査
+決定事項:
+  - Pi 5 USB gadget mode: USB-Cポートのみ対応、USB 2.0のみ
+  - Linux MIDI 2.0 UMP: kernel 6.5以降でサポート
+  - Property Exchange はユーザースペース実装が必要 (カーネル外)
+  - CONFIG_USB_CONFIGFS_F_MIDI2 が有効か要確認
+  - AM_MIDI2.0Lib が C++ PE 実装の現実的選択肢
+次のTODO: 問題点をユーザーに提示
+---
+
+---
+2026-03-02 00:38
+作業項目: CONFIG_USB_CONFIGFS_F_MIDI2 確認完了
+追加機能の説明: RPi カーネルソース (rpi-6.6.y) を直接調査
+決定事項:
+  - f_midi2.c は rpi-6.6.y カーネルソースに存在 ✅
+  - CONFIG_USB_CONFIGFS_F_MIDI2 は Kconfig に定義あり ✅
+  - bcm2712_defconfig には含まれていない (デフォルト無効) ❌
+  - SND_UMP / SND_USB_AUDIO_MIDI_V2 も defconfig に未記載 ❌
+  - → カーネル再ビルドが必要
+次のTODO: ユーザーに結果報告
+---
+
+---
+2026-03-02 01:07
+作業項目: MIDI 2.0 / Property Exchange ドキュメント作成
+追加機能の説明: Pi 5 USB MIDI 2.0 PE 対応の調査結果をdocs/に整理
+決定事項: docs/midi2-pe-setup.md を新規作成
+次のTODO: commit push
+---
