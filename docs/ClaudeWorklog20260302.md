@@ -263,6 +263,23 @@
 2026-03-02 03:07
 作業項目: elepiano-build スキル作成
 追加機能の説明: C++ エンジンのビルド・実行手順を .claude/commands/elepiano-build.md としてスキル化
-決定事項: 作成中
-次のTODO: スキルファイル作成 → git add → commit
+決定事項:
+  - .claude/commands/elepiano-build.md 作成
+  - git commit: feat: add release sample support to C++ engine; add elepiano-build skill
+  - /elepiano-build スキルとして即座に使用可能
+次のTODO: Pi 上でビルド・実機テスト
+---
+
+---
+2026-03-02 03:11
+作業項目: git push origin main
+決定事項: push 完了 (1262c50..22f0e53)
+次のTODO: ワークログ commit
+---
+
+---
+2026-03-02 03:11
+作業項目: ワークログ commit
+決定事項: docs/ClaudeWorklog20260302.md を commit
+次のTODO: Pi ビルド・実機テスト
 ---
