@@ -142,3 +142,31 @@
   9. CMakeLists.txt更新
 次のTODO: spsc_queue.hpp から順次実装
 ---
+
+---
+2026-03-01 18:22
+作業項目: GitHub Issues #1〜#6 全解決完了
+追加機能の説明: 6つのIssueを全て実装、commit b6cb82b でpush、全Issue close
+決定事項:
+  Issue #1: SampleDB::find() O(n)→O(log n) (std::map note_index_ + lower_bound)
+  Issue #2: NEON SIMD float→S16 (#ifdef __ARM_NEON__ で Pi 上のみ有効)
+  Issue #3: SpscQueue<MidiEvent,64> ロックフリーキュー導入、mutex廃止
+            push_event() (MIDIスレッド) → mix()でドレイン (オーディオスレッド)
+  Issue #4: extract_samples.py にSustain XOR対応
+            _find_encrypted_frame1(): brute-force scan
+            decode_spca(encrypted=True) で Sustain 復号
+            python extract_samples.py db_path out_dir sustain で実行可能
+  Issue #5: flac_decoder.hpp/.cpp 独立モジュール化 (DecodedAudio API)
+  Issue #6: Voice::start_time_samples + SynthEngine::sample_counter_
+            oldest_voice_idx() で真に最古の Voice をスチール
+  新規ファイル: src/spsc_queue.hpp, src/flac_decoder.hpp, src/flac_decoder.cpp
+次のTODO: Pi + PiSound 実機ビルド・テスト
+---
+
+---
+2026-03-02 00:06
+作業項目: ワークログをコミット・プッシュ
+追加機能の説明: ClaudeWorklog20260301.md の追記分をコミットしてリモートへpush
+決定事項: 変更ファイルは docs/ClaudeWorklog20260301.md のみ
+次のTODO: Pi + PiSound 実機ビルド・テスト
+---
