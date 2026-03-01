@@ -170,3 +170,27 @@
 決定事項: 変更ファイルは docs/ClaudeWorklog20260301.md のみ
 次のTODO: Pi + PiSound 実機ビルド・テスト
 ---
+
+---
+2026-03-02 00:07
+作業項目: Pianoberry 対応検討
+追加機能の説明: ユーザーが Pianoberry (Raspberry Pi 5 + Pisound + Pianoteq) の使用を検討
+決定事項: 調査中
+次のTODO: 対応可否の判断・回答
+---
+
+---
+2026-03-02 00:26
+作業項目: NEON の説明
+追加機能の説明: ARM NEON とは何かをユーザーに説明
+決定事項: NEON = ARM の SIMD 命令セット
+次のTODO: -
+---
+
+---
+2026-03-02 00:27
+作業項目: ワークログをコミット・プッシュ
+追加機能の説明: Pianoberry検討・NEON説明のログをコミット
+決定事項: 変更ファイルは docs/ClaudeWorklog20260301.md のみ
+次のTODO: -
+---
