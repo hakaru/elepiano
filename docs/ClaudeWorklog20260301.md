@@ -57,6 +57,25 @@
 ---
 
 ---
+2026-03-01 17:53
+作業項目: コードレビュー・性能監査・セキュリティ監査・リファクタリングを並行実行
+追加機能の説明: 4つのサブエージェントを並列起動して全コードを多角的に分析・改善
+決定事項: 各エージェントの結果をマージして最終的なリファクタリングを適用
+次のTODO: 各エージェントの結果確認・マージ・適用
+---
+
+---
+2026-03-01 17:59
+作業項目: 4エージェント結果マージ → 修正実装
+追加機能の説明: コードレビュー・性能・セキュリティ・リファクタリングの指摘をマージして修正を適用
+決定事項:
+  Critical: mutex(SynthEngine voices_), atomic<bool>(running_/g_quit), position overflow防止, candidates空チェック
+  High: FLAC RAII化, MIDI note/vel範囲検証, パストラバーサル防止, include漏れ修正, コピー/ムーブ禁止
+  Medium: std::clamp, rr_counters_削除, ALSA部分書き込み対応, JSON型チェック
+次のTODO: 修正適用後にgit commit
+---
+
+---
 2026-03-01 17:51
 作業項目: git commit & push
 追加機能の説明: 実装済みファイルを全てコミットしてリモートにプッシュ
@@ -80,4 +99,12 @@
   - Pi上でのCMakeビルド (apt install libasound2-dev libflac-dev nlohmann-json3-dev)
   - MIDI+ALSAの動作確認（virtual MIDIでMac上テスト可）
   - Sustain サンプル（XOR有り）も後で対応
+---
+
+---
+2026-03-01 17:54
+作業項目: C++/Pythonシンセコードのリファクタリング分析
+追加機能の説明: 全ソースファイル(src/*.hpp/cpp, tools/extract_samples.py)を精読し、リファクタリング推奨変更リストを作成
+決定事項: コード変更は行わず分析のみ（重複削除・命名統一・責務分離・エラーハンドリング・C++17活用・RAII強化・Python改善）
+次のTODO: 全ファイル読み込み後に推奨変更リストをMarkdownで出力
 ---

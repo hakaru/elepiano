@@ -5,33 +5,27 @@
 #include <thread>
 #include <csignal>
 #include <cstdio>
-#include <cstdlib>
+#include <atomic>
 
-static volatile bool g_quit = false;
+static std::atomic<bool> g_quit{false};
 
-static void sig_handler(int) { g_quit = true; }
+static void sig_handler(int) { g_quit.store(true); }
 
 int main(int argc, char* argv[])
 {
-    // ============================================================
-    // 引数
-    // ============================================================
     const char* json_path    = "data/rhodes/samples.json";
     const char* alsa_device  = "hw:pisound";
 
     if (argc > 1) json_path   = argv[1];
     if (argc > 2) alsa_device = argv[2];
 
-    printf("elepiano MIDI synth\n");
-    printf("  samples: %s\n", json_path);
-    printf("  device:  %s\n", alsa_device);
+    fprintf(stderr, "elepiano MIDI synth\n");
+    fprintf(stderr, "  samples: %s\n", json_path);
+    fprintf(stderr, "  device:  %s\n", alsa_device);
 
     signal(SIGINT,  sig_handler);
     signal(SIGTERM, sig_handler);
 
-    // ============================================================
-    // 初期化
-    // ============================================================
     SampleDB db(json_path);
 
     AudioOutput::Config acfg;
@@ -39,44 +33,40 @@ int main(int argc, char* argv[])
     acfg.sample_rate = db.sample_rate();
     acfg.channels    = 2;
     acfg.period_size = 256;
-    acfg.periods     = 3;
+    acfg.periods     = 4;  // 23.2ms バッファ（アンダーラン対策）
 
     AudioOutput audio(acfg);
     SynthEngine synth(db, acfg.sample_rate);
 
-    // オーディオコールバックを登録
+    // オーディオスレッドのコールバック — printf 禁止
     audio.set_callback([&](float* buf, int frames) {
         synth.mix(buf, frames);
     });
 
-    // MIDI 入力
+    // MIDI コールバック — MIDI スレッドで実行（printf OK）
     MidiInput midi("elepiano");
     midi.set_callback([&](const MidiEvent& ev) {
         if (ev.type == MidiEvent::Type::NOTE_ON) {
-            printf("[MIDI] NOTE ON  ch=%d note=%d vel=%d\n",
-                   ev.channel, ev.note, ev.velocity);
+            fprintf(stderr, "[MIDI] NOTE ON  ch=%d note=%d vel=%d\n",
+                    ev.channel, ev.note, ev.velocity);
             synth.note_on(ev.note, ev.velocity);
         } else if (ev.type == MidiEvent::Type::NOTE_OFF) {
-            printf("[MIDI] NOTE OFF ch=%d note=%d\n",
-                   ev.channel, ev.note);
+            fprintf(stderr, "[MIDI] NOTE OFF ch=%d note=%d\n",
+                    ev.channel, ev.note);
             synth.note_off(ev.note);
         }
     });
 
-    // ============================================================
-    // スレッド起動
-    // ============================================================
-    std::thread midi_thread([&]() { midi.run(); });
+    std::thread midi_thread([&]()  { midi.run(); });
     std::thread audio_thread([&]() { audio.run(); });
 
-    printf("起動完了。Ctrl+C で終了。\n");
+    fprintf(stderr, "起動完了。Ctrl+C で終了。\n");
 
-    // メインスレッドはシグナル待ち
-    while (!g_quit) {
+    while (!g_quit.load()) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 
-    printf("\n終了中...\n");
+    fprintf(stderr, "\n終了中...\n");
     midi.stop();
     audio.stop();
 
