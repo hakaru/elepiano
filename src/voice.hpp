@@ -7,6 +7,8 @@ struct Voice {
 
     const SampleData* sample    = nullptr;
     int   target_note           = 0;
+    int   velocity              = 0;     // note_on 時の velocity（release voice 選択に使用）
+    bool  is_release_voice      = false; // true の場合 note_off() は no-op（自然減衰で終了）
     float pitch_ratio           = 1.0f;
     double position             = 0.0;   // サンプル内浮動小数点位置
     float gain                  = 0.0f;  // 速度由来のゲイン

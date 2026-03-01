@@ -144,3 +144,125 @@
 決定事項: 検討中
 次のTODO: .gitignore 確認 → .claude/ を追跡対象に → commit & push
 ---
+
+---
+2026-03-02 02:39
+作業項目: skill管理 GitHub 反映完了
+追加機能の説明:
+  - .gitignore 更新: data/*/audio/ を除外、data/*/samples.json は追跡
+  - tools/__pycache__/ を除外
+  - .claude/commands/keyscape-extract.md を git に追加（skill 管理）
+  - commit: feat: add Rhodes Classic attack & Vintage Vibe EP extraction; add skill management
+  - git push origin main → 完了
+決定事項:
+  - .claude/commands/ でプロジェクトローカル skill を git 管理する方針確立
+  - audio/ (FLAC バイナリ, 計4.6GB) は gitignore、samples.json (メタデータ) は追跡
+次のTODO: Pi 上でのビルド・実機動作確認
+---
+
+---
+2026-03-02 02:53
+作業項目: Rhodes Classic Release サンプル & 未取得ボイスの調査
+追加機能の説明:
+  - Rhodes - Classic.db の全WAVファイル (7637件) を分析
+  - 現状取得済み: CLR r10 attack 1615件、lacrmsp 38件
+  - 未取得のReleaseサンプル種別を特定:
+    1. CLR RelF (Release Fade): RR01-04_SL01 CLR RelF_{note}-{vel_max}.wav
+       - 88ノート(21-108) × 5速度レイヤー(43/68/96/118/127) × 4RR = 1760ファイル
+    2. CLRRelMr3 (Release Mechanical): RR01-04_SL01 CLRRelMr3_{note}-{vel_max}.wav
+       - 同規模 1760ファイル
+    3. CLRMchRel (Mechanical Release): RR01_SL02 CLRMchRel_{note}-{vel_max}.wav
+       - 1056ファイル
+    4. CLRMchr03 (Mechanical attack r03): RR01_SL02 CLRMchr03_{note}-{vel_max}.wav
+       - 1408ファイル
+決定事項: 調査完了。Releaseサンプルは .db 内に存在する
+次のTODO: RelF (key-up release) を優先して extract_samples.py に追加するか判断
+---
+
+---
+2026-03-02 02:57
+作業項目: Rhodes Classic 全 Release サンプルの抽出モード追加
+追加機能の説明:
+  - ユーザー指示: 全4種類の Release/Mechanical サンプルを全部抽出したい
+  - 追加する4モード:
+    1. rhodes-relf   → CLR RelF_{note}-{vel_max}.wav (1760件, RR01-04, 5vel層)
+    2. rhodes-relm   → CLRRelMr3_{note}-{vel_max}.wav (1760件, RR01-04, 5vel層)
+    3. rhodes-mchrel → CLRMchRel_{note}-{vel_max}.wav (1056件, RR01, 3vel層)
+    4. rhodes-mchr03 → CLRMchr03_{note}-{vel_max}.wav (1408件, RR01-02, 4vel層)
+  - ファイル名の {vel_max} を explicit velocity range に変換する build_vel_max_ranges() を追加
+  - 出力: data/rhodes-classic-relf/, data/rhodes-classic-relm/ etc.
+決定事項: 実装開始
+次のTODO: extract_samples.py 更新 → 4モードを順次実行
+---
+
+---
+2026-03-02 03:10
+作業項目: Rhodes Classic Release/Mechanical サンプル全4種抽出完了
+追加機能の説明:
+  - extract_samples.py に4モード追加:
+    - rhodes-relf   (CLR RelF)   → data/rhodes-classic-relf/   1760/1760 ✅
+    - rhodes-relm   (CLRRelMr3)  → data/rhodes-classic-relm/   1760/1760 ✅
+    - rhodes-mchrel (CLRMchRel)  → data/rhodes-classic-mchrel/ 1056/1056 ✅
+    - rhodes-mchr03 (CLRMchr03)  → data/rhodes-classic-mchr03/ 1408/1408 ✅
+  - _parse_rr_note_velmax() 汎用パーサー追加（4モード共通）
+  - build_vel_max_ranges() 追加: [43,68,96,118,127] → {43:(0,43), 68:(44,68), ...}
+  - _RELEASE_MODES frozenset で後処理を制御
+  - velocity range 正常: 0-43 / 44-68 / 69-96 / 97-118 / 119-127
+決定事項:
+  - 全4種類 エラーゼロで完了
+  - 累計: Rhodes Classic 系 7617ファイル (attack 1615 + lacrmsp 38 + release 5984)
+次のTODO: samples.json を C++ エンジンに統合するか、Pi ビルド先行か
+---
+
+---
+2026-03-02 03:02
+作業項目: C++ エンジンへの Release サンプル統合 設計
+追加機能の説明:
+  - 現状把握:
+    - Voice: IDLE/PLAYING/RELEASING の3状態。note_off() → 200ms linear fade
+    - SynthEngine: SampleDB 1つ。_note_on/_note_off のみ
+    - main.cpp: argv[1] で attack samples.json を渡す
+  - 設計方針:
+    1. Voice に velocity/is_release_voice フィールド追加
+       - is_release_voice=true の時 note_off() は no-op (自然減衰で終了)
+    2. SynthEngine(attack_db, sample_rate, release_db=nullptr) に変更
+       - _note_off 時に release_db があれば _start_release_voice() を呼ぶ
+       - oldest_voice_idx() は非 release voice を優先スチール
+    3. main.cpp: argv[2] を release samples.json として受け取る
+決定事項: 最小変更で実装。RelF のみ対応（relm/mchrel/mchr03 は将来）
+次のTODO: 実装
+---
+
+---
+2026-03-02 03:15
+作業項目: C++ エンジン Release サンプル統合 実装完了
+追加機能の説明:
+  - voice.hpp/cpp:
+    - velocity フィールド追加（release voice 選択時の引数保持）
+    - is_release_voice フィールド追加（true なら note_off() が no-op）
+    - note_on() で is_release_voice=false にリセット
+  - synth_engine.hpp:
+    - MAX_VOICES を 16→32 に拡張（attack + release 同時発音対応）
+    - SynthEngine(attack_db, sample_rate, release_db=nullptr) に変更
+    - _start_release_voice() private メソッド追加
+  - synth_engine.cpp:
+    - _note_off(): release_db があれば _start_release_voice() 呼び出し
+    - _start_release_voice(): IDLE voice を確保してリリースサンプルを再生
+    - oldest_voice_idx(): 非 release voice を優先スチール
+  - main.cpp:
+    - argv[2] で release samples.json を受け取る（省略可能）
+    - std::unique_ptr<SampleDB> release_db で管理
+決定事項:
+  - 後方互換性あり（argv[2] 省略で旧動作）
+  - release voice は pcm 末尾まで自然減衰（200ms fade なし）
+次のTODO: Pi 上でビルド・実機テスト
+  コマンド例: ./elepiano data/rhodes-classic/samples.json data/rhodes-classic-relf/samples.json
+---
+
+---
+2026-03-02 03:07
+作業項目: elepiano-build スキル作成
+追加機能の説明: C++ エンジンのビルド・実行手順を .claude/commands/elepiano-build.md としてスキル化
+決定事項: 作成中
+次のTODO: スキルファイル作成 → git add → commit
+---

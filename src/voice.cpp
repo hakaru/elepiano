@@ -5,14 +5,16 @@
 static constexpr float RELEASE_TIME_S = 0.200f;
 static constexpr float kMaxVelocity   = 127.0f;
 
-void Voice::note_on(const SampleData* sd, int note, int velocity, int sample_rate)
+void Voice::note_on(const SampleData* sd, int note, int vel, int sample_rate)
 {
-    sample       = sd;
-    target_note  = note;
+    sample           = sd;
+    target_note      = note;
+    velocity         = vel;
+    is_release_voice = false;
     // double 精度で計算してから float に落とす
     pitch_ratio  = static_cast<float>(std::pow(2.0, (note - sd->midi_note) / 12.0));
     position     = 0.0;
-    gain         = velocity / kMaxVelocity;
+    gain         = vel / kMaxVelocity;
     release_gain = 1.0f;
     release_rate = 1.0f / (RELEASE_TIME_S * sample_rate);
     state        = State::PLAYING;
@@ -20,6 +22,8 @@ void Voice::note_on(const SampleData* sd, int note, int velocity, int sample_rat
 
 void Voice::note_off()
 {
+    // release voice は note_off に反応しない（サンプル末尾まで自然減衰）
+    if (is_release_voice) return;
     if (state == State::PLAYING) {
         state = State::RELEASING;
     }

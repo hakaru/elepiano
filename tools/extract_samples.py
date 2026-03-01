@@ -8,6 +8,10 @@ extract_samples.py - SpCA (.db) からサンプルを抽出・デコードする
   sustain       : Rhodes - Classic Sustain サンプル  (1615ファイル, XOR暗号化あり)
   wurl200a      : Wurlitzer 200A アタックサンプル    (1024ファイル, XOR暗号化なし)
   vvep          : Vintage Vibe EP アタックサンプル   (1539ファイル, XOR暗号化なし)
+  rhodes-relf   : Rhodes - Classic CLR RelF  (release fade)    (1760ファイル, XOR暗号化なし)
+  rhodes-relm   : Rhodes - Classic CLR RelMr3 (release mech)  (1760ファイル, XOR暗号化なし)
+  rhodes-mchrel : Rhodes - Classic CLRMchRel (mechanical rel)  (1056ファイル, XOR暗号化なし)
+  rhodes-mchr03 : Rhodes - Classic CLRMchr03 (mechanical atk)  (1408ファイル, XOR暗号化なし)
 
 SpCA フォーマット:
   - SpCA magic → fLaC に置換
@@ -54,6 +58,33 @@ VVEP_RE = re.compile(
     r"RR(\d+)_SL\d+\s+VVEP\s+r\d+_(\d+)\s+v(\d+)([+-]?)\.wav$",
     re.IGNORECASE
 )
+
+# CLR RelF (Release Fade): "RR01_SL01 CLR RelF_60-96.wav"
+CLR_RELF_RE = re.compile(
+    r"RR(\d+)_SL\d+\s+CLR\s+RelF_(\d+)-(\d+)\.wav$",
+    re.IGNORECASE
+)
+
+# CLR RelMr3 (Release Mechanical): "RR01_SL01 CLRRelMr3_60-96.wav"
+CLR_RELM_RE = re.compile(
+    r"RR(\d+)_SL\d+\s+CLRRelMr3_(\d+)-(\d+)\.wav$",
+    re.IGNORECASE
+)
+
+# CLR MchRel (Mechanical Release): "RR01_SL02 CLRMchRel_60-100.wav"
+CLR_MCHREL_RE = re.compile(
+    r"RR(\d+)_SL\d+\s+CLRMchRel_(\d+)-(\d+)\.wav$",
+    re.IGNORECASE
+)
+
+# CLR Mchr03 (Mechanical Attack r03): "RR01_SL02 CLRMchr03_60-116.wav"
+CLR_MCHR03_RE = re.compile(
+    r"RR(\d+)_SL\d+\s+CLRMchr03_(\d+)-(\d+)\.wav$",
+    re.IGNORECASE
+)
+
+# Release モードの集合（vel_max → vel range 変換が必要なモード）
+_RELEASE_MODES = frozenset({"rhodes-relf", "rhodes-relm", "rhodes-mchrel", "rhodes-mchr03"})
 
 # ============================================================
 # データクラス
@@ -321,6 +352,39 @@ def parse_vvep_name(name: str) -> SampleMeta | None:
     return SampleMeta(midi_note=note, velocity_idx=vel, round_robin=rr, file_entry=None)
 
 
+def _parse_rr_note_velmax(pattern: re.Pattern, name: str) -> SampleMeta | None:
+    """
+    汎用パーサー: RR(d+)_SLd+ {TAG}_(d+)-(d+).wav 形式
+    → SampleMeta(midi_note=note, velocity_idx=vel_max, round_robin=rr)
+    vel_max は後処理で vel_min_explicit/vel_max_explicit に変換される。
+    """
+    m = pattern.search(name)
+    if not m:
+        return None
+    return SampleMeta(
+        midi_note=int(m.group(2)),
+        velocity_idx=int(m.group(3)),
+        round_robin=int(m.group(1)),
+        file_entry=None
+    )
+
+
+def parse_clr_relf_name(name: str) -> SampleMeta | None:
+    return _parse_rr_note_velmax(CLR_RELF_RE, name)
+
+
+def parse_clr_relm_name(name: str) -> SampleMeta | None:
+    return _parse_rr_note_velmax(CLR_RELM_RE, name)
+
+
+def parse_clr_mchrel_name(name: str) -> SampleMeta | None:
+    return _parse_rr_note_velmax(CLR_MCHREL_RE, name)
+
+
+def parse_clr_mchr03_name(name: str) -> SampleMeta | None:
+    return _parse_rr_note_velmax(CLR_MCHR03_RE, name)
+
+
 def parse_wurl200a_name(name: str) -> SampleMeta | None:
     """
     "NMWurl 60 a 50-64-o.wav" → SampleMeta(midi_note=60, velocity_idx=50,
@@ -360,6 +424,21 @@ def build_velocity_range(vel_indices: list[int]) -> dict[int, tuple[int, int]]:
     return ranges
 
 
+def build_vel_max_ranges(vel_max_values: list[int]) -> dict[int, tuple[int, int]]:
+    """
+    ファイル名に含まれる vel_max のリストから velocity 範囲を生成する。
+    例: [43, 68, 96, 118, 127]
+      → {43: (0, 43), 68: (44, 68), 96: (69, 96), 118: (97, 118), 127: (119, 127)}
+    """
+    sorted_maxes = sorted(set(vel_max_values))
+    result: dict[int, tuple[int, int]] = {}
+    prev = -1
+    for vm in sorted_maxes:
+        result[vm] = (prev + 1, vm)
+        prev = vm
+    return result
+
+
 # ============================================================
 # メイン処理
 # ============================================================
@@ -395,6 +474,22 @@ def extract(db_path: Path, output_dir: Path, mode: str = "pattern1") -> None:
         parse_fn  = parse_vvep_name
         encrypted = False
         label     = "Vintage Vibe EP"
+    elif mode == "rhodes-relf":
+        parse_fn  = parse_clr_relf_name
+        encrypted = False
+        label     = "Rhodes CLR RelF (Release Fade)"
+    elif mode == "rhodes-relm":
+        parse_fn  = parse_clr_relm_name
+        encrypted = False
+        label     = "Rhodes CLR RelMr3 (Release Mech)"
+    elif mode == "rhodes-mchrel":
+        parse_fn  = parse_clr_mchrel_name
+        encrypted = False
+        label     = "Rhodes CLR MchRel (Mechanical Release)"
+    elif mode == "rhodes-mchr03":
+        parse_fn  = parse_clr_mchr03_name
+        encrypted = False
+        label     = "Rhodes CLR Mchr03 (Mechanical Attack)"
     else:
         raise ValueError(f"未知のモード: {mode}")
 
@@ -412,6 +507,13 @@ def extract(db_path: Path, output_dir: Path, mode: str = "pattern1") -> None:
         for e in entries[:5]:
             print(f"  {e.name}")
         return
+
+    # Release モード: vel_max → vel range に変換してから explicit range として記録
+    if mode in _RELEASE_MODES:
+        vm_ranges = build_vel_max_ranges([m.velocity_idx for m in metas])
+        for m in metas:
+            m.vel_min_explicit = vm_ranges[m.velocity_idx][0]
+            m.vel_max_explicit = m.velocity_idx  # velocity_idx == vel_max
 
     # velocity 範囲の決定
     # 明示的な vel_min/vel_max を持つ場合はそちらを優先し、
@@ -462,11 +564,15 @@ def extract(db_path: Path, output_dir: Path, mode: str = "pattern1") -> None:
 
     # samples.json 出力
     instrument_name = {
-        "pattern1":     "rhodes-classic",
-        "rhodes-attack":"rhodes-classic",
-        "sustain":      "rhodes-classic-sustain",
-        "wurl200a":     "wurlitzer-200a",
-        "vvep":         "vintage-vibe-ep",
+        "pattern1":      "rhodes-classic",
+        "rhodes-attack": "rhodes-classic",
+        "sustain":       "rhodes-classic-sustain",
+        "wurl200a":      "wurlitzer-200a",
+        "vvep":          "vintage-vibe-ep",
+        "rhodes-relf":   "rhodes-classic-relf",
+        "rhodes-relm":   "rhodes-classic-relm",
+        "rhodes-mchrel": "rhodes-classic-mchrel",
+        "rhodes-mchr03": "rhodes-classic-mchr03",
     }.get(mode, mode)
     samples_json = {
         "instrument":   instrument_name,

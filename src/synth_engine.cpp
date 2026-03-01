@@ -2,8 +2,8 @@
 #include <cstring>
 #include <climits>
 
-SynthEngine::SynthEngine(SampleDB& db, int sample_rate)
-    : db_(db), sample_rate_(sample_rate)
+SynthEngine::SynthEngine(SampleDB& attack_db, int sample_rate, SampleDB* release_db)
+    : db_(attack_db), release_db_(release_db), sample_rate_(sample_rate)
 {}
 
 void SynthEngine::push_event(const MidiEvent& ev)
@@ -64,21 +64,62 @@ void SynthEngine::_note_on(int midi_note, int velocity)
 void SynthEngine::_note_off(int midi_note)
 {
     for (auto& v : voices_) {
-        if (v.state == Voice::State::PLAYING && v.target_note == midi_note) {
+        if (v.state == Voice::State::PLAYING && v.target_note == midi_note
+                && !v.is_release_voice) {
+            if (release_db_) {
+                _start_release_voice(midi_note, v.velocity);
+            }
             v.note_off();
         }
     }
+}
+
+void SynthEngine::_start_release_voice(int midi_note, int velocity)
+{
+    const SampleData* sd = release_db_->find(midi_note, velocity);
+    if (!sd) return;
+
+    // IDLE な Voice を探す
+    Voice* target = nullptr;
+    for (auto& v : voices_) {
+        if (v.state == Voice::State::IDLE) { target = &v; break; }
+    }
+
+    // IDLE がなければ最古の非 release voice を奪う
+    if (!target) {
+        int idx = oldest_voice_idx();
+        if (idx >= 0) target = &voices_[idx];
+    }
+
+    if (!target) return;
+
+    target->note_on(sd, midi_note, velocity, sample_rate_);
+    target->is_release_voice  = true;
+    target->start_time_samples = sample_counter_;
 }
 
 int SynthEngine::oldest_voice_idx() const
 {
     int oldest = -1;
     uint64_t min_time = UINT64_MAX;
+
+    // 非 release voice を優先スチール
     for (int i = 0; i < MAX_VOICES; ++i) {
         if (voices_[i].state == Voice::State::PLAYING &&
+            !voices_[i].is_release_voice &&
             voices_[i].start_time_samples < min_time) {
             min_time = voices_[i].start_time_samples;
             oldest = i;
+        }
+    }
+    // 非 release がなければ release voice も対象
+    if (oldest == -1) {
+        for (int i = 0; i < MAX_VOICES; ++i) {
+            if (voices_[i].state == Voice::State::PLAYING &&
+                voices_[i].start_time_samples < min_time) {
+                min_time = voices_[i].start_time_samples;
+                oldest = i;
+            }
         }
     }
     return oldest;

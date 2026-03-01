@@ -6,6 +6,7 @@
 #include <csignal>
 #include <cstdio>
 #include <atomic>
+#include <memory>
 
 static std::atomic<bool> g_quit{false};
 
@@ -13,20 +14,29 @@ static void sig_handler(int) { g_quit.store(true); }
 
 int main(int argc, char* argv[])
 {
-    const char* json_path    = "data/rhodes/samples.json";
-    const char* alsa_device  = "hw:pisound";
+    const char* json_path         = "data/rhodes-classic/samples.json";
+    const char* release_json_path = nullptr;
+    const char* alsa_device       = "hw:pisound";
 
-    if (argc > 1) json_path   = argv[1];
-    if (argc > 2) alsa_device = argv[2];
+    if (argc > 1) json_path         = argv[1];
+    if (argc > 2) release_json_path = argv[2];
+    if (argc > 3) alsa_device       = argv[3];
 
     fprintf(stderr, "elepiano MIDI synth\n");
-    fprintf(stderr, "  samples: %s\n", json_path);
-    fprintf(stderr, "  device:  %s\n", alsa_device);
+    fprintf(stderr, "  attack samples:  %s\n", json_path);
+    if (release_json_path)
+        fprintf(stderr, "  release samples: %s\n", release_json_path);
+    fprintf(stderr, "  device:          %s\n", alsa_device);
 
     signal(SIGINT,  sig_handler);
     signal(SIGTERM, sig_handler);
 
     SampleDB db(json_path);
+
+    std::unique_ptr<SampleDB> release_db;
+    if (release_json_path) {
+        release_db = std::make_unique<SampleDB>(release_json_path);
+    }
 
     AudioOutput::Config acfg;
     acfg.device      = alsa_device;
@@ -36,7 +46,7 @@ int main(int argc, char* argv[])
     acfg.periods     = 4;  // 23.2ms バッファ（アンダーラン対策）
 
     AudioOutput audio(acfg);
-    SynthEngine synth(db, acfg.sample_rate);
+    SynthEngine synth(db, acfg.sample_rate, release_db.get());
 
     // オーディオスレッドのコールバック — fprintf 禁止
     audio.set_callback([&](float* buf, int frames) {

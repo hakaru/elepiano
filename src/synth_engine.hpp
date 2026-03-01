@@ -8,9 +8,10 @@
 
 class SynthEngine {
 public:
-    static constexpr int MAX_VOICES = 16;
+    static constexpr int MAX_VOICES = 32;  // attack + release が同時に鳴るため余裕を持たせる
 
-    explicit SynthEngine(SampleDB& db, int sample_rate = 44100);
+    // release_db が nullptr の場合は release サンプルを使用しない
+    SynthEngine(SampleDB& attack_db, int sample_rate = 44100, SampleDB* release_db = nullptr);
 
     // MIDIスレッドから呼ぶ（ロックフリー push）
     // キューが満杯のイベントは無視される（実用上 64 要素で十分）
@@ -24,9 +25,11 @@ private:
     // 以下はオーディオスレッドのみからアクセス（mutex 不要）
     void _note_on(int midi_note, int velocity);
     void _note_off(int midi_note);
-    int  oldest_voice_idx() const;
+    void _start_release_voice(int midi_note, int velocity);
+    int  oldest_voice_idx() const;  // 非 release voice を優先してスチール
 
     SampleDB& db_;
+    SampleDB* release_db_;           // nullptr = release サンプルなし
     int       sample_rate_;
     uint64_t  sample_counter_ = 0;           // mix() 呼び出し時に frames 分インクリメント
 
