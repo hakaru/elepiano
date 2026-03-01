@@ -2,10 +2,13 @@
 """
 extract_samples.py - SpCA (.db) からサンプルを抽出・デコードするツール
 
-対象: Rhodes - Classic Pattern 1 サンプル
+対象:
+  pattern1  : Rhodes - Classic Pattern 1 サンプル (38ファイル, XOR暗号化なし)
+  sustain   : Rhodes - Classic Sustain サンプル  (1615ファイル, XOR暗号化あり)
+
 SpCA フォーマット:
   - SpCA magic → fLaC に置換
-  - フレーム1以降: XOR キー [ef 42 12 bc] の4通りローテーションを適用
+  - Sustain フレーム1以降: XOR キー [ef 42 12 bc] の4通りローテーションを適用
 """
 
 import struct
@@ -26,6 +29,12 @@ FLAC_MAGIC   = b"fLaC"
 # Pattern 1 ファイル名のパターン: "RR01 lacrmsp VV NN.wav"
 PATTERN1_RE = re.compile(
     r"RR(\d+)\s+lacrmsp\s+(\d+)\s+(\d+)\.wav$",
+    re.IGNORECASE
+)
+
+# Sustain サンプルのパターン: "RR01_SL01 CLR r10_60 v25.wav"
+SUSTAIN_RE = re.compile(
+    r"RR(\d+)_SL\d+\s+\w+\s+r\d+_(\d+)\s+v(\d+)\.wav$",
     re.IGNORECASE
 )
 
@@ -84,13 +93,32 @@ def parse_db_header(data: bytes) -> tuple[list[FileEntry], int]:
 # SpCA デコーダー
 # ============================================================
 def _find_sync(data: bytes, start: int = 0) -> int:
-    """FLAC フレーム同期ワード 0xFF F8/F9 を探す"""
+    """FLAC フレーム同期ワード 0xFF F8/F9 を探す（平文用）"""
     i = start
     while i < len(data) - 1:
         if data[i] == 0xFF and (data[i+1] & 0xFE) == 0xF8:
             return i
         i += 1
     return -1
+
+
+def _find_encrypted_frame1(data: bytes, search_start: int,
+                            max_scan: int = 200_000) -> tuple[int, int]:
+    """
+    XOR 暗号化された FLAC フレーム同期ワードを探す（Sustain サンプル用）。
+
+    data[pos] ^ XOR_BASE_KEY[rot] == 0xFF かつ
+    data[pos+1] ^ XOR_BASE_KEY[(rot+1)%4] が 0xF8 または 0xF9
+    になる (pos, rot) を返す。見つからなければ (-1, -1)。
+    """
+    search_end = min(len(data) - 4, search_start + max_scan)
+    for pos in range(search_start, search_end):
+        for rot in range(4):
+            b0 = data[pos]     ^ XOR_BASE_KEY[rot]
+            b1 = data[pos + 1] ^ XOR_BASE_KEY[(rot + 1) % 4]
+            if b0 == 0xFF and (b1 & 0xFE) == 0xF8:
+                return pos, rot
+    return -1, -1
 
 
 def _crc8(data: bytes) -> int:
@@ -113,18 +141,15 @@ def _find_frame_header_size(data: bytes, pos: int) -> int:
     """
     if pos + 4 > len(data):
         return -1
-    # バイト2: ブロックサイズ/サンプルレートフィールド
     byte2 = data[pos + 2]
-    byte3 = data[pos + 3]
 
     # sample/frame number (UTF-8 encoded)
     idx = pos + 4
     b0 = data[idx] if idx < len(data) else 0
-    # UTF-8 先頭バイトで可変長を判定
     if b0 < 0x80:
         num_bytes = 1
     elif b0 < 0xC0:
-        num_bytes = 1  # 不正だが仮
+        num_bytes = 1
     elif b0 < 0xE0:
         num_bytes = 2
     elif b0 < 0xF0:
@@ -137,30 +162,30 @@ def _find_frame_header_size(data: bytes, pos: int) -> int:
         num_bytes = 6
     idx += num_bytes
 
-    # blocksize 末尾フィールド (byte2 上位4bit が 6 or 7)
     bs_code = (byte2 >> 4) & 0x0F
     if bs_code == 6:
         idx += 1
     elif bs_code == 7:
         idx += 2
 
-    # sample rate 末尾フィールド (byte2 下位4bit が 12,13,14)
     sr_code = byte2 & 0x0F
     if sr_code == 12:
         idx += 1
     elif sr_code in (13, 14):
         idx += 2
 
-    # CRC-8
-    idx += 1
+    idx += 1  # CRC-8
     return idx - pos
 
 
-def decode_spca(spca_bytes: bytes) -> bytes:
+def decode_spca(spca_bytes: bytes, encrypted: bool = False) -> bytes:
     """
     SpCA バイト列を FLAC バイト列に変換する。
-    1. SPCA_MAGIC → FLAC_MAGIC
-    2. フレーム1以降: XOR キーの正しいローテーションを適用
+
+    encrypted=False (Pattern 1):
+        SpCA magic → fLaC 置換のみ。XOR なし。
+    encrypted=True (Sustain):
+        Magic 置換後、フレーム1以降に XOR キーを適用。
     """
     if not spca_bytes.startswith(SPCA_MAGIC):
         raise ValueError(f"SpCA マジックバイトが見つかりません: {spca_bytes[:4].hex()}")
@@ -168,15 +193,19 @@ def decode_spca(spca_bytes: bytes) -> bytes:
     # magic 置換
     result = bytearray(FLAC_MAGIC + spca_bytes[4:])
 
+    if not encrypted:
+        # Pattern 1: XOR なし、そのまま返す
+        return bytes(result)
+
+    # --- Sustain: XOR 暗号化フレーム1を探して復号 ---
+
     # メタデータブロックを読み飛ばしてオーディオフレームの先頭を特定
-    # fLaC(4) + 先頭メタデータブロック群をスキャン
     pos = 4
     while pos < len(result):
         if pos + 4 > len(result):
             break
         block_header = result[pos]
-        is_last = (block_header & 0x80) != 0
-        block_type = block_header & 0x7F
+        is_last  = (block_header & 0x80) != 0
         block_len = struct.unpack_from(">I", bytes([0]) + bytes(result[pos+1:pos+4]))[0]
         pos += 4 + block_len
         if is_last:
@@ -184,49 +213,30 @@ def decode_spca(spca_bytes: bytes) -> bytes:
 
     audio_start = pos
 
-    # フレーム0の位置を特定
+    # フレーム0の位置を特定（平文）
     frame0_pos = _find_sync(result, audio_start)
     if frame0_pos == -1:
         raise ValueError("フレーム0の同期ワードが見つかりません")
 
-    # フレーム0 ヘッダーサイズを求め、フレーム0の末尾まで進む
-    hdr_size = _find_frame_header_size(result, frame0_pos)
-    # フレーム0はそのまま（XOR なし）
-    # フレーム1以降を XOR 解読する
+    hdr_size    = _find_frame_header_size(result, frame0_pos)
+    search_start = frame0_pos + max(hdr_size, 1)
 
-    # フレーム1の位置を特定（フレーム0の後の最初の同期ワード）
-    frame1_pos = _find_sync(result, frame0_pos + max(hdr_size, 1))
-    if frame1_pos == -1:
-        # オーディオフレームが1つのみ
+    # XOR 暗号化されたフレーム1を探す
+    enc_pos, enc_rot = _find_encrypted_frame1(bytes(result), search_start)
+    if enc_pos == -1:
+        # フレームが1つのみ（または解析不能）
         return bytes(result)
 
-    # フレーム1が既に ff f8/f9 で始まっている場合は XOR 不要
-    if result[frame1_pos] == 0xFF and (result[frame1_pos + 1] & 0xFE) == 0xF8:
-        return bytes(result)
-
-    # フレーム1以降の全バイトに XOR を適用する
-    # まず4通りのローテーションを試し、先頭4バイトが ff f8/f9 xx xx になるものを選ぶ
-    segment = bytes(result[frame1_pos:])
-    best_rot = -1
-    for rot in range(4):
-        key = XOR_BASE_KEY[rot:] + XOR_BASE_KEY[:rot]
-        candidate = bytes(b ^ key[i % 4] for i, b in enumerate(segment[:4]))
-        if candidate[0] == 0xFF and (candidate[1] & 0xFE) == 0xF8:
-            best_rot = rot
-            break
-
-    if best_rot == -1:
-        raise ValueError("正しい XOR ローテーションが見つかりません")
-
-    key = XOR_BASE_KEY[best_rot:] + XOR_BASE_KEY[:best_rot]
-    decrypted = bytes(b ^ key[i % 4] for i, b in enumerate(segment))
-    result[frame1_pos:] = decrypted
+    # フレーム1以降を XOR 復号
+    key = XOR_BASE_KEY[enc_rot:] + XOR_BASE_KEY[:enc_rot]
+    seg = bytes(result[enc_pos:])
+    result[enc_pos:] = bytes(b ^ key[i % 4] for i, b in enumerate(seg))
 
     return bytes(result)
 
 
 # ============================================================
-# FLAC → WAV 変換
+# FLAC → WAV 変換（デバッグ用）
 # ============================================================
 def flac_to_wav(flac_bytes: bytes, wav_path: Path) -> None:
     """ffmpeg を使い FLAC バイト列を WAV ファイルに変換する"""
@@ -249,17 +259,28 @@ def parse_pattern1_name(name: str) -> SampleMeta | None:
     m = PATTERN1_RE.search(name)
     if not m:
         return None
-    rr  = int(m.group(1))
-    vel = int(m.group(2))
+    rr   = int(m.group(1))
+    vel  = int(m.group(2))
     note = int(m.group(3))
     return SampleMeta(midi_note=note, velocity_idx=vel, round_robin=rr, file_entry=None)
 
 
+def parse_sustain_name(name: str) -> SampleMeta | None:
+    """
+    "RR01_SL01 CLR r10_60 v25.wav" → SampleMeta(midi_note=60, velocity_idx=25, round_robin=1)
+    """
+    m = SUSTAIN_RE.search(name)
+    if not m:
+        return None
+    rr   = int(m.group(1))
+    note = int(m.group(2))
+    vel  = int(m.group(3))
+    return SampleMeta(midi_note=note, velocity_idx=vel, round_robin=rr, file_entry=None)
+
+
 # ============================================================
-# 速度マッピング（19段階）
+# 速度マッピング（等分割）
 # ============================================================
-# velocity_idx → (vel_min, vel_max) の対応表
-# Pattern 1 のサンプルに含まれる速度インデックスから推定する
 def build_velocity_range(vel_indices: list[int]) -> dict[int, tuple[int, int]]:
     """
     速度インデックスのリストから、各インデックスが担当する
@@ -280,33 +301,46 @@ def build_velocity_range(vel_indices: list[int]) -> dict[int, tuple[int, int]]:
 # ============================================================
 # メイン処理
 # ============================================================
-def extract(db_path: Path, output_dir: Path, pattern: str = "pattern1") -> None:
-    print(f"[extract] 読み込み: {db_path}")
+def extract(db_path: Path, output_dir: Path, mode: str = "pattern1") -> None:
+    """
+    mode: "pattern1" または "sustain"
+    """
+    print(f"[extract] 読み込み: {db_path}  mode={mode}")
     db_bytes = db_path.read_bytes()
 
     print("[extract] XMLヘッダーをパース中...")
     entries, data_start = parse_db_header(db_bytes)
     print(f"[extract] {len(entries)} ファイルエントリ発見, データ開始: 0x{data_start:X}")
 
-    # Pattern 1 のエントリだけ抽出
+    # モードに応じてエントリを絞り込む
+    if mode == "pattern1":
+        parse_fn  = parse_pattern1_name
+        encrypted = False
+        label     = "Pattern 1"
+    elif mode == "sustain":
+        parse_fn  = parse_sustain_name
+        encrypted = True
+        label     = "Sustain"
+    else:
+        raise ValueError(f"未知のモード: {mode}")
+
     metas: list[SampleMeta] = []
     for entry in entries:
-        meta = parse_pattern1_name(entry.name)
+        meta = parse_fn(entry.name)
         if meta is None:
             continue
         meta.file_entry = entry
         metas.append(meta)
 
-    print(f"[extract] Pattern 1 エントリ数: {len(metas)}")
+    print(f"[extract] {label} エントリ数: {len(metas)}")
     if not metas:
-        print("[extract] Pattern 1 エントリが見つかりません。ファイル名例:")
+        print(f"[extract] {label} エントリが見つかりません。ファイル名例:")
         for e in entries[:5]:
             print(f"  {e.name}")
         return
 
-    # 速度インデックスからMIDI velocity範囲を生成
     vel_indices = [m.velocity_idx for m in metas]
-    vel_ranges = build_velocity_range(vel_indices)
+    vel_ranges  = build_velocity_range(vel_indices)
 
     audio_dir = output_dir / "audio"
     audio_dir.mkdir(parents=True, exist_ok=True)
@@ -319,13 +353,13 @@ def extract(db_path: Path, output_dir: Path, pattern: str = "pattern1") -> None:
         abs_offset = data_start + entry.offset
         spca_bytes = db_bytes[abs_offset: abs_offset + entry.size]
 
-        out_stem = f"rr{meta.round_robin}_vel{meta.velocity_idx:03d}_n{meta.midi_note:03d}"
+        out_stem  = f"rr{meta.round_robin}_vel{meta.velocity_idx:03d}_n{meta.midi_note:03d}"
         flac_path = audio_dir / f"{out_stem}.flac"
 
-        print(f"[{i+1:3d}/{len(metas)}] {entry.name} → {flac_path.name}", end=" ", flush=True)
+        print(f"[{i+1:4d}/{len(metas)}] {entry.name} → {flac_path.name}", end=" ", flush=True)
 
         try:
-            flac_bytes = decode_spca(spca_bytes)
+            flac_bytes = decode_spca(spca_bytes, encrypted=encrypted)
             flac_path.write_bytes(flac_bytes)
 
             vel_min, vel_max = vel_ranges[meta.velocity_idx]
@@ -347,7 +381,7 @@ def extract(db_path: Path, output_dir: Path, pattern: str = "pattern1") -> None:
         "instrument":   "rhodes-classic",
         "sample_rate":  44100,
         "bit_depth":    24,
-        "pattern":      "pattern1",
+        "pattern":      mode,
         "samples":      sorted(samples_info, key=lambda s: (s["midi_note"], s["velocity_idx"]))
     }
     json_path = output_dir / "samples.json"
@@ -368,10 +402,13 @@ if __name__ == "__main__":
         "Soundsources/Factory/Keyscape Library/Keyboards/Rhodes - Classic.db"
     )
     OUTPUT_DIR = Path("/Volumes/Dev/DEVELOP/elepiano/data/rhodes")
+    MODE = "pattern1"
 
     if len(sys.argv) > 1:
         DB_PATH = Path(sys.argv[1])
     if len(sys.argv) > 2:
         OUTPUT_DIR = Path(sys.argv[2])
+    if len(sys.argv) > 3:
+        MODE = sys.argv[3]
 
-    extract(DB_PATH, OUTPUT_DIR)
+    extract(DB_PATH, OUTPUT_DIR, mode=MODE)

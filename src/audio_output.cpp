@@ -4,6 +4,9 @@
 #include <algorithm>
 #include <vector>
 #include <cstdio>
+#ifdef __ARM_NEON__
+#include <arm_neon.h>
+#endif
 
 AudioOutput::AudioOutput(const Config& cfg) : cfg_(cfg)
 {
@@ -89,11 +92,34 @@ void AudioOutput::run()
             std::fill(float_buf_.begin(), float_buf_.end(), 0.0f);
         }
 
-        // float → S16LE 変換（std::clamp でクリップ）
+        // float → S16LE 変換（ARM では NEON SIMD で 4 サンプル並列処理）
+#ifdef __ARM_NEON__
+        {
+            const int        total   = frames * cfg_.channels;
+            const float32x4_t scale   = vdupq_n_f32(32767.0f);
+            const float32x4_t clip_lo = vdupq_n_f32(-1.0f);
+            const float32x4_t clip_hi = vdupq_n_f32(1.0f);
+            int i = 0;
+            for (; i + 4 <= total; i += 4) {
+                float32x4_t v = vld1q_f32(&float_buf_[i]);
+                v = vmaxq_f32(v, clip_lo);
+                v = vminq_f32(v, clip_hi);
+                v = vmulq_f32(v, scale);
+                int32x4_t  iv = vcvtq_s32_f32(v);
+                int16x4_t  sv = vqmovn_s32(iv);
+                vst1_s16(&s16_buf_[i], sv);
+            }
+            for (; i < total; ++i) {
+                float v = std::clamp(float_buf_[i], -1.0f, 1.0f);
+                s16_buf_[i] = static_cast<int16_t>(v * 32767.0f);
+            }
+        }
+#else
         for (int i = 0; i < frames * cfg_.channels; ++i) {
             float v = std::clamp(float_buf_[i], -1.0f, 1.0f);
             s16_buf_[i] = static_cast<int16_t>(v * 32767.0f);
         }
+#endif
 
         // 部分書き込みも含めてリトライ
         int written = 0;

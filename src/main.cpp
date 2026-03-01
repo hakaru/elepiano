@@ -38,23 +38,23 @@ int main(int argc, char* argv[])
     AudioOutput audio(acfg);
     SynthEngine synth(db, acfg.sample_rate);
 
-    // オーディオスレッドのコールバック — printf 禁止
+    // オーディオスレッドのコールバック — fprintf 禁止
     audio.set_callback([&](float* buf, int frames) {
         synth.mix(buf, frames);
     });
 
-    // MIDI コールバック — MIDI スレッドで実行（printf OK）
+    // MIDI コールバック — MIDI スレッドで実行
+    // ロックフリー push_event() で SynthEngine に渡す（mutex 不要）
     MidiInput midi("elepiano");
     midi.set_callback([&](const MidiEvent& ev) {
         if (ev.type == MidiEvent::Type::NOTE_ON) {
             fprintf(stderr, "[MIDI] NOTE ON  ch=%d note=%d vel=%d\n",
                     ev.channel, ev.note, ev.velocity);
-            synth.note_on(ev.note, ev.velocity);
         } else if (ev.type == MidiEvent::Type::NOTE_OFF) {
             fprintf(stderr, "[MIDI] NOTE OFF ch=%d note=%d\n",
                     ev.channel, ev.note);
-            synth.note_off(ev.note);
         }
+        synth.push_event(ev);
     });
 
     std::thread midi_thread([&]()  { midi.run(); });

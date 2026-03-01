@@ -1,5 +1,6 @@
 #pragma once
 #include "sample_db.hpp"
+#include <cstdint>
 
 struct Voice {
     enum class State { IDLE, PLAYING, RELEASING };
@@ -12,6 +13,7 @@ struct Voice {
     float release_gain          = 1.0f;  // リリース中のゲインスケール
     float release_rate          = 0.0f;  // 1フレームあたりの減衰量
     State state                 = State::IDLE;
+    uint64_t start_time_samples = 0;     // Voice スチール判定用（音符開始時の sample_counter_）
 
     void note_on(const SampleData* sd, int note, int velocity, int sample_rate);
     void note_off();

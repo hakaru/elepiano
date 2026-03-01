@@ -34,6 +34,7 @@ endif()
 # ============================================================
 add_executable(elepiano
     src/main.cpp
+    src/flac_decoder.cpp
     src/sample_db.cpp
     src/voice.cpp
     src/synth_engine.cpp
