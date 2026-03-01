@@ -37,10 +37,14 @@ static void run_engine(AudioOutput& audio, MidiInput& midi)
 // ─── オルガンモード ────────────────────────────────────────────
 static int run_organ(const char* alsa_device)
 {
-    fprintf(stderr, "elepiano MIDI organ (tonewheel)\n");
+    fprintf(stderr, "elepiano MIDI organ (tonewheel, 2 manuals + pedal)\n");
     fprintf(stderr, "  device: %s\n", alsa_device);
-    fprintf(stderr, "  Leslie CC64: >=64=Fast(6.7Hz)  <64=Slow(0.7Hz)\n");
-    fprintf(stderr, "  Drawbar CC12-20: drawbars 0-8 (val 0-127 -> 0-8)\n");
+    fprintf(stderr, "  CH1: Upper Manual  drawbars=[0,0,8,8,6,0,0,0,0]  8'+4'+2/3'\n");
+    fprintf(stderr, "  CH2: Lower Manual  drawbars=[0,0,8,8,0,0,0,0,0]  8'+4'\n");
+    fprintf(stderr, "  CH3: Pedal Board   drawbars=[8,0,8,0,0,0,0,0,0]  16'+8'\n");
+    fprintf(stderr, "  CC 64: Leslie Fast(6.7Hz)/Slow(0.7Hz)\n");
+    fprintf(stderr, "  CC  7: Volume per manual\n");
+    fprintf(stderr, "  CC 12-20: Drawbars 0-8 (by channel)\n");
 
     static constexpr int SAMPLE_RATE = 44100;
 

@@ -329,6 +329,23 @@
 ---
 
 ---
+2026-03-02 03:53
+作業項目: オルガン 2鍵盤+1ペダル対応 実装開始
+追加機能の説明: 「全部入れたい」= ManualSection×3 (Upper/Lower/Pedal) を OrganEngine に実装
+決定事項: 実装開始
+次のTODO: 実装完了 → commit → Pi テスト
+---
+
+---
+2026-03-02 03:51
+作業項目: git commit & push
+決定事項:
+  - commit: feat: add tonewheel organ engine (--organ mode) (76be981)
+  - push: 52f65d2..76be981 main -> main
+次のTODO: Pi ビルド・実機テスト
+---
+
+---
 2026-03-02 03:43
 作業項目: オルガン 2鍵盤+1ペダル対応 設計検討
 追加機能の説明: CH1=Upper/CH2=Lower/CH3=Pedal の ManualSection×3 構造を設計

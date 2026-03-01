@@ -4,16 +4,25 @@
 
 static constexpr double PI2 = 2.0 * M_PI;
 
-// デフォルトドローバー: 8'(8), 4'(8), 2⅔'(6) — オルガンらしい基本音色
-static constexpr int DEFAULT_DRAWBARS[OrganEngine::NUM_DRAWBARS] = {
-    0, 0, 8, 8, 6, 0, 0, 0, 0
-};
+// デフォルトドローバー
+// Upper: 8'(8) + 4'(8) + 2⅔'(6)  — 明るいリードオルガン音色
+// Lower: 8'(8) + 4'(8)             — マイルドな伴奏音色
+// Pedal: 16'(8) + 8'(8)            — 重低音ベース
+static constexpr int DEFAULT_UPPER[OrganEngine::NUM_DRAWBARS] = { 0,0,8,8,6,0,0,0,0 };
+static constexpr int DEFAULT_LOWER[OrganEngine::NUM_DRAWBARS] = { 0,0,8,8,0,0,0,0,0 };
+static constexpr int DEFAULT_PEDAL[OrganEngine::NUM_DRAWBARS] = { 8,0,8,0,0,0,0,0,0 };
 
 OrganEngine::OrganEngine(int sample_rate)
     : sample_rate_(sample_rate)
 {
-    for (int i = 0; i < NUM_DRAWBARS; ++i) {
-        drawbars_[i] = DEFAULT_DRAWBARS[i];
+    // セクション初期化
+    const int*  defs[NUM_SECTIONS] = { DEFAULT_UPPER, DEFAULT_LOWER, DEFAULT_PEDAL };
+    for (int s = 0; s < NUM_SECTIONS; ++s) {
+        sections_[s].ch     = s;       // CH1=0, CH2=1, CH3=2
+        sections_[s].volume = 1.0f;
+        for (int d = 0; d < NUM_DRAWBARS; ++d) {
+            sections_[s].drawbars[d] = defs[s][d];
+        }
     }
 
     // sin LUT 構築
@@ -30,22 +39,34 @@ void OrganEngine::push_event(const MidiEvent& ev)
     event_queue_.push(ev);
 }
 
-void OrganEngine::set_drawbar(int idx, int value)
+void OrganEngine::set_drawbar(int section, int drawbar_idx, int value)
 {
-    if (idx < 0 || idx >= NUM_DRAWBARS) return;
-    drawbars_[idx] = value < 0 ? 0 : (value > 8 ? 8 : value);
+    if (section < 0 || section >= NUM_SECTIONS)    return;
+    if (drawbar_idx < 0 || drawbar_idx >= NUM_DRAWBARS) return;
+    int& db = sections_[section].drawbars[drawbar_idx];
+    db = value < 0 ? 0 : (value > 8 ? 8 : value);
 }
 
-void OrganEngine::_note_on(int note, int velocity)
+OrganEngine::ManualSection* OrganEngine::_section_for_ch(int ch)
 {
-    if (velocity == 0) { _note_off(note); return; }
+    for (auto& s : sections_) {
+        if (s.ch == ch) return &s;
+    }
+    return nullptr;
+}
+
+void OrganEngine::_note_on(int ch, int note, int velocity)
+{
+    if (velocity == 0) { _note_off(ch, note); return; }
     if (note < 0 || note >= MAX_NOTES) return;
 
-    auto& n   = notes_[note];
-    n.active  = true;
-    n.gain    = velocity / 127.0f;
+    auto* sec = _section_for_ch(ch);
+    if (!sec) return;
 
-    // 各ドローバーの位相増分を計算
+    auto& n  = sec->notes[note];
+    n.active = true;
+    n.gain   = velocity / 127.0f;
+
     for (int d = 0; d < NUM_DRAWBARS; ++d) {
         const int    semi = note + DRAWBAR_SEMITONES[d];
         const double freq = 440.0 * std::pow(2.0, (semi - 69) / 12.0);
@@ -54,26 +75,37 @@ void OrganEngine::_note_on(int note, int velocity)
     }
 }
 
-void OrganEngine::_note_off(int note)
+void OrganEngine::_note_off(int ch, int note)
 {
     if (note < 0 || note >= MAX_NOTES) return;
-    notes_[note].active = false;
+    auto* sec = _section_for_ch(ch);
+    if (sec) sec->notes[note].active = false;
 }
 
-void OrganEngine::_handle_cc(int cc_num, int cc_val)
+void OrganEngine::_handle_cc(int ch, int cc_num, int cc_val)
 {
-    // CC 64 (Sustain Pedal): Leslie 速度切替
+    // CC 64: Leslie 速度切替（どのチャンネルからでも）
     if (cc_num == 64) {
         leslie_fast_      = (cc_val >= 64);
         leslie_phase_inc_ = (leslie_fast_ ? LESLIE_FAST_HZ : LESLIE_SLOW_HZ)
                             / sample_rate_;
         return;
     }
-    // CC 12-20: ドローバー 0-8 (0-127 → 0-8)
+
+    auto* sec = _section_for_ch(ch);
+    if (!sec) return;
+
+    // CC 7: マニュアルごとの音量
+    if (cc_num == 7) {
+        sec->volume = cc_val / 127.0f;
+        return;
+    }
+
+    // CC 12-20: ドローバー 0-8（チャンネルで振り分け）
     if (cc_num >= 12 && cc_num <= 20) {
         const int idx = cc_num - 12;
         const int val = (cc_val * 8 + 63) / 127;
-        set_drawbar(idx, val);
+        sec->drawbars[idx] = val < 0 ? 0 : (val > 8 ? 8 : val);
     }
 }
 
@@ -83,13 +115,13 @@ void OrganEngine::mix(float* buf, int frames)
     while (auto ev = event_queue_.pop()) {
         switch (ev->type) {
         case MidiEvent::Type::NOTE_ON:
-            _note_on(ev->note, ev->velocity);
+            _note_on(ev->channel, ev->note, ev->velocity);
             break;
         case MidiEvent::Type::NOTE_OFF:
-            _note_off(ev->note);
+            _note_off(ev->channel, ev->note);
             break;
         case MidiEvent::Type::CC:
-            _handle_cc(ev->note, ev->velocity);
+            _handle_cc(ev->channel, ev->note, ev->velocity);
             break;
         default:
             break;
@@ -101,39 +133,38 @@ void OrganEngine::mix(float* buf, int frames)
     for (int i = 0; i < frames; ++i) {
         float mix_s = 0.0f;
 
-        for (int n = 0; n < MAX_NOTES; ++n) {
-            auto& ns = notes_[n];
-            if (!ns.active) continue;
+        // 全セクション（Upper / Lower / Pedal）を合算
+        for (auto& sec : sections_) {
+            for (int n = 0; n < MAX_NOTES; ++n) {
+                auto& ns = sec.notes[n];
+                if (!ns.active) continue;
 
-            float note_s = 0.0f;
-            for (int d = 0; d < NUM_DRAWBARS; ++d) {
-                // ドローバーが 0 でも位相は進める（コヒーレンス保持）
-                const int lut_idx = static_cast<int>(ns.phase[d] * LUT_SIZE)
-                                    & (LUT_SIZE - 1);
-                ns.phase[d] += ns.inc[d];
-                if (ns.phase[d] >= 1.0) ns.phase[d] -= 1.0;
+                float note_s = 0.0f;
+                for (int d = 0; d < NUM_DRAWBARS; ++d) {
+                    const int lut_idx = static_cast<int>(ns.phase[d] * LUT_SIZE)
+                                        & (LUT_SIZE - 1);
+                    ns.phase[d] += ns.inc[d];
+                    if (ns.phase[d] >= 1.0) ns.phase[d] -= 1.0;
 
-                if (drawbars_[d] == 0) continue;
-                note_s += sin_lut_[lut_idx] * (drawbars_[d] / 8.0f);
+                    if (sec.drawbars[d] == 0) continue;
+                    note_s += sin_lut_[lut_idx] * (sec.drawbars[d] / 8.0f);
+                }
+                mix_s += note_s * ns.gain * sec.volume;
             }
-            mix_s += note_s * ns.gain;
         }
 
-        // tanh ソフトクリップ（Hammond アンプの管球飽和をシミュレート）
+        // tanh ソフトクリップ（Hammond アンプの管球飽和）
         const float driven = std::tanh(mix_s * MASTER_GAIN);
 
-        // Leslie シミュレーション: 90° 位相差クォドラチャー方式
-        //   L と R を 90° ずらした AM で常に出力 ≤ 1.0 を保証
-        const int lut_L = static_cast<int>(leslie_phase_ * LUT_SIZE)
-                          & (LUT_SIZE - 1);
-        const int lut_R = static_cast<int>((leslie_phase_ + 0.25) * LUT_SIZE)
-                          & (LUT_SIZE - 1);
-
-        // AM: 0.75 + 0.25 * sin → range [0.5, 1.0]（max = 1.0）
+        // Leslie: 90° クォドラチャー AM (出力 ≤ 1.0 を保証)
+        const int   lut_L  = static_cast<int>(leslie_phase_ * LUT_SIZE)
+                             & (LUT_SIZE - 1);
+        const int   lut_R  = static_cast<int>((leslie_phase_ + 0.25) * LUT_SIZE)
+                             & (LUT_SIZE - 1);
         const float L_gain = 0.75f + 0.25f * sin_lut_[lut_L];
         const float R_gain = 0.75f + 0.25f * sin_lut_[lut_R];
 
-        buf[i * 2]     = driven * L_gain;   // max |output| ≤ 1.0
+        buf[i * 2]     = driven * L_gain;
         buf[i * 2 + 1] = driven * R_gain;
 
         leslie_phase_ += leslie_phase_inc_;

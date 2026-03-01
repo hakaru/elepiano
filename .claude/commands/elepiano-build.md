@@ -113,11 +113,15 @@ rsync -av data/rhodes-classic-relf/audio/ pi@raspberrypi:~/elepiano/data/rhodes-
 ./build/elepiano --organ hw:pisound
 ```
 
-MIDI CC マッピング:
-- CC 64 (Sustain Pedal): `>=64` → Leslie Fast (6.7Hz) / `<64` → Slow (0.7Hz)
-- CC 12-20: ドローバー 0-8 制御 (val 0-127 → drawbar 0-8)
+MIDI チャンネル割り当て:
+- CH1: Upper Manual — ドローバー `[0,0,8,8,6,0,0,0,0]` (8'+4'+2⅔')
+- CH2: Lower Manual — ドローバー `[0,0,8,8,0,0,0,0,0]` (8'+4')
+- CH3: Pedal Board  — ドローバー `[8,0,8,0,0,0,0,0,0]` (16'+8')
 
-デフォルトドローバー: `[0,0,8,8,6,0,0,0,0]` (8' + 4' + 2⅔')
+MIDI CC マッピング（チャンネルで自動振り分け）:
+- CC 64: Leslie Fast(6.7Hz)/Slow(0.7Hz) ← どのチャンネルでも可
+- CC 7 : 各マニュアルの音量 (0-127)
+- CC 12-20: ドローバー 0-8 制御 (val 0-127 → 0-8) ← チャンネルで振り分け
 
 ```
 ./elepiano --organ [alsa_device]
