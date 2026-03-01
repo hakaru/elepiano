@@ -283,3 +283,66 @@
 決定事項: docs/ClaudeWorklog20260302.md を commit
 次のTODO: Pi ビルド・実機テスト
 ---
+
+---
+2026-03-02 03:13
+作業項目: King B Organ サンプル調査
+追加機能の説明: Keyscape ライブラリ内の King B Organ .db ファイルを解析し、WAVファイル構造・サンプル種別・件数を調査
+決定事項:
+  - King B = /Applications/KingB.app (Yonac Software 製 Hammond B3 シミュレーター iOS アプリ)
+  - サンプルベースではない → 物理モデリング/加算合成
+  - オーディオファイル (wav/aif/flac) は存在しない
+  - .orb (bank XML plist) / .orp (preset) のドローバー設定のみ
+  - 合成エンジン: YonacOrgan.framework (iOS バイナリ、直接利用不可)
+  - ドローバー値例: upper=[0,0,6,6,6,3,0,0,0] lower=[0,0,12,15,12,15,12,12,0]
+  - プリセット数: Forever Classics 32 / Meditations in Blue 32 / Organ Essentials 32 = 計96
+  - elepiano への統合: サンプル抽出は不可。トーンホイール合成エンジンの実装が必要
+次のTODO: ユーザーに報告・次の方針を確認
+---
+
+---
+2026-03-02 03:33
+作業項目: 独自トーンホイールオルガンエンジン実装 完了
+追加機能の説明:
+  - src/midi_input.hpp: MidiEvent::Type に CC を追加（note=cc番号、velocity=cc値）
+  - src/midi_input.cpp: SND_SEQ_EVENT_CONTROLLER をフォワード
+  - src/organ_engine.hpp/cpp: OrganEngine 新規作成
+    - 9 ドローバー: [-12, +7, 0, +12, +19, +24, +28, +31, +36] セミトーンオフセット
+    - sin LUT (4096 エントリ, float) で高速合成
+    - 128音ポリフォニー (NoteState 配列)
+    - tanh ソフトクリップ (MASTER_GAIN=0.3)
+    - Leslie: 90° 位相差クォドラチャー AM (L/R を 1/4サイクルずらし)
+      → 出力は常に ≤ 1.0、ALSA クリップなし
+    - CC 64: Leslie Fast(6.7Hz)/Slow(0.7Hz) 切替
+    - CC 12-20: ドローバー 0-8 リアルタイム制御
+    - デフォルトドローバー: [0,0,8,8,6,0,0,0,0] (8'+4'+2⅔')
+  - src/main.cpp: run_organ()/run_piano() に分離、--organ フラグ追加
+  - CMakeLists.txt: organ_engine.cpp を追加
+  - .claude/commands/elepiano-build.md: オルガンモードのコマンド例追加
+決定事項:
+  - アーキテクチャ: SynthEngine (sample-based piano) と OrganEngine (tonewheel organ) 共存
+  - 起動方法: ./build/elepiano --organ [alsa_device]
+  - Pi ビルド不要な純粋加算合成エンジン（サンプルデータ不要）
+次のTODO: Pi 上でビルド → 実機テスト
+  コマンド例: cmake -S . -B build && cmake --build build -j$(nproc)
+             ./build/elepiano --organ
+---
+
+---
+2026-03-02 03:43
+作業項目: オルガン 2鍵盤+1ペダル対応 設計検討
+追加機能の説明: CH1=Upper/CH2=Lower/CH3=Pedal の ManualSection×3 構造を設計
+決定事項: 設計は完了。実装は後回し（先に Pi で1マニュアル動作確認）
+次のTODO: Pi ビルド → 実機テスト → 2鍵盤対応は後で
+---
+
+---
+2026-03-02 03:18
+作業項目: setBfree の調査
+決定事項:
+  - setBfree = GPL-2.0 の OSS Hammond B3 シミュレーター (C言語, 219⭐, 2026-02-16更新)
+  - ARM/Pi 対応あり (Zynthian で実績)、MIDI CC でドローバーリアルタイム制御可能
+  - ライブラリ API はなし → プロセス間通信 or ソース改造が必要
+  - elepiano 統合難易度: 中〜高
+次のTODO: ユーザーの方針確認
+---

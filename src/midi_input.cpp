@@ -75,6 +75,13 @@ void MidiInput::run()
             me.velocity = 0;
             break;
         }
+        case SND_SEQ_EVENT_CONTROLLER: {
+            me.type     = MidiEvent::Type::CC;
+            me.channel  = ev->data.control.channel & 0x0F;
+            me.note     = ev->data.control.param;   // cc_number
+            me.velocity = ev->data.control.value;   // cc_value
+            break;
+        }
         default:
             me.type = MidiEvent::Type::OTHER;
             break;

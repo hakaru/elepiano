@@ -105,7 +105,25 @@ rsync -av data/rhodes-classic-relf/audio/ pi@raspberrypi:~/elepiano/data/rhodes-
   alsa_device   : ALSA デバイス名（デフォルト: hw:pisound）
 ```
 
-### 他の音色
+### トーンホイールオルガンモード（サンプル不要）
+
+```bash
+./build/elepiano --organ
+# 指定デバイス
+./build/elepiano --organ hw:pisound
+```
+
+MIDI CC マッピング:
+- CC 64 (Sustain Pedal): `>=64` → Leslie Fast (6.7Hz) / `<64` → Slow (0.7Hz)
+- CC 12-20: ドローバー 0-8 制御 (val 0-127 → drawbar 0-8)
+
+デフォルトドローバー: `[0,0,8,8,6,0,0,0,0]` (8' + 4' + 2⅔')
+
+```
+./elepiano --organ [alsa_device]
+```
+
+### 他の音色（ピアノモード）
 
 ```bash
 # Wurlitzer 200A

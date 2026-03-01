@@ -38,6 +38,7 @@ add_executable(elepiano
     src/sample_db.cpp
     src/voice.cpp
     src/synth_engine.cpp
+    src/organ_engine.cpp
     src/midi_input.cpp
     src/audio_output.cpp
 )

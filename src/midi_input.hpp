@@ -5,11 +5,11 @@
 #include <atomic>
 
 struct MidiEvent {
-    enum class Type { NOTE_ON, NOTE_OFF, OTHER };
+    enum class Type { NOTE_ON, NOTE_OFF, CC, OTHER };
     Type type     = Type::OTHER;
     int  channel  = 0;
-    int  note     = 0;
-    int  velocity = 0;
+    int  note     = 0;  // CC イベント時は cc_number として使用
+    int  velocity = 0;  // CC イベント時は cc_value として使用
 };
 
 class MidiInput {
