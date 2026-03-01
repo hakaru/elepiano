@@ -1,0 +1,14 @@
+# Build
+build/
+cmake-build-*/
+
+# Audio data (large binary files - generate with extract_samples.py)
+data/rhodes/audio/
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+*.swp
