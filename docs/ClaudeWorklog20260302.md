@@ -444,6 +444,22 @@
 ---
 
 ---
+2026-03-02 11:13
+作業項目: elepiano OrganEngine vs King B Organ 比較分析
+追加機能の説明: 両実装の技術的差異を整理
+決定事項: 下記参照
+次のTODO: ユーザーに説明
+---
+
+---
+2026-03-02 11:22
+作業項目: OrganEngine 全面物理モデリング化 設計開始
+追加機能の説明: Leslie加速/減速・キークリック・Vibrato/Chorus・トーンホイール磁束モデルの4要素を実装
+決定事項: Plan モードで設計してから実装
+次のTODO: 設計完了後に実装
+---
+
+---
 2026-03-02 11:09
 作業項目: GitHub Issue 確認
 追加機能の説明: gh issue list で open/closed 一覧を確認
@@ -451,4 +467,39 @@
   - Open issue: なし（0件）
   - Closed issue: 6件（#1-#6 全て解決済み）
 次のTODO: 新規 issue 作成 or Pi ビルド
+---
+
+---
+2026-03-02 11:47
+作業項目: OrganEngine 全面物理モデリング化 実装開始
+追加機能の説明:
+  1. Leslie 加速/減速（指数関数的収束 τ_accel=0.161s, τ_decel=0.321s）
+  2. キーオンクリック（6倍音 + 70ms 減衰）
+  3. Vibrato/Chorus スキャナー（7Hz LFO + 遅延ライン）
+  4. トーンホイール磁束高調波（H2=3%, H3=2%）
+決定事項: Plan モードで承認済みの仕様に基づき実装する
+次のTODO: organ_engine.hpp → organ_engine.cpp 実装 → ビルド確認
+---
+
+---
+2026-03-02 11:50
+作業項目: OrganEngine 物理モデリング化 実装完了
+追加機能の説明:
+  1. Leslie 加速/減速 — 指数収束モデル実装。CC64 ON/OFF でターゲット速度のみ変更
+     - 加速 τ=0.161s, 減速 τ=0.321s (Leslie 44W 実機測定値)
+     - leslie_phase_inc_ 削除 → leslie_current_hz_ / leslie_target_hz_ に置換
+  2. キーオンクリック — NoteState.click_env 追加。note_on で 1.0 にセット
+     - 8' 基音位相の 6 倍音 × CLICK_AMPLITUDE=0.15 × 指数減衰 70ms
+  3. Vibrato/Chorus スキャナー — 128サンプル遅延ライン + 7Hz LFO
+     - CC1 で 0-6 モード切替 (off/V1/V2/V3/C1/C2/C3)
+     - 初期値: C2 (vib_mode_=5)
+     - 信号位置: tanhf の後・Leslie の前
+  4. トーンホイール磁束高調波 — ドローバーループに H2=3%, H3=2% 追加
+     - LUT 整数インデックス乗算 (lut_idx*2, lut_idx*3) & マスク
+  [重要な変更]
+  - 旧 leslie_fast_ / leslie_phase_inc_ フィールド削除済み
+  - 外部 API (push_event/mix/set_drawbar) 変更なし
+  - VIB_DEPTHS[] を static constexpr float 配列 (定数式) として定義
+決定事項: Mac 上で g++ 構文チェック通過。Pi ビルドが必要
+次のTODO: Pi でビルド & 実機テスト (CC64 Leslie 加速/減速, CC1 V/C)
 ---
