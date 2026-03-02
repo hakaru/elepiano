@@ -49,9 +49,10 @@ private:
     };
 
     struct ManualSection {
-        int       ch       = 0;
+        int       ch           = 0;
         int       drawbars[NUM_DRAWBARS] = {};
-        float     volume   = 1.0f;
+        float     volume       = 1.0f;
+        int       active_count = 0;   // アクティブノート数（128 全走査回避用）
         NoteState notes[MAX_NOTES];
     };
 

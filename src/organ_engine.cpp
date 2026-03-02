@@ -36,7 +36,11 @@ OrganEngine::OrganEngine(int sample_rate)
 
 void OrganEngine::push_event(const MidiEvent& ev)
 {
-    event_queue_.push(ev);
+    if (!event_queue_.push(ev) && ev.type == MidiEvent::Type::NOTE_OFF) {
+        // NOTE_OFF ドロップはゾンビノートを引き起こすため警告
+        fprintf(stderr, "[OrganEngine] WARNING: queue full, NOTE_OFF dropped (ch=%d note=%d)\n",
+                ev.channel, ev.note);
+    }
 }
 
 void OrganEngine::set_drawbar(int section, int drawbar_idx, int value)
@@ -64,6 +68,7 @@ void OrganEngine::_note_on(int ch, int note, int velocity)
     if (!sec) return;
 
     auto& n  = sec->notes[note];
+    if (!n.active) ++sec->active_count;
     n.active = true;
     n.gain   = velocity / 127.0f;
 
@@ -79,7 +84,10 @@ void OrganEngine::_note_off(int ch, int note)
 {
     if (note < 0 || note >= MAX_NOTES) return;
     auto* sec = _section_for_ch(ch);
-    if (sec) sec->notes[note].active = false;
+    if (sec && sec->notes[note].active) {
+        sec->notes[note].active = false;
+        --sec->active_count;
+    }
 }
 
 void OrganEngine::_handle_cc(int ch, int cc_num, int cc_val)
@@ -130,14 +138,30 @@ void OrganEngine::mix(float* buf, int frames)
 
     std::memset(buf, 0, static_cast<std::size_t>(frames) * 2 * sizeof(float));
 
+    // セクションごとのドローバーゲインをプリコンピュート
+    // （内ループでの int→float 除算を排除）
+    float sec_drawbar_gain[NUM_SECTIONS][NUM_DRAWBARS];
+    for (int s = 0; s < NUM_SECTIONS; ++s) {
+        for (int d = 0; d < NUM_DRAWBARS; ++d) {
+            sec_drawbar_gain[s][d] = sections_[s].drawbars[d] / 8.0f;
+        }
+    }
+
     for (int i = 0; i < frames; ++i) {
         float mix_s = 0.0f;
 
         // 全セクション（Upper / Lower / Pedal）を合算
-        for (auto& sec : sections_) {
-            for (int n = 0; n < MAX_NOTES; ++n) {
+        for (int s = 0; s < NUM_SECTIONS; ++s) {
+            auto& sec = sections_[s];
+            if (sec.active_count == 0) continue;
+
+            const float* db_gain = sec_drawbar_gain[s];
+            int remaining = sec.active_count;
+
+            for (int n = 0; n < MAX_NOTES && remaining > 0; ++n) {
                 auto& ns = sec.notes[n];
                 if (!ns.active) continue;
+                --remaining;
 
                 float note_s = 0.0f;
                 for (int d = 0; d < NUM_DRAWBARS; ++d) {
@@ -146,21 +170,22 @@ void OrganEngine::mix(float* buf, int frames)
                     ns.phase[d] += ns.inc[d];
                     if (ns.phase[d] >= 1.0) ns.phase[d] -= 1.0;
 
-                    if (sec.drawbars[d] == 0) continue;
-                    note_s += sin_lut_[lut_idx] * (sec.drawbars[d] / 8.0f);
+                    if (db_gain[d] == 0.0f) continue;
+                    note_s += sin_lut_[lut_idx] * db_gain[d];
                 }
                 mix_s += note_s * ns.gain * sec.volume;
             }
         }
 
-        // tanh ソフトクリップ（Hammond アンプの管球飽和）
-        const float driven = std::tanh(mix_s * MASTER_GAIN);
+        // tanhf ソフトクリップ（Hammond アンプの管球飽和、単精度で tanh より高速）
+        const float driven = tanhf(mix_s * MASTER_GAIN);
 
         // Leslie: 90° クォドラチャー AM (出力 ≤ 1.0 を保証)
+        // R チャンネルは L から固定オフセット (LUT_SIZE/4 = 1024) で計算
+        // → (leslie_phase_ + 0.25) * LUT_SIZE の double 演算を毎サンプル省略
         const int   lut_L  = static_cast<int>(leslie_phase_ * LUT_SIZE)
                              & (LUT_SIZE - 1);
-        const int   lut_R  = static_cast<int>((leslie_phase_ + 0.25) * LUT_SIZE)
-                             & (LUT_SIZE - 1);
+        const int   lut_R  = (lut_L + (LUT_SIZE / 4)) & (LUT_SIZE - 1);
         const float L_gain = 0.75f + 0.25f * sin_lut_[lut_L];
         const float R_gain = 0.75f + 0.25f * sin_lut_[lut_R];
 

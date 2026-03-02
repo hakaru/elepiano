@@ -329,11 +329,30 @@
 ---
 
 ---
+2026-03-02 10:53
+作業項目: パフォーマンス監査・リファクタリング・セキュリティ監査 並行実行開始
+追加機能の説明: 3つのサブエージェントを並行起動して各種監査を実施
+決定事項: 各エージェントの結果を統合して適用
+次のTODO: 結果確認 → 修正適用
+---
+
+---
 2026-03-02 03:53
-作業項目: オルガン 2鍵盤+1ペダル対応 実装開始
-追加機能の説明: 「全部入れたい」= ManualSection×3 (Upper/Lower/Pedal) を OrganEngine に実装
-決定事項: 実装開始
-次のTODO: 実装完了 → commit → Pi テスト
+作業項目: オルガン 2鍵盤+1ペダル対応 実装完了
+追加機能の説明:
+  - ManualSection 構造体追加 (ch, drawbars[9], volume, notes[128])
+  - OrganEngine::sections_[3]: Upper(CH1) / Lower(CH2) / Pedal(CH3)
+  - デフォルトドローバー:
+    - Upper: [0,0,8,8,6,0,0,0,0] (8'+4'+2⅔')
+    - Lower: [0,0,8,8,0,0,0,0,0] (8'+4')
+    - Pedal: [8,0,8,0,0,0,0,0,0] (16'+8')
+  - CC MIDIチャンネルで自動振り分け (CC7=音量, CC12-20=ドローバー)
+  - CC 64: Leslie切替は全チャンネル共通
+  - MASTER_GAIN 0.3→0.2 (3セクション分のヘッドルーム)
+  - commit: feat: organ engine — 2 manuals + pedal board (b85fa08)
+  - push: 76be981..b85fa08 main -> main
+決定事項: 完了
+次のTODO: Pi ビルド → MIDI 接続して実機テスト
 ---
 
 ---
@@ -362,4 +381,64 @@
   - ライブラリ API はなし → プロセス間通信 or ソース改造が必要
   - elepiano 統合難易度: 中〜高
 次のTODO: ユーザーの方針確認
+---
+
+---
+2026-03-02 10:53
+作業項目: Raspberry Pi 5 向け C++ パフォーマンス監査 (src/ 全ファイル)
+追加機能の説明: ARM Cortex-A76 / NEON / 4コア向けの最適化ポイントを調査・レポート作成
+決定事項: 調査のみ。ファイル変更なし
+次のTODO: レポート提示 → ユーザーが優先度を確認して実装指示
+---
+
+---
+2026-03-02 10:54
+作業項目: セキュリティ監査 (src/ 全ファイル, CMakeLists.txt, tools/extract_samples.py)
+追加機能の説明: バッファオーバーフロー・整数オーバーフロー・スレッド安全性・入力検証・ファイルパス・メモリ安全性等の全面監査
+決定事項: 調査・レポートのみ。ファイル変更なし
+次のTODO: レポート提示 → ユーザーが重要度別に修正指示
+---
+
+---
+2026-03-02 10:54
+作業項目: C++ シンセエンジン リファクタリング (振る舞い保持)
+追加機能の説明:
+  - 対象: main.cpp / organ_engine.cpp の構造改善
+  - 5項目の安全なリファクタリング:
+    1. main.cpp: MIDI ログ出力の重複排除 (log_midi_event 関数抽出)
+    2. organ_engine.cpp: drawbar gain のプリコンピュート (int→float 除算を内ループから除去)
+    3. organ_engine.cpp: アクティブノートリスト導入 (128ノート全走査の回避)
+    4. main.cpp: run_engine の RAII ガード化検討
+    5. include 順序の統一 (cosmetic)
+決定事項: 外部APIは変更しない。コンパイル検証は clang++ -fsyntax-only で実施
+次のTODO: 各リファクタリングを順次適用 → コンパイル検証
+---
+
+---
+2026-03-02 11:07
+作業項目: パフォーマンス監査・リファクタリング・セキュリティ監査 全修正適用完了
+追加機能の説明:
+  [セキュリティ修正]
+  - midi_input.cpp: ALSA poll() ベースループに変更 (100ms タイムアウト)
+    → stop() 後 join() がデッドロックしない (L2 修正)
+  - midi_input.cpp: CC param/value を 0-127 にクランプ
+    → 整数オーバーフロー UB を排除 (H1 修正)
+  - flac_decoder.cpp: bits_per_sample を [1,31] にクランプ
+    → シフト演算の UB を排除 (H2 修正)
+  - synth_engine.cpp: NOTE_OFF キュー溢れ時に stderr 警告
+    → ゾンビボイス発生を検知可能に (M1 修正)
+  - organ_engine.cpp: NOTE_OFF キュー溢れ時に stderr 警告 (M1 修正)
+  [パフォーマンス修正]
+  - organ_engine.cpp: std::tanh → tanhf (単精度, 高速)
+  - organ_engine.cpp: Leslie R チャンネルの double 演算を固定オフセット (lut_L + 1024) に変更
+  - organ_engine.cpp: drawbar gain を mix() 冒頭でプリコンピュート (内ループの int→float 除算排除)
+  - organ_engine.hpp: ManualSection に active_count フィールド追加
+  - organ_engine.cpp: active_count による早期ループ脱出 (128ノート全走査を回避)
+  [リファクタリング]
+  - main.cpp: log_midi_event() 関数抽出 (重複ログ排除)
+  - main.cpp: EngineGuard RAII 構造体 (スレッドライフサイクル管理、デッドロック防止)
+決定事項:
+  - 全修正を適用。外部 API は変更なし。後方互換性維持
+  - commit & push: 未完了 → 次のアクション
+次のTODO: git commit & push
 ---

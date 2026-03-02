@@ -1,6 +1,8 @@
 #include "midi_input.hpp"
 #include <stdexcept>
 #include <cstdio>
+#include <poll.h>
+#include <vector>
 
 MidiInput::MidiInput(const std::string& client_name)
 {
@@ -35,7 +37,20 @@ void MidiInput::run()
 {
     running_.store(true);
 
+    // poll() で 100ms タイムアウトを設けて running_ フラグを確認できるようにする
+    // (ブロッキング版だと stop() 後に join() がデッドロックする可能性がある)
+    const int npfds = snd_seq_poll_descriptors_count(seq_, POLLIN);
+    std::vector<struct pollfd> pfds(npfds);
+    snd_seq_poll_descriptors(seq_, pfds.data(), npfds, POLLIN);
+
     while (running_.load()) {
+        const int ready = poll(pfds.data(), npfds, /*timeout_ms=*/100);
+        if (ready < 0) {
+            fprintf(stderr, "[MidiInput] poll error\n");
+            break;
+        }
+        if (ready == 0) continue;  // タイムアウト → running_ を再チェック
+
         snd_seq_event_t* ev = nullptr;
         int ret = snd_seq_event_input(seq_, &ev);
 
@@ -76,10 +91,13 @@ void MidiInput::run()
             break;
         }
         case SND_SEQ_EVENT_CONTROLLER: {
+            const int param = ev->data.control.param;
+            const int value = ev->data.control.value;
+            // MIDI 標準範囲 (0-127) にクランプ — 範囲外は整数オーバーフロー UB の原因
             me.type     = MidiEvent::Type::CC;
             me.channel  = ev->data.control.channel & 0x0F;
-            me.note     = ev->data.control.param;   // cc_number
-            me.velocity = ev->data.control.value;   // cc_value
+            me.note     = (param < 0) ? 0 : (param > 127 ? 127 : param);
+            me.velocity = (value < 0) ? 0 : (value > 127 ? 127 : value);
             break;
         }
         default:

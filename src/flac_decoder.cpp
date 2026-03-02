@@ -22,7 +22,11 @@ static FLAC__StreamDecoderWriteStatus write_cb(
     void* client_data)
 {
     auto* ctx = static_cast<FlacCtx*>(client_data);
-    const float scale = 1.0f / static_cast<float>(1 << (ctx->bits_per_sample - 1));
+    // bits_per_sample を [1, 31] にクランプ: 0 は負シフト UB、32+ は符号付き整数オーバーフロー UB
+    const int   bps   = (ctx->bits_per_sample < 1) ? 1
+                      : (ctx->bits_per_sample > 31) ? 31
+                      : ctx->bits_per_sample;
+    const float scale = 1.0f / static_cast<float>(1 << (bps - 1));
     const int   n     = static_cast<int>(frame->header.blocksize);
     ctx->pcm->reserve(ctx->pcm->size() + n);
     for (int i = 0; i < n; ++i) {

@@ -14,11 +14,58 @@ static std::atomic<bool> g_quit{false};
 
 static void sig_handler(int) { g_quit.store(true); }
 
+// ─── MIDI イベントログ出力（run_organ / run_piano 共通） ──────
+static void log_midi_event(const MidiEvent& ev)
+{
+    switch (ev.type) {
+    case MidiEvent::Type::NOTE_ON:
+        fprintf(stderr, "[MIDI] NOTE ON  ch=%d note=%d vel=%d\n",
+                ev.channel, ev.note, ev.velocity);
+        break;
+    case MidiEvent::Type::NOTE_OFF:
+        fprintf(stderr, "[MIDI] NOTE OFF ch=%d note=%d\n",
+                ev.channel, ev.note);
+        break;
+    case MidiEvent::Type::CC:
+        fprintf(stderr, "[MIDI] CC       ch=%d cc=%d val=%d\n",
+                ev.channel, ev.note, ev.velocity);
+        break;
+    default:
+        break;
+    }
+}
+
+// ─── RAII スレッドライフサイクル管理 ──────────────────────────
+// AudioOutput / MidiInput のスレッドを起動し、
+// デストラクタで stop + join を保証する。
+struct EngineGuard {
+    AudioOutput& audio;
+    MidiInput&   midi;
+    std::thread  midi_thread;
+    std::thread  audio_thread;
+
+    EngineGuard(AudioOutput& a, MidiInput& m)
+        : audio(a), midi(m),
+          midi_thread([&]()  { midi.run(); }),
+          audio_thread([&]() { audio.run(); })
+    {}
+
+    ~EngineGuard() {
+        midi.stop();
+        audio.stop();
+        if (midi_thread.joinable())  midi_thread.join();
+        if (audio_thread.joinable()) audio_thread.join();
+    }
+
+    // コピー/ムーブ禁止
+    EngineGuard(const EngineGuard&)            = delete;
+    EngineGuard& operator=(const EngineGuard&) = delete;
+};
+
 // MIDI/Audio スレッド管理の共通部分
 static void run_engine(AudioOutput& audio, MidiInput& midi)
 {
-    std::thread midi_thread([&]()  { midi.run(); });
-    std::thread audio_thread([&]() { audio.run(); });
+    EngineGuard guard(audio, midi);
 
     fprintf(stderr, "起動完了。Ctrl+C で終了。\n");
 
@@ -27,11 +74,7 @@ static void run_engine(AudioOutput& audio, MidiInput& midi)
     }
 
     fprintf(stderr, "\n終了中...\n");
-    midi.stop();
-    audio.stop();
-
-    if (midi_thread.joinable())  midi_thread.join();
-    if (audio_thread.joinable()) audio_thread.join();
+    // guard のデストラクタが stop + join を実行
 }
 
 // ─── オルガンモード ────────────────────────────────────────────
@@ -64,16 +107,7 @@ static int run_organ(const char* alsa_device)
 
     MidiInput midi("elepiano-organ");
     midi.set_callback([&](const MidiEvent& ev) {
-        if (ev.type == MidiEvent::Type::NOTE_ON) {
-            fprintf(stderr, "[MIDI] NOTE ON  ch=%d note=%d vel=%d\n",
-                    ev.channel, ev.note, ev.velocity);
-        } else if (ev.type == MidiEvent::Type::NOTE_OFF) {
-            fprintf(stderr, "[MIDI] NOTE OFF ch=%d note=%d\n",
-                    ev.channel, ev.note);
-        } else if (ev.type == MidiEvent::Type::CC) {
-            fprintf(stderr, "[MIDI] CC       ch=%d cc=%d val=%d\n",
-                    ev.channel, ev.note, ev.velocity);
-        }
+        log_midi_event(ev);
         organ.push_event(ev);
     });
 
@@ -115,13 +149,7 @@ static int run_piano(const char* json_path,
 
     MidiInput midi("elepiano");
     midi.set_callback([&](const MidiEvent& ev) {
-        if (ev.type == MidiEvent::Type::NOTE_ON) {
-            fprintf(stderr, "[MIDI] NOTE ON  ch=%d note=%d vel=%d\n",
-                    ev.channel, ev.note, ev.velocity);
-        } else if (ev.type == MidiEvent::Type::NOTE_OFF) {
-            fprintf(stderr, "[MIDI] NOTE OFF ch=%d note=%d\n",
-                    ev.channel, ev.note);
-        }
+        log_midi_event(ev);
         synth.push_event(ev);
     });
 

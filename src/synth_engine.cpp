@@ -1,6 +1,7 @@
 #include "synth_engine.hpp"
 #include <cstring>
 #include <climits>
+#include <cstdio>
 
 SynthEngine::SynthEngine(SampleDB& attack_db, int sample_rate, SampleDB* release_db)
     : db_(attack_db), release_db_(release_db), sample_rate_(sample_rate)
@@ -8,7 +9,11 @@ SynthEngine::SynthEngine(SampleDB& attack_db, int sample_rate, SampleDB* release
 
 void SynthEngine::push_event(const MidiEvent& ev)
 {
-    event_queue_.push(ev);  // ロックフリー、満杯時はイベントを無視
+    if (!event_queue_.push(ev) && ev.type == MidiEvent::Type::NOTE_OFF) {
+        // NOTE_OFF ドロップはゾンビボイスを引き起こすため警告
+        fprintf(stderr, "[SynthEngine] WARNING: queue full, NOTE_OFF dropped (ch=%d note=%d)\n",
+                ev.channel, ev.note);
+    }
 }
 
 void SynthEngine::mix(float* buf, int frames)
