@@ -442,3 +442,13 @@
   - commit & push: 未完了 → 次のアクション
 次のTODO: git commit & push
 ---
+
+---
+2026-03-02 11:09
+作業項目: GitHub Issue 確認
+追加機能の説明: gh issue list で open/closed 一覧を確認
+決定事項:
+  - Open issue: なし（0件）
+  - Closed issue: 6件（#1-#6 全て解決済み）
+次のTODO: 新規 issue 作成 or Pi ビルド
+---
