@@ -119,12 +119,25 @@ MIDI チャンネル割り当て:
 - CH3: Pedal Board  — ドローバー `[8,0,8,0,0,0,0,0,0]` (16'+8')
 
 MIDI CC マッピング（チャンネルで自動振り分け）:
-- CC 64: Leslie Fast(6.7Hz)/Slow(0.7Hz) ← どのチャンネルでも可
+- CC 1 : V/C モード (0=off, 1-3=V1-V3 ビブラート, 4-6=C1-C3 コーラス)
 - CC 7 : 各マニュアルの音量 (0-127)
 - CC 12-20: ドローバー 0-8 制御 (val 0-127 → 0-8) ← チャンネルで振り分け
+- CC 64: Leslie Fast(6.7Hz)/Slow(0.7Hz) ← どのチャンネルでも可
 
 ```
 ./elepiano --organ [alsa_device]
+```
+
+### メロトロン（Logic Pro サンプル使用）
+
+```bash
+# 3 Violins (M400 メロトロン弦楽器, MIDI 55–89)
+./build/elepiano data/mellotron-strings/samples.json
+```
+
+Mac → Pi 転送:
+```bash
+rsync -av data/mellotron-strings/ pi@raspberrypi:~/elepiano/data/mellotron-strings/
 ```
 
 ### 他の音色（ピアノモード）
@@ -146,6 +159,8 @@ MIDI CC マッピング（チャンネルで自動振り分け）:
 
 ## 利用可能なサンプルデータ一覧
 
+### Keyscape / Rhodes 系（メインライブラリ）
+
 | ディレクトリ | 種別 | ファイル数 | 用途 |
 |---|---|---:|---|
 | `data/rhodes-classic/` | CLR attack r10 | 1,615 | attack (推奨) |
@@ -158,6 +173,17 @@ MIDI CC マッピング（チャンネルで自動振り分け）:
 | `data/rhodes/` | lacrmsp pattern1 | 38 | 旧テスト用 |
 
 ★ 通常の鍵盤リリース音。最初は `rhodes-classic-relf` を推奨。
+
+### Mellotron 系（Logic Pro サンプル）
+
+| ディレクトリ | 種別 | ファイル数 | 用途 |
+|---|---|---:|---|
+| `data/mellotron-strings/` | M400 3 Violins | 35 | MIDI 55–89 (G3–F6) |
+
+抽出元: `/Library/Application Support/Logic/EXS Factory Samples/Mellotron/Mellotron_consolidated.caf`
+追加可能な楽器: Flute, GC 3Brass, StringSection, FemaleChoir, BoysChoir, Cello, 8Choir (各 35 ゾーン)
+
+詳細は `docs/Arturia_formats.md` → `docs/NKX_format.md` を参照。
 
 ---
 

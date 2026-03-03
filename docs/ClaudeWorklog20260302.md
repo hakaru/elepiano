@@ -503,3 +503,311 @@
 決定事項: Mac 上で g++ 構文チェック通過。Pi ビルドが必要
 次のTODO: Pi でビルド & 実機テスト (CC64 Leslie 加速/減速, CC1 V/C)
 ---
+
+---
+2026-03-02 12:11
+作業項目: /Volumes/Media 内の抽出可能サンプル調査
+追加機能の説明: Keyscape 以外のライブラリも含め .db/.sf2/.sfz ファイルを探索
+決定事項: 調査中
+次のTODO: 調査結果をユーザーに報告
+---
+
+---
+2026-03-02 12:19
+作業項目: /Volumes/Media サンプル調査 完了
+追加機能の説明:
+  - /Volumes/Media 内のオーディオライブラリを全調査
+  - SF2/SFZ/Kontakt/WAV 生ファイルはなし。全て Keyscape .db (SpCA) のみ
+  - .db ファイル: 44個、未抽出 41 楽器 (74.1 GB)
+  - 高優先候補の命名パターンを実機検証:
+    * Wurlitzer 140B: RR01 33 100.wav (シンプル、3101 WAV)
+    * Hohner Clavinet C: RR01_SL01 ClvC r12_29-11.wav (velocity=float)
+    * LA Custom C7 Grand: RR01_SL01LACPPUr09_100-100.wav
+決定事項: 調査完了。抽出実装は次のセッションで
+次のTODO: Wurlitzer 140B の extract_samples.py モード追加
+---
+
+---
+2026-03-02 12:24
+作業項目: 内蔵ディスク サンプル調査
+追加機能の説明: Mac 内蔵ディスク上のオーディオライブラリを探索
+決定事項: 調査中
+次のTODO: 調査結果報告
+---
+
+---
+2026-03-02 12:27
+作業項目: 内蔵ディスク サンプル調査 完了
+追加機能の説明:
+  内蔵に見つかったオーディオライブラリ:
+  1. Native Instruments (Kontakt) - /Users/Shared/ に多数
+     - Scarbee Vintage Keys (5.9GB): Rhodes/Clavinet等
+     - Vintage Organs (1.4GB): Hammond系
+     - Una Corda (3.0GB): 特殊ピアノ
+     - Kontakt Factory Library (23GB): 電子ピアノ/Mellotron/etc
+     - 全て .nkx 暗号化コンテナ → 抽出困難
+  2. Arturia Analog Lab V: DSPモデル、サンプルなし
+  3. Logic EXS Factory Samples (5.1GB): .caf 形式
+     - Studio Grand Piano, Mellotron 等 consolidated.caf → Apple独自
+決定事項:
+  - NI .nkx = 暗号化、実質抽出不可
+  - Logic consolidated.caf = Apple独自、抽出困難
+  - 実用的な抽出源は /Volumes/Media の Keyscape .db のみ
+次のTODO: Wurlitzer 140B 抽出モード追加
+---
+
+---
+2026-03-02 12:31
+作業項目: 内蔵ディスク サンプル再調査（より広範囲）
+追加機能の説明: ~/Music, ~/Documents, ~/DEVELOP, Volumes 全体も含め網羅的に探索
+決定事項: 調査中
+次のTODO: 調査結果報告
+---
+
+---
+2026-03-02 12:34
+作業項目: 内蔵ディスク 広範囲サンプル調査 完了
+追加機能の説明:
+  追加発見:
+  1. GarageBand Sampler Files - WAV 518件 + AIFF 489件
+     → 管楽器・弦楽器（Clarinet/Flute/Horns/Strings 等）
+     → 標準フォーマット（16bit/44100Hz）だが鍵盤楽器なし
+  2. Arturia CMI V - WAV 1083件（14080Hz IEEE Float）
+     → Fairlight CMI サンプル。超短い単音ループ、鍵盤用途に不向き
+  3. Arturia Mellotron V - ZIP内独自エンコード（.mrk）
+     → Mk2 Piano, MkI Piano, MkI Hammond 等 35ノート×24楽器
+     → entropy 6.0 bits → 暗号化なしだが独自圧縮。解析要
+  4. Logic EXS Steinway Piano - consolidated.caf（Apple独自）
+     → EXS binary に Zone定義（30 zones×4 velocity）はあるが
+       サンプルは全て consolidated.caf に格納 → 切り出し困難
+  5. NI Kontakt 全ライブラリ (.nkx 45GB+) → 暗号化で抽出不可
+決定事項:
+  - 鍵盤楽器として実用的に抽出できるものは内蔵ディスクにない
+  - Arturia Mellotron V の独自フォーマット解析は要調査
+  - /Volumes/Media Keyscape (.db) が引き続き唯一の実用的な抽出源
+次のTODO: Wurlitzer 140B の extract_samples.py モード追加（最優先）
+---
+
+---
+2026-03-02 12:56
+作業項目: NKX フォーマット解析調査
+追加機能の説明: NI Kontakt .nkx ファイルのフォーマットを実ファイルで解析
+決定事項: 調査中
+次のTODO: 解析結果報告
+---
+
+---
+2026-03-02 13:02
+作業項目: NKX フォーマット解析続き - データオフセット確認、NCWフォーマット調査
+追加機能の説明: 前セッションで発見したTOCレコードのデータオフセットにある実データを確認
+決定事項: 調査中
+次のTODO: NCWデータの先頭バイトを確認し暗号化有無を判定
+---
+
+---
+2026-03-02 13:20
+作業項目: NKX フォーマット解析 完了
+追加機能の説明:
+  NKX (NI Kontakt) フォーマット解析結果まとめ:
+  
+  【構造】
+  - NKX = 大型コンテナ (Scarbee Mark I: 1.3 GB)
+  - Primary TOC (0-95,690 bytes): 1692 エントリ (ファイル名 + 未解明オフセット)
+  - 31バイト per-file ブロックヘッダー: magic + ファイルサイズ (v2 と一致)
+  - NKC (119KB): メタデータキャッシュ。v1=絶対オフセット, v2=音声サイズ
+  
+  【音声データ】
+  - 先頭16バイト: 全ファイル共通 = AES-CBC の IV
+    `fb ed 4f 72 e1 c3 7f 02 fb 2c f8 bb af d1 62 c5`
+  - 残りデータ: entropy = 8.00 bits/byte → AES-128 暗号化確定
+  - 検証: NOISE.ncw と RSP73 sus C4 -0.ncw の両方が entropy=8.00
+    → 圧縮のみなら持続音は 6-7 bits/byte のはず → AES確定
+
+  【結論】
+  - NKX音声データは AES-128-CBC で暗号化されている
+  - 復号鍵は NI ライセンスシステムに紐付け (マシン固有または NI アカウント)
+  - 鍵なしでの抽出は不可能
+
+決定事項:
+  - NKX 抽出は実質的に不可能 (AES暗号化)
+  - 実用的な抽出源は引き続き Keyscape (.db) のみ
+  - 次の優先作業: Keyscape 残り楽器の抽出 or オルガンエンジンの改良
+
+次のTODO:
+  1. Keyscape 残り楽器の extract_samples.py 対応 (Wurlitzer 140B等)
+  2. 未抽出の Keyscape 楽器 43本の中から有望なものを選択
+  3. OrganEngine の Pi 実機テスト
+---
+
+---
+2026-03-02 15:52
+作業項目: NKX フォーマットのドキュメント化
+追加機能の説明: docs/NKX_format.md を新規作成
+決定事項: 解析結果をまとめた技術ドキュメントを作成
+次のTODO: 完成後ユーザーに報告
+---
+
+---
+2026-03-02 16:01
+作業項目: Mellotron V .mrk フォーマット解析（コンテキスト再開）
+追加機能の説明: 前セッションの続き。rack/0 を 16bit/44100Hz WAV として解釈した結果、mean=-4.8dB, max=0.0dB。引き続きフォーマット特定調査を継続。
+決定事項: FFT解析・代替サンプルレート試行・バイナリパターン探索で本物かどうか確認
+次のTODO: スペクトル解析で音楽コンテンツを確認
+---
+
+---
+2026-03-02 16:21
+作業項目: Mellotron サンプル抽出 完了
+追加機能の説明:
+  Arturia Mellotron V (.mrk) フォーマット解析結果:
+  - .mrk = ZIP アーカイブ → rack/N = Base64+DEFLATE → バイナリ
+  - 全サイズが16の倍数、エントロピー8.0 bits/byte → AES暗号化確定
+  - NKX と同様、プラグインなしでの復号は不可能
+  
+  Logic Pro の Mellotron サンプルを代替として使用:
+  - /Library/Application Support/Logic/EXS Factory Samples/Mellotron/Mellotron_consolidated.caf
+  - フォーマット: lpcm big-endian, 16-bit, 44100Hz, mono, 232MB
+  - EXS24 instrument (.exs) でゾーン情報 (note_lo, sample_start, sample_end) を解析
+  
+  "3 Violins" (M400 Mellotron クラシック弦楽器) を抽出:
+  - 35サンプル: MIDI 55 (G3) 〜 MIDI 89 (F6) 
+  - 各サンプル: ~7.5〜9秒 (本物のメロトロンテープ長)
+  - big-endian → little-endian 変換してFLAC圧縮 (ffmpeg s16be→flac)
+  - mean_volume: -9.0 dB (弦楽器として自然)
+  - 出力: data/mellotron-strings/ (35 FLAC + samples.json)
+  
+  EXS24 フォーマット解析:
+  - チャンク: 16バイトヘッダー + TBOS magic + 64バイト名前 + ゾーンデータ
+  - note_lo: TBOS+69, sample_start: TBOS+80, sample_end: TBOS+84 (uint32 LE, 単位: samples)
+  - 700ゾーン = 20楽器 × 35音符 (重複含む)
+  - 楽器: 3Violins, GC 3Brass, StringSection, FemaleChoir, BoysChoir, MaleChoir, Cello, Brass, Flute, 8Choir
+
+決定事項:
+  - data/mellotron-strings/samples.json 形式は SampleDB 互換 (midi_note, velocity_min/max, file)
+  - 起動コマンド: ./build/elepiano data/mellotron-strings/samples.json
+  - 次回: Flute や Choir セットも追加可能
+
+次のTODO:
+  1. Pi でのビルド・テスト (mellotron-strings を Pi に転送)
+  2. Flute (35サンプル) も抽出して別音色として追加
+  3. elepiano-build スキルにメロトロンモードを追加
+---
+
+---
+2026-03-02 16:23
+作業項目: Arturia サンプルライブラリ全体サーベイ
+追加機能の説明: /Library/Arturia/Samples/ の全ライブラリを調査
+決定事項: 調査中
+次のTODO: 調査結果によって判断
+---
+
+---
+2026-03-02 16:26
+作業項目: CMI V WAV解析 (Arturia サーベイ続き)
+追加機能の説明:
+  - wave モジュール "unknown format: 3" エラー（32-bit float WAV）を回避
+  - ffmpeg/numpy を使って直接バイナリ解析に変更
+  - CMI V ピアノ・鍵盤系サンプルのピッチ検出を実施
+決定事項: 調査中
+次のTODO: ピッチ検出 → elepiano 利用可否判断
+---
+
+---
+2026-03-02 16:36
+作業項目: Arturia サンプルライブラリ全体サーベイ 完了
+追加機能の説明:
+  各ライブラリの解析結果:
+
+  [1] CMI V (Fairlight CMI)
+    - 1083 WAV (float32, 14080Hz, ~1.16s = 16384 samples)
+    - 直接読み取り可能 (バイナリ解析で float32 対応)
+    - カテゴリ: PIANO, KEYBOARD1(ORGAN1-16 etc), KEYBOARD2(WURLI etc), HISTRING, LOSTRING, STRINGS3
+    - PIANOL1(A3/57), PIANOH1(A4/69) の 2 ゾーン → ピアノとしては不十分
+    - 欠点: 短すぎる(1.16s)、ピアノとしては 2ゾーンのみ
+    - ✗ elepiano 用途には不向き (too short)
+
+  [2] Synclavier V
+    - 224 WAV (16-bit PCM, 44100-100000Hz)
+    - 直接読み取り可能
+    - Electric Piano - F.wav (A4, 50kHz, 2s), FF.wav (G4, 5.47s), Digi CMI Grand.wav (D2, 96kHz, 9.28s)
+    - 欠点: 楽器ごとに 1-2 ゾーンのみ → 全鍵盤をカバーする多ゾーン構成なし
+    - ✗ 単体では elepiano 用プレイアブル音源にならない
+
+  [3] Emulator II V ← 最注目
+    - 1104 .eiiwav (µ-law 8-bit, ~27700Hz, 2.2-2.65s)
+    - フォーマット: カスタム解析が必要 (ffprobe 非対応)
+    - ヘッダー構造: [0]=version(0x100), [4]=file_size-20, [8]=loop_end, [12]=loop_start
+                    offset 28 から µ-law データ
+    - G.711 µ-law 復号: (~byte & 0xff) → sign/exp/mant → linear/32768
+    - ピッチ検出: ファイル名に音名が入っている (例: "piano D4" → D4 = MIDI62)
+    - Grand Piano (カテゴリ04): A2, F#3, D4, A#4, F#5, D6 の 6 ゾーン ← 優秀！
+    - 他: Marcato Strings (10 ゾーン), Cello & Violin, Orchestra Tune, Stacked Strings
+    - ○ 抽出可能。Emulator II 独特のヴィンテージ音色
+
+  [4] Augmented STRINGS
+    - 1852 .arta (Arturia 暗号化) + 141 .sfz (オープン形式)
+    - SFZ が .arta を参照 → 復号不可
+    - ✗ 使用不可
+
+決定事項:
+  最有望: Emulator II V Grand Piano (6ゾーン)
+  次点: Logic Pro Mellotron 他楽器 (Flute等、既存パイプライン利用可)
+  対応方針: Emulator II V 抽出スクリプト作成 or まず Mellotron Flute を追加するか、ユーザーの判断を待つ
+
+次のTODO:
+  1. Emulator II V Grand Piano: µ-law → FLAC 変換スクリプト作成
+  2. または Logic Pro Mellotron Flute を先に抽出
+  3. mellotron-strings を Pi にテスト転送
+---
+
+---
+2026-03-02 16:37
+作業項目: Arturia サーベイ ドキュメント化 + elepiano-build スキル更新
+追加機能の説明: docs/Arturia_formats.md 新規作成、.claude/commands/elepiano-build.md 更新
+決定事項: 作業中
+次のTODO: 完了後確認
+---
+
+---
+2026-03-02 16:39
+作業項目: Arturia フォーマット ドキュメント化 + elepiano-build スキル更新 完了
+追加機能の説明:
+  docs/Arturia_formats.md 新規作成:
+    - CMI V: float32 WAV 読み取り方法, ピッチ対応表, 利用制約
+    - Synclavier V: 鍵盤系ファイル一覧, 利用制約
+    - Emulator II V: .eiiwav ヘッダー構造, µ-law デコードコード, Grand Piano ゾーンマップ
+    - Augmented STRINGS: .arta 暗号化, .sfz 構造
+    - Mellotron V: NKX_format.md への参照
+
+  .claude/commands/elepiano-build.md 更新:
+    - オルガン CC マッピングに CC1 (V/C モード) を追記
+    - メロトロンモード追加 (data/mellotron-strings/samples.json)
+    - Pi 転送コマンド追記
+    - サンプルデータ一覧を「Keyscape 系」と「Mellotron 系」に分割
+    - 追加可能な Logic Pro Mellotron 楽器一覧を記載
+
+決定事項:
+  ドキュメント: docs/Arturia_formats.md ← 将来のフォーマット調査の参照先
+  スキル: /elepiano-build に Mellotron モード起動コマンドを追加
+
+次のTODO:
+  1. Emulator II V Grand Piano 抽出スクリプト作成
+  2. Logic Pro Mellotron 追加楽器 (Flute 等) 抽出
+  3. mellotron-strings を Pi に転送してテスト
+---
+
+---
+2026-03-02 17:15
+作業項目: サンプリング系ハモンドオルガン音源の調査
+追加機能の説明: 製品リサーチ（elepiano へのサンプル転用可能性の検討）
+決定事項: 調査・回答
+次のTODO: 有望な音源があれば抽出調査へ
+---
+
+---
+2026-03-02 17:17
+作業項目: オルガンサンプル所在確認 (Keyscape / Logic Pro / Arturia)
+追加機能の説明: 3箇所を同時確認
+決定事項: 確認中
+次のTODO: 結果次第で抽出検討
+---

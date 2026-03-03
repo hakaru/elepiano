@@ -1,0 +1,214 @@
+{
+  "samples": [
+    {
+      "midi_note": 55,
+      "velocity_min": 0,
+      "velocity_max": 127,
+      "file": "audio/mellotron-3violins-G3-n55.flac"
+    },
+    {
+      "midi_note": 56,
+      "velocity_min": 0,
+      "velocity_max": 127,
+      "file": "audio/mellotron-3violins-Gs3-n56.flac"
+    },
+    {
+      "midi_note": 57,
+      "velocity_min": 0,
+      "velocity_max": 127,
+      "file": "audio/mellotron-3violins-A3-n57.flac"
+    },
+    {
+      "midi_note": 58,
+      "velocity_min": 0,
+      "velocity_max": 127,
+      "file": "audio/mellotron-3violins-As3-n58.flac"
+    },
+    {
+      "midi_note": 59,
+      "velocity_min": 0,
+      "velocity_max": 127,
+      "file": "audio/mellotron-3violins-B3-n59.flac"
+    },
+    {
+      "midi_note": 60,
+      "velocity_min": 0,
+      "velocity_max": 127,
+      "file": "audio/mellotron-3violins-C4-n60.flac"
+    },
+    {
+      "midi_note": 61,
+      "velocity_min": 0,
+      "velocity_max": 127,
+      "file": "audio/mellotron-3violins-Cs4-n61.flac"
+    },
+    {
+      "midi_note": 62,
+      "velocity_min": 0,
+      "velocity_max": 127,
+      "file": "audio/mellotron-3violins-D4-n62.flac"
+    },
+    {
+      "midi_note": 63,
+      "velocity_min": 0,
+      "velocity_max": 127,
+      "file": "audio/mellotron-3violins-Ds4-n63.flac"
+    },
+    {
+      "midi_note": 64,
+      "velocity_min": 0,
+      "velocity_max": 127,
+      "file": "audio/mellotron-3violins-E4-n64.flac"
+    },
+    {
+      "midi_note": 65,
+      "velocity_min": 0,
+      "velocity_max": 127,
+      "file": "audio/mellotron-3violins-F4-n65.flac"
+    },
+    {
+      "midi_note": 66,
+      "velocity_min": 0,
+      "velocity_max": 127,
+      "file": "audio/mellotron-3violins-Fs4-n66.flac"
+    },
+    {
+      "midi_note": 67,
+      "velocity_min": 0,
+      "velocity_max": 127,
+      "file": "audio/mellotron-3violins-G4-n67.flac"
+    },
+    {
+      "midi_note": 68,
+      "velocity_min": 0,
+      "velocity_max": 127,
+      "file": "audio/mellotron-3violins-Gs4-n68.flac"
+    },
+    {
+      "midi_note": 69,
+      "velocity_min": 0,
+      "velocity_max": 127,
+      "file": "audio/mellotron-3violins-A4-n69.flac"
+    },
+    {
+      "midi_note": 70,
+      "velocity_min": 0,
+      "velocity_max": 127,
+      "file": "audio/mellotron-3violins-As4-n70.flac"
+    },
+    {
+      "midi_note": 71,
+      "velocity_min": 0,
+      "velocity_max": 127,
+      "file": "audio/mellotron-3violins-B4-n71.flac"
+    },
+    {
+      "midi_note": 72,
+      "velocity_min": 0,
+      "velocity_max": 127,
+      "file": "audio/mellotron-3violins-C5-n72.flac"
+    },
+    {
+      "midi_note": 73,
+      "velocity_min": 0,
+      "velocity_max": 127,
+      "file": "audio/mellotron-3violins-Cs5-n73.flac"
+    },
+    {
+      "midi_note": 74,
+      "velocity_min": 0,
+      "velocity_max": 127,
+      "file": "audio/mellotron-3violins-D5-n74.flac"
+    },
+    {
+      "midi_note": 75,
+      "velocity_min": 0,
+      "velocity_max": 127,
+      "file": "audio/mellotron-3violins-Ds5-n75.flac"
+    },
+    {
+      "midi_note": 76,
+      "velocity_min": 0,
+      "velocity_max": 127,
+      "file": "audio/mellotron-3violins-E5-n76.flac"
+    },
+    {
+      "midi_note": 77,
+      "velocity_min": 0,
+      "velocity_max": 127,
+      "file": "audio/mellotron-3violins-F5-n77.flac"
+    },
+    {
+      "midi_note": 78,
+      "velocity_min": 0,
+      "velocity_max": 127,
+      "file": "audio/mellotron-3violins-Fs5-n78.flac"
+    },
+    {
+      "midi_note": 79,
+      "velocity_min": 0,
+      "velocity_max": 127,
+      "file": "audio/mellotron-3violins-G5-n79.flac"
+    },
+    {
+      "midi_note": 80,
+      "velocity_min": 0,
+      "velocity_max": 127,
+      "file": "audio/mellotron-3violins-Gs5-n80.flac"
+    },
+    {
+      "midi_note": 81,
+      "velocity_min": 0,
+      "velocity_max": 127,
+      "file": "audio/mellotron-3violins-A5-n81.flac"
+    },
+    {
+      "midi_note": 82,
+      "velocity_min": 0,
+      "velocity_max": 127,
+      "file": "audio/mellotron-3violins-As5-n82.flac"
+    },
+    {
+      "midi_note": 83,
+      "velocity_min": 0,
+      "velocity_max": 127,
+      "file": "audio/mellotron-3violins-B5-n83.flac"
+    },
+    {
+      "midi_note": 84,
+      "velocity_min": 0,
+      "velocity_max": 127,
+      "file": "audio/mellotron-3violins-C6-n84.flac"
+    },
+    {
+      "midi_note": 85,
+      "velocity_min": 0,
+      "velocity_max": 127,
+      "file": "audio/mellotron-3violins-Cs6-n85.flac"
+    },
+    {
+      "midi_note": 86,
+      "velocity_min": 0,
+      "velocity_max": 127,
+      "file": "audio/mellotron-3violins-D6-n86.flac"
+    },
+    {
+      "midi_note": 87,
+      "velocity_min": 0,
+      "velocity_max": 127,
+      "file": "audio/mellotron-3violins-Ds6-n87.flac"
+    },
+    {
+      "midi_note": 88,
+      "velocity_min": 0,
+      "velocity_max": 127,
+      "file": "audio/mellotron-3violins-E6-n88.flac"
+    },
+    {
+      "midi_note": 89,
+      "velocity_min": 0,
+      "velocity_max": 127,
+      "file": "audio/mellotron-3violins-F6-n89.flac"
+    }
+  ]
+}
