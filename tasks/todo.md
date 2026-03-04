@@ -1,47 +1,67 @@
-# elepiano Open Issues 解決計画
+# BLE-MIDI iPhone コントロールアプリ計画
 
 作成日: 2026-03-04
 
-## 実行戦略
+## アーキテクチャ
 
-- グループ A/C/D/E は独立ファイル → **並列実行**
-- グループ B は `flac_decoder.cpp` 内で変更行が重複 → **直列** (#18→#9→#7→#13)
-- グループ F (#12) はグループ B・E 完了後
+```
+iPhone (SwiftUI + MIDIKit)
+  ↓ BLE-MIDI (Apple MIDI GATT Service)
+Pi5 (bluetoothd + btmidi-server --enable-midi)
+  ↓ ALSA Sequencer 仮想ポート（BlueZ 自動生成）
+elepiano MidiInput（既存 ALSA Sequencer client: 変更不要）
+```
 
----
+## Phase 1: Pi5 BLE-MIDI セットアップ（要物理アクセス）
 
-## グループ A: sample_db.cpp セキュリティ修正
+- [ ] P1-1: BlueZ を --enable-midi 付きでソースビルド
+- [ ] P1-2: bluetoothd を experimental モードで起動
+- [ ] P1-3: btmidi-server をシステムサービス化
+- [ ] P1-4: BLE ペアリングと ALSA ポート自動接続の確認
+- [ ] P1-5: elepiano 起動スクリプトに aconnect 自動接続追加
 
-- [x] #10: パストラバーサルガードを `std::filesystem` ベースに修正 → `35af3ac`
-- [x] #17: samples.json サイズ制限・サンプル数上限を追加 → `ec49937`
+## Phase 2: iOS アプリ基盤
 
-## グループ B: flac_decoder.cpp 修正（直列）
+ディレクトリ: /Users/hakaru/DEVELOP/elepiano/iOS/ElepianoControl/
 
-- [x] #18: read_file_bytes() に tellg() 失敗ガード・サイズ上限追加 → `481af1c`
-- [x] #9: SpCA XOR の sr_code==9 ハードコードを緩い条件に修正 → `4c1200c`
-- [x] #7: multi-channel PCM バッファサイズ計算に channels を反映 → `4c1200c`
-- [x] #13: 通常FLAC のストリーミングデコード追加・二重デコード排除 → `4c1200c`
+- [ ] P2-1: XcodeGen project.yml 作成
+- [ ] P2-2: Info.plist (NSBluetoothAlwaysUsageDescription)
+- [ ] P2-3: MIDIManager セットアップ (AppState)
+- [ ] P2-4: BLE-MIDI デバイス検索・接続 UI
 
-## グループ C: midi_input.cpp セキュリティ修正
+## Phase 3: iOS アプリ UI
 
-- [x] #16: ALSA poll descriptor count にバリデーション追加 → `f54a266`
+- [ ] P3-1: CC スライダーコンポーネント
+- [ ] P3-2: FxChain コントロールパネル (CC 70-79)
+- [ ] P3-3: オルガン Drawbars パネル (CC 12-20, CC 64)
+- [ ] P3-4: モード切替 (Piano/Organ) タブ
+- [ ] P3-5: MIDI 送信ロジック
 
-## グループ D: main.cpp 修正
+## Phase 4: プリセット機能
 
-- [x] #8: デフォルト ALSA デバイスを "default" に変更 → `1b430c2`
-- [x] #14: MIDI ログを条件付き出力に変更（デフォルト無効） → `b586744`
+- [ ] P4-1: PresetStore (Codable + UserDefaults)
+- [ ] P4-2: PresetView (一覧 + 保存/読み込み)
 
-## グループ E: Python ツール修正
+## CC マッピング
 
-- [x] #11: extract_samples.py の CRC デッドコード削除 → `5378723`
-- [x] #15: extract_samples.py の並列化・コピー削減 → `69c5c97`
+### FxChain (ピアノモード)
+| CC | パラメータ | 範囲 |
+|----|-----------|------|
+| 70 | Drive | 1.0〜8.0 |
+| 71 | Lo EQ | -12〜+12 dB |
+| 72 | Hi EQ | -12〜+12 dB |
+| 73 | Tremolo Depth | 0〜0.8 |
+| 74 | Tremolo Rate | 0.5〜8 Hz |
+| 75 | Delay Time | 0〜0.5s |
+| 76 | Delay Feedback | 0〜0.85 |
+| 77 | Chorus Rate | 0.5〜2 Hz |
+| 78 | Chorus Depth | 0〜20 ms |
+| 79 | Chorus Wet | 0〜1.0 |
 
-## グループ F: SpCA XOR リファクタ（B・E 完了後）
-
-- [x] #12: C++/Python の SpCA XOR ロジック統合 → `e7e6916`
-
----
-
-## 結果
-
-全12件の issue を10コミットで修正完了。push 後に GitHub 上で自動クローズされる。
+### オルガンモード
+| CC | パラメータ |
+|----|-----------|
+| 12-20 | Drawbar 0-8 (チャンネルごと) |
+| 64 | Leslie Fast/Slow |
+| 7 | Volume (マニュアルごと) |
+| 1 | V/C モード |

@@ -1,0 +1,31 @@
+name: ElepianoControl
+options:
+  bundleIdPrefix: com.hakaru
+  deploymentTarget:
+    iOS: "18.0"
+  xcodeVersion: "16.0"
+
+packages:
+  MIDIKit:
+    url: https://github.com/orchetect/MIDIKit
+    from: "0.11.0"
+
+targets:
+  ElepianoControl:
+    type: application
+    platform: iOS
+    sources:
+      - Sources
+    resources:
+      - Resources
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.hakaru.ElepianoControl
+        INFOPLIST_FILE: Resources/Info.plist
+        MARKETING_VERSION: "1.0.0"
+        CURRENT_PROJECT_VERSION: "1"
+        SWIFT_VERSION: "6.0"
+        TARGETED_DEVICE_FAMILY: "1"
+    dependencies:
+      - package: MIDIKit
+        product: MIDIKit
