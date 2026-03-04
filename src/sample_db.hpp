@@ -12,7 +12,7 @@ struct SampleData {
     int         round_robin;
     std::string file_path;
 
-    // RAM に展開した PCM サンプル (float 正規化済み, -1.0 〜 +1.0, モノ)
+    // RAM に展開した PCM サンプル (float 正規化済み, -1.0 〜 +1.0, モノにダウンミックス済み)
     std::vector<float> pcm;
     int sample_rate  = 44100;
     int num_channels = 1;

@@ -78,6 +78,21 @@ SampleDB::SampleDB(const std::string& json_path)
 
         auto audio     = decode_flac_file(sd.file_path, MAX_SAMPLE_FRAMES);
 
+        // ステレオ → モノ ダウンミックス（Voice はモノ前提）
+        if (audio.num_channels >= 2) {
+            size_t ch = static_cast<size_t>(audio.num_channels);
+            size_t total_frames = audio.pcm.size() / ch;
+            std::vector<float> mono(total_frames);
+            for (size_t f = 0; f < total_frames; ++f) {
+                float sum = 0.0f;
+                for (size_t c = 0; c < ch; ++c)
+                    sum += audio.pcm[f * ch + c];
+                mono[f] = sum / static_cast<float>(ch);
+            }
+            audio.pcm = std::move(mono);
+            audio.num_channels = 1;
+        }
+
         // フェードアウト（クリック防止）
         if (audio.pcm.size() >= FADE_OUT_FRAMES) {
             size_t fade_start = audio.pcm.size() - FADE_OUT_FRAMES;
