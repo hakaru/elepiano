@@ -11,12 +11,14 @@
 #include <string>
 
 static std::atomic<bool> g_quit{false};
+static bool g_midi_log = false;
 
 static void sig_handler(int) { g_quit.store(true); }
 
-// ─── MIDI イベントログ出力（run_organ / run_piano 共通） ──────
+// ─── MIDI イベントログ出力（--midi-log または ELEPIANO_MIDI_LOG=1 で有効） ──
 static void log_midi_event(const MidiEvent& ev)
 {
+    if (!g_midi_log) return;
     switch (ev.type) {
     case MidiEvent::Type::NOTE_ON:
         fprintf(stderr, "[MIDI] NOTE ON  ch=%d note=%d vel=%d\n",
@@ -162,6 +164,17 @@ int main(int argc, char* argv[])
 {
     signal(SIGINT,  sig_handler);
     signal(SIGTERM, sig_handler);
+
+    // --midi-log フラグまたは環境変数で MIDI ログを有効化
+    if (const char* env = getenv("ELEPIANO_MIDI_LOG"); env && env[0] == '1')
+        g_midi_log = true;
+    for (int i = 1; i < argc; ++i) {
+        if (std::string(argv[i]) == "--midi-log") {
+            g_midi_log = true;
+            for (int j = i; j < argc - 1; ++j) argv[j] = argv[j + 1];
+            --argc; --i;
+        }
+    }
 
     // --organ [alsa_device]
     if (argc > 1 && std::string(argv[1]) == "--organ") {
