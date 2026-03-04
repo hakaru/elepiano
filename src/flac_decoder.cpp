@@ -130,10 +130,9 @@ DecodedAudio decode_flac_file(const std::string& path, size_t max_frames)
     result.pcm.resize(static_cast<size_t>(decoded) * channels);
     drflac_close(f);
 
-    // デコード数が期待値とほぼ一致 → 通常の FLAC（非暗号化）
-    // DR_FLAC_NO_CRC では暗号化データの偽 sync でゴミフレームをデコードし
-    // decoded > 8192 になりうるため、totalPCMFrameCount と比較して判定する
-    if (decoded >= frames_to_read * 9 / 10) {
+    // 全フレーム完全デコード → 通常 FLAC（非暗号化）、そのまま返す
+    // DR_FLAC_NO_CRC でゴミフレームをデコードしても全フレーム一致にはならない
+    if (total_frames > 0 && decoded == frames_to_read) {
         if (result.pcm.empty())
             throw std::runtime_error("FLAC デコード結果が空: " + path);
         return result;
