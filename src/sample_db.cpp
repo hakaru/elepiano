@@ -6,7 +6,13 @@
 #include <algorithm>
 #include <filesystem>
 #include <climits>
+#include <cmath>
 #include <cstdio>
+
+// Pi5 (8GB RAM) で全サンプルをメモリに収めるため、最大長を制限する
+// 10秒 @ 44100Hz = 441000 サンプル → 1615 ファイル × 441000 × 4B ≈ 2.7GB
+static constexpr size_t MAX_SAMPLE_FRAMES = 441000;
+static constexpr size_t FADE_OUT_FRAMES   = 4410;  // 100ms フェードアウト
 
 using json = nlohmann::json;
 namespace fs = std::filesystem;
@@ -47,18 +53,29 @@ SampleDB::SampleDB(const std::string& json_path)
         sd.velocity_idx = item.value("velocity_idx", 0);
         sd.round_robin  = item.value("round_robin", 1);
 
-        // パストラバーサル防止
+        // パストラバーサル防止: relative() が ".." 始まりなら拒否
         fs::path file_path = base_dir / item["file"].get<std::string>();
         {
             auto cf = fs::weakly_canonical(file_path);
             auto cb = fs::weakly_canonical(base_dir);
-            if (cf.string().compare(0, cb.string().size(), cb.string()) != 0)
+            auto rel = fs::relative(cf, cb);
+            if (rel.empty() || *rel.begin() == "..")
                 throw std::runtime_error("パストラバーサルを検出: " + cf.string());
         }
         sd.file_path   = file_path.string();
         sd.sample_rate = sample_rate_;
 
-        auto audio     = decode_flac_file(sd.file_path);
+        auto audio     = decode_flac_file(sd.file_path, MAX_SAMPLE_FRAMES);
+
+        // フェードアウト（クリック防止）
+        if (audio.pcm.size() >= FADE_OUT_FRAMES) {
+            size_t fade_start = audio.pcm.size() - FADE_OUT_FRAMES;
+            for (size_t i = 0; i < FADE_OUT_FRAMES; ++i) {
+                float fade = 1.0f - static_cast<float>(i) / FADE_OUT_FRAMES;
+                audio.pcm[fade_start + i] *= fade;
+            }
+        }
+
         sd.pcm         = std::move(audio.pcm);
         sd.num_channels = audio.num_channels;
         sd.sample_rate  = audio.sample_rate;
