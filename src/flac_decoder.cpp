@@ -1,5 +1,4 @@
 #define DR_FLAC_IMPLEMENTATION
-#define DR_FLAC_NO_CRC
 #include "dr_flac.h"
 
 #include "flac_decoder.hpp"
@@ -131,10 +130,15 @@ DecodedAudio decode_flac_file(const std::string& path, size_t max_frames)
         return result;
     }
 
-    // 暗号化フレームを探す（audio_start + 100 〜 +200KB の範囲）
+    // frame 0 は平文。STREAMINFO の max_blocksize (4096 typ) × チャンネル × ビット深度
+    // から frame 0 のおおよそのサイズを見積もり、その後ろから暗号化フレームを探す
+    // (frame 0 圧縮データ内の偽マッチを避けるため audio_start + 100 では不十分)
+    size_t frame0_min_size = 4096;  // 最小でもブロックサイズ分のバイトは超える
+    size_t search_begin = audio_start + frame0_min_size;
+
     size_t enc_pos = 0;
     int enc_rot = 0;
-    if (!try_find_encrypted_sync(buf, audio_start + 100,
+    if (!try_find_encrypted_sync(buf, search_begin,
                                   audio_start + 200000, enc_pos, enc_rot)) {
         // 暗号化されていない（短いサンプル）
         if (result.pcm.empty())
@@ -157,8 +161,9 @@ DecodedAudio decode_flac_file(const std::string& path, size_t max_frames)
         drflac_uint64 xor_decoded = drflac_read_pcm_frames_f32(f, frames_to_read, xor_pcm.data());
         drflac_close(f);
 
-        // XOR 復号で改善した場合のみ採用
-        if (xor_decoded > plain_decoded) {
+        // XOR 復号で十分な量をデコードできた場合のみ採用
+        // (部分デコードのノイズ混じりデータを避ける)
+        if (xor_decoded > plain_decoded && xor_decoded >= frames_to_read / 2) {
             xor_pcm.resize(static_cast<size_t>(xor_decoded) * xor_channels);
             result.pcm = std::move(xor_pcm);
         }

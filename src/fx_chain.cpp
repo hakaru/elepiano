@@ -1,4 +1,5 @@
 #include "fx_chain.hpp"
+#include <cmath>
 #include <algorithm>
 
 static constexpr double PI2 = 2.0 * M_PI;
