@@ -73,18 +73,30 @@ static std::vector<uint8_t> read_file_bytes(const std::string& path)
 }
 
 // FLAC メタデータブロックを読み飛ばしてオーディオデータ開始位置を返す
-static size_t find_audio_start(const std::vector<uint8_t>& buf)
+// max_frame_size: STREAMINFO から読んだ最大フレームサイズ（バイト）
+static size_t find_audio_start(const std::vector<uint8_t>& buf, size_t& max_frame_size)
 {
+    max_frame_size = 0;
     if (buf.size() < 8 || buf[0] != 'f' || buf[1] != 'L' ||
         buf[2] != 'a' || buf[3] != 'C')
         return 0;
 
     size_t pos = 4;
     while (pos + 4 <= buf.size()) {
+        int block_type = buf[pos] & 0x7F;
         bool is_last = (buf[pos] & 0x80) != 0;
         size_t blen = (static_cast<size_t>(buf[pos+1]) << 16) |
                       (static_cast<size_t>(buf[pos+2]) << 8)  |
                        static_cast<size_t>(buf[pos+3]);
+
+        // STREAMINFO (type 0): max_frame_size はオフセット 7-9 (3バイト BE)
+        if (block_type == 0 && blen >= 18) {
+            size_t si = pos + 4;
+            max_frame_size = (static_cast<size_t>(buf[si+7]) << 16) |
+                             (static_cast<size_t>(buf[si+8]) << 8)  |
+                              static_cast<size_t>(buf[si+9]);
+        }
+
         pos += 4 + blen;
         if (is_last) break;
     }
@@ -107,7 +119,10 @@ DecodedAudio decode_flac_file(const std::string& path, size_t max_frames)
     const size_t channels = static_cast<size_t>(f->channels);
     const drflac_uint64 total_frames = f->totalPCMFrameCount;
     drflac_uint64 frames_to_read = total_frames;
-    if (max_frames > 0 && frames_to_read > max_frames)
+    // totalPCMFrameCount=0 は「不明」を意味する（SpCA 抽出ファイルで頻出）
+    if (frames_to_read == 0)
+        frames_to_read = max_frames > 0 ? max_frames : 441000;
+    else if (max_frames > 0 && frames_to_read > max_frames)
         frames_to_read = max_frames;
 
     result.pcm.resize(static_cast<size_t>(frames_to_read) * channels);
@@ -127,20 +142,26 @@ DecodedAudio decode_flac_file(const std::string& path, size_t max_frames)
     // フレーム0 のみ（≤4096 サンプル）→ SpCA XOR 暗号化の可能性
     // ここで初めてファイルをメモリに読み込む
     auto buf = read_file_bytes(path);
-    size_t audio_start = find_audio_start(buf);
+    size_t max_frame_size = 0;
+    size_t audio_start = find_audio_start(buf, max_frame_size);
     if (audio_start == 0) {
         if (result.pcm.empty())
             throw std::runtime_error("FLAC デコード結果が空: " + path);
         return result;
     }
 
-    // frame 0 のヘッダー＋最低限のデータを飛ばした位置から探索開始
-    size_t search_begin = audio_start + 100;
+    // フレーム0（平文）を確実に飛ばした位置から暗号化 sync を探索する
+    // STREAMINFO の max_frame_size が利用可能ならそれを使い、
+    // なければ保守的に推定（ブロックサイズ × チャンネル × バイト深度 × 2）
+    size_t skip = max_frame_size;
+    if (skip == 0)
+        skip = 4096 * channels * (static_cast<size_t>(result.bits_per_sample) / 8 + 1);
+    size_t search_begin = audio_start + skip + 16;
 
     size_t enc_pos = 0;
     int enc_rot = 0;
-    if (!try_find_encrypted_sync(buf, search_begin,
-                                  audio_start + 200000, enc_pos, enc_rot)) {
+    size_t search_end = search_begin + 200000;
+    if (!try_find_encrypted_sync(buf, search_begin, search_end, enc_pos, enc_rot)) {
         // 暗号化されていない（短いサンプル）
         if (result.pcm.empty())
             throw std::runtime_error("FLAC デコード結果が空: " + path);
@@ -155,7 +176,9 @@ DecodedAudio decode_flac_file(const std::string& path, size_t max_frames)
     if (f) {
         const size_t xor_channels = static_cast<size_t>(f->channels);
         frames_to_read = f->totalPCMFrameCount;
-        if (max_frames > 0 && frames_to_read > max_frames)
+        if (frames_to_read == 0)
+            frames_to_read = max_frames > 0 ? max_frames : 441000;
+        else if (max_frames > 0 && frames_to_read > max_frames)
             frames_to_read = max_frames;
 
         std::vector<float> xor_pcm(static_cast<size_t>(frames_to_read) * xor_channels);
