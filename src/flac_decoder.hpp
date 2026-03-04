@@ -11,5 +11,6 @@ struct DecodedAudio {
 };
 
 /// FLAC ファイルをデコードして DecodedAudio を返す。
+/// max_frames > 0 の場合、最大フレーム数を制限する（メモリ節約）。
 /// 失敗時は std::runtime_error を投げる。
-DecodedAudio decode_flac_file(const std::string& path);
+DecodedAudio decode_flac_file(const std::string& path, size_t max_frames = 0);

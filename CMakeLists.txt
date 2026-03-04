@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 project(elepiano CXX)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # ============================================================
@@ -8,12 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # ============================================================
 find_package(ALSA REQUIRED)
 
-# libFLAC
-find_library(FLAC_LIB NAMES FLAC)
-find_path(FLAC_INCLUDE NAMES FLAC/stream_decoder.h)
-if(NOT FLAC_LIB OR NOT FLAC_INCLUDE)
-    message(FATAL_ERROR "libFLAC が見つかりません。apt install libflac-dev")
-endif()
+# FLAC デコード: dr_flac (ヘッダーオンリー, src/dr_flac.h)
 
 # nlohmann/json (ヘッダーオンリー)
 # システムにある場合: apt install nlohmann-json3-dev
@@ -44,13 +39,11 @@ add_executable(elepiano
 )
 
 target_include_directories(elepiano PRIVATE
-    ${FLAC_INCLUDE}
     src
 )
 
 target_link_libraries(elepiano PRIVATE
     ALSA::ALSA
-    ${FLAC_LIB}
     nlohmann_json::nlohmann_json
     pthread
 )
