@@ -14,12 +14,26 @@
 static constexpr uint8_t XOR_KEY[4] = {0xEF, 0x42, 0x12, 0xBC};
 
 // 暗号化された FLAC フレーム sync (0xFF 0xF8) を探す
+// channels, bps: STREAMINFO から取得した値で偽陽性を排除
 static bool try_find_encrypted_sync(const std::vector<uint8_t>& buf,
                                      size_t search_start, size_t search_end,
+                                     int channels, int bps,
                                      size_t& out_pos, int& out_rot)
 {
+    if (buf.size() < 8) return false;
     if (search_end > buf.size() - 4)
         search_end = buf.size() - 4;
+
+    // FLAC byte 3: [channel_assignment(4) | sample_size(3) | reserved(1)]
+    // reserved bit は 0 でなければならない
+    // channel_assignment: 0-7=独立N+1ch, 8=L/S, 9=R/S, 10=M/S, 11-15=reserved
+    // sample_size: 0=STREAMINFO参照, 1=8bit, 2=12bit, 4=16bit, 5=20bit, 6=24bit
+    int expected_size_code = 0;
+    if (bps == 8)  expected_size_code = 1;
+    if (bps == 12) expected_size_code = 2;
+    if (bps == 16) expected_size_code = 4;
+    if (bps == 20) expected_size_code = 5;
+    if (bps == 24) expected_size_code = 6;
 
     for (size_t pos = search_start; pos < search_end; ++pos) {
         for (int rot = 0; rot < 4; ++rot) {
@@ -28,17 +42,31 @@ static bool try_find_encrypted_sync(const std::vector<uint8_t>& buf,
             if (b0 != 0xFF || (b1 & 0xFE) != 0xF8)
                 continue;
 
-            // ヘッダー妥当性チェック
             uint8_t b2 = buf[pos + 2] ^ XOR_KEY[(rot + 2) & 3];
             int bs_code = (b2 >> 4) & 0x0F;
             int sr_code = b2 & 0x0F;
+            if (bs_code < 1 || sr_code < 1 || sr_code == 15)
+                continue;
 
-            // blocksize / sample_rate が有効なコードであること
-            if (bs_code >= 1 && sr_code >= 1 && sr_code != 15) {
-                out_pos = pos;
-                out_rot = rot;
-                return true;
-            }
+            uint8_t b3 = buf[pos + 3] ^ XOR_KEY[(rot + 3) & 3];
+            int ch_assign  = (b3 >> 4) & 0x0F;
+            int size_code  = (b3 >> 1) & 0x07;
+            int reserved   = b3 & 0x01;
+
+            // reserved bit は 0
+            if (reserved != 0) continue;
+            // channel assignment: 0-10 のみ有効
+            if (ch_assign > 10) continue;
+            // チャンネル数の整合性チェック
+            if (ch_assign <= 7 && (ch_assign + 1) != channels) continue;
+            if (ch_assign >= 8 && channels != 2) continue;
+            // ビット深度の整合性（0=STREAMINFO参照 も許容）
+            if (size_code != 0 && expected_size_code != 0 && size_code != expected_size_code)
+                continue;
+
+            out_pos = pos;
+            out_rot = rot;
+            return true;
         }
     }
     return false;
@@ -149,18 +177,17 @@ DecodedAudio decode_flac_file(const std::string& path, size_t max_frames)
         return result;
     }
 
-    // フレーム0（平文）を確実に飛ばした位置から暗号化 sync を探索する
-    // STREAMINFO の max_frame_size が利用可能ならそれを使い、
-    // なければ保守的に推定（ブロックサイズ × チャンネル × バイト深度 × 2）
-    size_t skip = max_frame_size;
-    if (skip == 0)
-        skip = 4096 * channels * (static_cast<size_t>(result.bits_per_sample) / 8 + 1);
-    size_t search_begin = audio_start + skip + 16;
+    // フレーム0 の sync（平文 0xFFF8）を飛ばし、フレーム1 から暗号化 sync を探索
+    // ヘッダ検証（チャンネル数・ビット深度・reserved bit）で偽陽性を排除するため
+    // フレーム0 内のデータから探索開始しても安全
+    size_t search_begin = audio_start + 6;  // frame 0 sync + header を飛ばす
 
     size_t enc_pos = 0;
     int enc_rot = 0;
-    size_t search_end = search_begin + 200000;
-    if (!try_find_encrypted_sync(buf, search_begin, search_end, enc_pos, enc_rot)) {
+    size_t search_end = buf.size();  // ファイル全体を探索
+    if (!try_find_encrypted_sync(buf, search_begin, search_end,
+                                  static_cast<int>(channels), result.bits_per_sample,
+                                  enc_pos, enc_rot)) {
         // 暗号化されていない（短いサンプル）
         if (result.pcm.empty())
             throw std::runtime_error("FLAC デコード結果が空: " + path);
