@@ -33,8 +33,8 @@ static bool try_find_encrypted_sync(const std::vector<uint8_t>& buf,
             int bs_code = (b2 >> 4) & 0x0F;
             int sr_code = b2 & 0x0F;
 
-            // blocksize=4096(0xC) or similar, sample_rate=44100(0x9)
-            if (bs_code >= 1 && sr_code == 9) {
+            // blocksize / sample_rate が有効なコードであること
+            if (bs_code >= 1 && sr_code >= 1 && sr_code != 15) {
                 out_pos = pos;
                 out_rot = rot;
                 return true;
@@ -94,11 +94,8 @@ static size_t find_audio_start(const std::vector<uint8_t>& buf)
 // ─── メインデコード関数 ────────────────────────────────────────
 DecodedAudio decode_flac_file(const std::string& path, size_t max_frames)
 {
-    // ファイルをメモリに読み込み
-    auto buf = read_file_bytes(path);
-
-    // まず平文として試行
-    drflac* f = drflac_open_memory(buf.data(), buf.size(), nullptr);
+    // ファストパス: ファイルから直接デコード（メモリコピー不要）
+    drflac* f = drflac_open_file(path.c_str(), nullptr);
     if (!f)
         throw std::runtime_error("FLAC open 失敗: " + path);
 
@@ -107,16 +104,17 @@ DecodedAudio decode_flac_file(const std::string& path, size_t max_frames)
     result.num_channels    = static_cast<int>(f->channels);
     result.bits_per_sample = static_cast<int>(f->bitsPerSample);
 
+    const size_t channels = static_cast<size_t>(f->channels);
     drflac_uint64 frames_to_read = f->totalPCMFrameCount;
     if (max_frames > 0 && frames_to_read > max_frames)
         frames_to_read = max_frames;
 
-    result.pcm.resize(static_cast<size_t>(frames_to_read));
+    result.pcm.resize(static_cast<size_t>(frames_to_read) * channels);
     drflac_uint64 decoded = drflac_read_pcm_frames_f32(f, frames_to_read, result.pcm.data());
-    result.pcm.resize(static_cast<size_t>(decoded));
+    result.pcm.resize(static_cast<size_t>(decoded) * channels);
     drflac_close(f);
 
-    // 十分にデコードできた → そのまま返す
+    // 十分にデコードできた → 通常 FLAC、そのまま返す
     if (decoded > 8192) {
         if (result.pcm.empty())
             throw std::runtime_error("FLAC デコード結果が空: " + path);
@@ -124,6 +122,8 @@ DecodedAudio decode_flac_file(const std::string& path, size_t max_frames)
     }
 
     // フレーム0 のみ（≤4096 サンプル）→ SpCA XOR 暗号化の可能性
+    // ここで初めてファイルをメモリに読み込む
+    auto buf = read_file_bytes(path);
     size_t audio_start = find_audio_start(buf);
     if (audio_start == 0) {
         if (result.pcm.empty())
@@ -148,17 +148,18 @@ DecodedAudio decode_flac_file(const std::string& path, size_t max_frames)
 
     f = drflac_open_memory(buf.data(), buf.size(), nullptr);
     if (f) {
+        const size_t xor_channels = static_cast<size_t>(f->channels);
         frames_to_read = f->totalPCMFrameCount;
         if (max_frames > 0 && frames_to_read > max_frames)
             frames_to_read = max_frames;
 
-        std::vector<float> xor_pcm(static_cast<size_t>(frames_to_read));
+        std::vector<float> xor_pcm(static_cast<size_t>(frames_to_read) * xor_channels);
         drflac_uint64 xor_decoded = drflac_read_pcm_frames_f32(f, frames_to_read, xor_pcm.data());
         drflac_close(f);
 
         // XOR 復号で改善した場合のみ採用
         if (xor_decoded > plain_decoded) {
-            xor_pcm.resize(static_cast<size_t>(xor_decoded));
+            xor_pcm.resize(static_cast<size_t>(xor_decoded) * xor_channels);
             result.pcm = std::move(xor_pcm);
         }
     }
