@@ -40,6 +40,11 @@ void MidiInput::run()
     // poll() で 100ms タイムアウトを設けて running_ フラグを確認できるようにする
     // (ブロッキング版だと stop() 後に join() がデッドロックする可能性がある)
     const int npfds = snd_seq_poll_descriptors_count(seq_, POLLIN);
+    if (npfds <= 0 || npfds > 1024) {
+        fprintf(stderr, "[MidiInput] invalid poll descriptor count: %d\n", npfds);
+        running_.store(false);
+        return;
+    }
     std::vector<struct pollfd> pfds(npfds);
     snd_seq_poll_descriptors(seq_, pfds.data(), npfds, POLLIN);
 
