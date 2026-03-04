@@ -13,6 +13,8 @@
 // 10秒 @ 44100Hz = 441000 サンプル → 1615 ファイル × 441000 × 4B ≈ 2.7GB
 static constexpr size_t MAX_SAMPLE_FRAMES = 441000;
 static constexpr size_t FADE_OUT_FRAMES   = 4410;  // 100ms フェードアウト
+static constexpr size_t MAX_JSON_SIZE     = 10 * 1024 * 1024;  // 10MB
+static constexpr size_t MAX_SAMPLE_COUNT  = 10000;
 
 using json = nlohmann::json;
 namespace fs = std::filesystem;
@@ -24,6 +26,12 @@ SampleDB::SampleDB(const std::string& json_path)
 {
     std::ifstream f(json_path);
     if (!f) throw std::runtime_error("samples.json が開けません: " + json_path);
+
+    {
+        auto file_size = fs::file_size(json_path);
+        if (file_size > MAX_JSON_SIZE)
+            throw std::runtime_error("samples.json が大きすぎます: " + std::to_string(file_size) + " bytes");
+    }
 
     json j;
     try {
@@ -39,6 +47,9 @@ SampleDB::SampleDB(const std::string& json_path)
         throw std::runtime_error("samples.json: 'samples' 配列が見つかりません");
     }
 
+    if (j["samples"].size() > MAX_SAMPLE_COUNT)
+        throw std::runtime_error("samples[] が多すぎます: " + std::to_string(j["samples"].size()) + " 件");
+
     for (auto& item : j["samples"]) {
         // 必須フィールドの型チェック
         if (!item.contains("midi_note") || !item["midi_note"].is_number_integer())
@@ -53,7 +64,7 @@ SampleDB::SampleDB(const std::string& json_path)
         sd.velocity_idx = item.value("velocity_idx", 0);
         sd.round_robin  = item.value("round_robin", 1);
 
-        // パストラバーサル防止: relative() が ".." 始まりなら拒否
+        // パストラバーサル防止: relative() が ".." 始まりまたは絶対パスなら拒否
         fs::path file_path = base_dir / item["file"].get<std::string>();
         {
             auto cf = fs::weakly_canonical(file_path);
