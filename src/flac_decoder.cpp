@@ -234,48 +234,43 @@ DecodedAudio decode_flac_file(const std::string& path, size_t max_frames)
     result.pcm.resize(static_cast<size_t>(decoded) * channels);
     drflac_close(f);
 
-    // 全フレーム完全デコード → 通常 FLAC（非暗号化）、そのまま返す
-    // DR_FLAC_NO_CRC でゴミフレームをデコードしても全フレーム一致にはならない
-    if (total_frames > 0 && decoded == frames_to_read) {
-        if (result.pcm.empty())
-            throw std::runtime_error("FLAC デコード結果が空: " + path);
-        return result;
-    }
-
-    // フレーム0 のみ（≤4096 サンプル）→ SpCA XOR 暗号化の可能性
-    // ここで初めてファイルをメモリに読み込む
+    // DR_FLAC_NO_CRC は暗号化フレームもデコード「成功」として返すため、
+    // decoded == frames_to_read でも暗号化されている可能性がある。
+    // 常にファイルを読み込んで暗号化チェックを行う。
     auto buf = read_file_bytes(path);
     size_t max_frame_size = 0;
     size_t audio_start = find_audio_start(buf, max_frame_size);
     if (audio_start == 0) {
+        // FLAC ヘッダなし → 最初のデコード結果をそのまま返す
         if (result.pcm.empty())
             throw std::runtime_error("FLAC デコード結果が空: " + path);
         return result;
     }
 
-    // フレーム0 の sync（平文 0xFFF8）を飛ばし、フレーム1 から暗号化 sync を探索
-    // ヘッダ検証（チャンネル数・ビット深度・reserved bit）で偽陽性を排除するため
-    // フレーム0 内のデータから探索開始しても安全
-    size_t search_begin = audio_start + 6;  // frame 0 sync + header を飛ばす
-
+    // フレーム0 の sync（平文 0xFFF8）を飛ばし、暗号化 sync を探索
+    // CRC-8 検証で偽陽性を完全排除
+    size_t search_begin = audio_start + 6;
     size_t enc_pos = 0;
     int enc_rot = 0;
-    size_t search_end = buf.size();  // ファイル全体を探索
-    if (!try_find_encrypted_sync(buf, search_begin, search_end,
+    if (!try_find_encrypted_sync(buf, search_begin, buf.size(),
                                   static_cast<int>(channels), result.bits_per_sample,
                                   enc_pos, enc_rot)) {
-        // 暗号化されていない（短いサンプル）
+        // 暗号化されていない → 最初のデコード結果を返す
         if (result.pcm.empty())
             throw std::runtime_error("FLAC デコード結果が空: " + path);
         return result;
     }
 
-    // XOR 復号してリトライ
-    drflac_uint64 plain_decoded = decoded;
+    // CRC-8 検証済みの暗号化 sync → SpCA 暗号化ファイル確定
+    // XOR 復号して全フレームを再デコード
     apply_xor(buf, enc_pos, enc_rot);
 
     f = drflac_open_memory(buf.data(), buf.size(), nullptr);
     if (f) {
+        result.sample_rate     = static_cast<int>(f->sampleRate);
+        result.num_channels    = static_cast<int>(f->channels);
+        result.bits_per_sample = static_cast<int>(f->bitsPerSample);
+
         const size_t xor_channels = static_cast<size_t>(f->channels);
         frames_to_read = f->totalPCMFrameCount;
         if (frames_to_read == 0)
@@ -283,15 +278,10 @@ DecodedAudio decode_flac_file(const std::string& path, size_t max_frames)
         else if (max_frames > 0 && frames_to_read > max_frames)
             frames_to_read = max_frames;
 
-        std::vector<float> xor_pcm(static_cast<size_t>(frames_to_read) * xor_channels);
-        drflac_uint64 xor_decoded = drflac_read_pcm_frames_f32(f, frames_to_read, xor_pcm.data());
+        result.pcm.resize(static_cast<size_t>(frames_to_read) * xor_channels);
+        drflac_uint64 xor_decoded = drflac_read_pcm_frames_f32(f, frames_to_read, result.pcm.data());
+        result.pcm.resize(static_cast<size_t>(xor_decoded) * xor_channels);
         drflac_close(f);
-
-        // XOR 復号で改善した場合のみ採用
-        if (xor_decoded > plain_decoded) {
-            xor_pcm.resize(static_cast<size_t>(xor_decoded) * xor_channels);
-            result.pcm = std::move(xor_pcm);
-        }
     }
 
     if (result.pcm.empty())
