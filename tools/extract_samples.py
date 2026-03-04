@@ -4,7 +4,7 @@ extract_samples.py - SpCA (.db) からサンプルを抽出・デコードする
 
 対象:
   pattern1      : Rhodes - Classic Pattern 1 サンプル (38ファイル, XOR暗号化なし)
-  rhodes-attack : Rhodes - Classic CLR attack サンプル (1615ファイル, XOR暗号化なし)
+  rhodes-attack : Rhodes - Classic CLR attack サンプル (1615ファイル, XOR暗号化あり)
   sustain       : Rhodes - Classic Sustain サンプル  (1615ファイル, XOR暗号化あり)
   wurl200a      : Wurlitzer 200A アタックサンプル    (1024ファイル, XOR暗号化なし)
   vvep          : Vintage Vibe EP アタックサンプル   (1539ファイル, XOR暗号化なし)
@@ -154,13 +154,17 @@ def _find_sync(data: bytes, start: int = 0) -> int:
 
 
 def _find_encrypted_frame1(data: bytes, search_start: int,
-                            max_scan: int = 200_000) -> tuple[int, int]:
+                            max_scan: int = 200_000,
+                            expected_sr_code: int = 9) -> tuple[int, int]:
     """
     XOR 暗号化された FLAC フレーム同期ワードを探す（Sustain サンプル用）。
 
     data[pos] ^ XOR_BASE_KEY[rot] == 0xFF かつ
     data[pos+1] ^ XOR_BASE_KEY[(rot+1)%4] が 0xF8 または 0xF9
     になる (pos, rot) を返す。見つからなければ (-1, -1)。
+
+    expected_sr_code でサンプルレートコードを絞り込むことで
+    フレーム0 内の偽 sync 誤検出を防ぐ（44100Hz → sr_code=9）。
     """
     search_end = min(len(data) - 4, search_start + max_scan)
     for pos in range(search_start, search_end):
@@ -168,21 +172,11 @@ def _find_encrypted_frame1(data: bytes, search_start: int,
             b0 = data[pos]     ^ XOR_BASE_KEY[rot]
             b1 = data[pos + 1] ^ XOR_BASE_KEY[(rot + 1) % 4]
             if b0 == 0xFF and (b1 & 0xFE) == 0xF8:
-                return pos, rot
+                b2 = data[pos + 2] ^ XOR_BASE_KEY[(rot + 2) % 4]
+                sr_code = b2 & 0x0F
+                if sr_code == expected_sr_code:
+                    return pos, rot
     return -1, -1
-
-
-def _crc8(data: bytes) -> int:
-    """CRC-8 (FLAC フレームヘッダー用)"""
-    crc = 0
-    for b in data:
-        crc ^= b
-        for _ in range(8):
-            if crc & 0x80:
-                crc = ((crc << 1) ^ 0x07) & 0xFF
-            else:
-                crc = (crc << 1) & 0xFF
-    return crc
 
 
 def _find_frame_header_size(data: bytes, pos: int) -> int:
@@ -245,7 +239,7 @@ def decode_spca(spca_bytes: bytes, encrypted: bool = False) -> bytes:
     result = bytearray(FLAC_MAGIC + spca_bytes[4:])
 
     if not encrypted:
-        # Pattern 1: XOR なし、そのまま返す
+        # dr_flac (DR_FLAC_NO_CRC) は CRC 不要 — CRC修復は偽sync位置を破損させるためスキップ
         return bytes(result)
 
     # --- Sustain: XOR 暗号化フレーム1を探して復号 ---
@@ -283,6 +277,7 @@ def decode_spca(spca_bytes: bytes, encrypted: bool = False) -> bytes:
     seg = bytes(result[enc_pos:])
     result[enc_pos:] = bytes(b ^ key[i % 4] for i, b in enumerate(seg))
 
+    # dr_flac (DR_FLAC_NO_CRC) は CRC 不要 — CRC修復は偽sync位置を破損させるためスキップ
     return bytes(result)
 
 
@@ -460,7 +455,7 @@ def extract(db_path: Path, output_dir: Path, mode: str = "pattern1") -> None:
         label     = "Pattern 1"
     elif mode == "rhodes-attack":
         parse_fn  = parse_sustain_name
-        encrypted = False
+        encrypted = True
         label     = "Rhodes Attack"
     elif mode == "sustain":
         parse_fn  = parse_sustain_name
