@@ -76,7 +76,55 @@ SampleDB::SampleDB(const std::string& json_path)
         sd.file_path   = file_path.string();
         sd.sample_rate = sample_rate_;
 
-        auto audio     = decode_flac_file(sd.file_path, MAX_SAMPLE_FRAMES);
+        DecodedAudio audio;
+        try {
+            audio = decode_flac_file(sd.file_path, MAX_SAMPLE_FRAMES);
+        } catch (const std::exception& e) {
+            fprintf(stderr, "[SampleDB] SKIP %s: %s\n", sd.file_path.c_str(), e.what());
+            continue;
+        }
+
+        // ── 健全性チェック ──────────────────────────────────────────
+        // (1) 極端に短いデコード結果: totalPCMFrameCount が十分大きいのに
+        //     デコード結果がごく短い場合は壊れたファイルとみなす
+        //     (decode_flac_file 内で取得できないため、ここでは 44 フレーム未満を閾値とする)
+        if (audio.pcm.empty()) {
+            fprintf(stderr, "[SampleDB] SKIP %s: デコード結果が空\n", sd.file_path.c_str());
+            continue;
+        }
+        if (audio.pcm.size() < 44) {
+            fprintf(stderr, "[SampleDB] SKIP %s: デコード結果が極端に短い (%zu サンプル)\n",
+                    sd.file_path.c_str(), audio.pcm.size());
+            continue;
+        }
+
+        // (2) 異常値検出: drflac_read_pcm_frames_f32 は -1.0〜+1.0 に正規化するはずなので
+        //     大幅に超える値（例: ±2.0 超）はデコード異常とみなす
+        {
+            bool has_abnormal = false;
+            for (float v : audio.pcm) {
+                if (v < -2.0f || v > 2.0f) { has_abnormal = true; break; }
+            }
+            if (has_abnormal) {
+                fprintf(stderr, "[SampleDB] SKIP %s: 異常な PCM 値を検出\n", sd.file_path.c_str());
+                continue;
+            }
+        }
+
+        // (3) 無音/DC オフセット検出: 全サンプルが同じ値（またはほぼ同じ）なら壊れている
+        {
+            float first = audio.pcm[0];
+            bool all_same = true;
+            for (float v : audio.pcm) {
+                if (std::fabs(v - first) > 1e-6f) { all_same = false; break; }
+            }
+            if (all_same) {
+                fprintf(stderr, "[SampleDB] SKIP %s: 全サンプルが同一値 (%.6f)\n",
+                        sd.file_path.c_str(), static_cast<double>(first));
+                continue;
+            }
+        }
+        // ─────────────────────────────────────────────────────────────
 
         // ステレオ → モノ ダウンミックス（Voice はモノ前提）
         if (audio.num_channels >= 2) {
