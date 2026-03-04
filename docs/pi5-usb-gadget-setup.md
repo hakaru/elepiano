@@ -1,14 +1,18 @@
-# Pi 5 USB Gadget セットアップ手順
+# Pi 5 セットアップ手順
 
 > 作成日: 2026-03-03
+> 更新日: 2026-03-04
 > 対象: Raspberry Pi 5 + Pi OS Lite 64-bit (Bookworm) + Mac ホスト
 
 ---
 
 ## 概要
 
-Pi 5 を USB-C 経由で Mac に接続し、`dwc2` USB gadget として動作させる手順。
-SSH over USB (`usb0` インターフェース) を最初のゴールとする。
+Pi 5 を Wi-Fi 経由で Mac に接続し、SSH でログインする手順。
+elepiano エンジンのビルド・実行環境として使用する。
+
+> **注意:** Pi 5 の USB-C ポートは電源専用。Pi Zero/4 で使える dwc2 USB gadget モードは
+> Pi 5 では利用不可（RP1 チップ経由 xHCI = ホストモード専用）。
 
 ---
 
@@ -75,89 +79,47 @@ enable_ssh: true
 
 ```yaml
 version: 2
-ethernets:
-  usb0:
+wifis:
+  wlan0:
     dhcp4: true
-    optional: true
+    access-points:
+      "YOUR_SSID":
+        password: "YOUR_PASSWORD"
 ```
 
 ---
 
-## 3. USB Gadget (dwc2) 設定
-
-SD カードの `bootfs` パーティションを Mac でマウントして編集する。
-
-### `/Volumes/bootfs/config.txt` に追記
-
-```ini
-# USB gadget モード (Pi 5 USB-C ポート)
-dtoverlay=dwc2,dr_mode=peripheral
-```
-
-### `/Volumes/bootfs/cmdline.txt` に `modules-load=dwc2` を追記
-
-```
-# 既存の行の末尾（改行なし）に追加
-... rootwait modules-load=dwc2
-```
-
-> **確認ポイント:** `cmdline.txt` は1行のみ。改行を入れると起動しない。
-
----
-
-## 4. Mac 側の設定
+## 3. Mac 側の設定
 
 ### /etc/hosts (オプション)
 
 ```
-192.168.x.x   hakarupiano.local hakarupiano
+192.168.3.193   hakarupiano
 ```
 
-USB 経由の場合、Pi は `usb0` に DHCP で IP を取得する。
-`hakarupiano.local` は mDNS で解決される。
+Pi は Wi-Fi (`wlan0`) で DHCP から IP を取得する。
+ルーター側で IP 固定するか、mDNS (`hakarupiano.local`) で接続する。
 
 ---
 
-## 5. 接続確認手順
-
-### Pi 起動後の確認
+## 4. 接続確認手順
 
 ```bash
-# Mac から Pi が USB デバイスとして見えているか
-system_profiler SPUSBDataType | grep -A5 "Raspberry"
-
-# ARP 確認
-arp -a | grep en5   # en5 = USB gadget ネットワークインターフェース
-
 # ping
 ping hakarupiano.local
 
 # SSH
-ssh hakaru@hakarupiano.local
+ssh hakaru@192.168.3.193
 ```
 
 ---
 
 ## トラブルシューティング
 
-### Pi が USB デバイスとして Mac に認識されない
-
-**症状:**
-- `system_profiler SPUSBDataType` に Raspberry Pi のエントリなし
-- `arp -a` で ARP incomplete
-
-**原因と対処:**
-
-| 原因 | 対処 |
-|------|------|
-| `config.txt` に `dtoverlay=dwc2` がない | 上記 §3 を適用 |
-| `cmdline.txt` に `modules-load=dwc2` がない | 上記 §3 を適用 |
-| USB-C ケーブルがデータ転送非対応 | データ対応ケーブルに交換 |
-
 ### SSH 接続できない (Tailscale 環境)
 
 **症状:**
-- `tcpdump` で SYN パケットが `en5` に出ていない
+- `tcpdump` で SYN パケットが出ていない
 - `arp -a` で ARP incomplete のまま
 
 **原因:**
@@ -192,8 +154,8 @@ systemextensionsctl list | grep tailscale
 
 ## 次のステップ
 
-- [ ] SSH 接続確認 (`ssh hakaru@hakarupiano.local`)
-- [ ] 依存ライブラリインストール確認 (`libasound2-dev`, `libflac-dev` など)
-- [ ] elepiano ソース転送 & ビルド
-- [ ] MIDI 接続テスト (PiSound または USB MIDI)
-- [ ] MIDI 2.0 gadget 対応 → [`midi2-pe-setup.md`](./midi2-pe-setup.md) 参照
+- [x] SSH 接続確認 (`ssh hakaru@192.168.3.193`)
+- [x] 依存ライブラリインストール確認 (`libasound2-dev`, `libflac-dev`, `nlohmann-json3-dev`, `cmake`)
+- [x] elepiano ソース転送 & ビルド (GCC 14 対応: コンストラクタオーバーロード化)
+- [x] KORG Keystage 接続 (USB MIDI + USB Audio: `hw:Keystage`)
+- [x] MIDI 接続テスト — オルガンモードで音出し確認
