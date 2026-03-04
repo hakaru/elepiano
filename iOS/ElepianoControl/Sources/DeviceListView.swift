@@ -3,6 +3,7 @@ import MIDIKitIO
 
 struct DeviceListView: View {
     @Environment(AppState.self) private var state
+    @State private var showingBLEPairing = false
 
     var body: some View {
         NavigationStack {
@@ -58,7 +59,7 @@ struct DeviceListView: View {
                                     Image(systemName: "pianokeys")
                                     Text(endpoint.displayName)
                                     Spacer()
-                                    if state.connectedDeviceName == endpoint.displayName {
+                                    if state.connectedEndpointID == endpoint.uniqueID {
                                         Image(systemName: "checkmark")
                                             .foregroundStyle(.blue)
                                     }
@@ -72,6 +73,11 @@ struct DeviceListView: View {
                         Text("Devices")
                         Spacer()
                         Button {
+                            showingBLEPairing = true
+                        } label: {
+                            Image(systemName: "dot.radiowaves.left.and.right")
+                        }
+                        Button {
                             state.refreshInputs()
                         } label: {
                             Image(systemName: "arrow.clockwise")
@@ -80,6 +86,20 @@ struct DeviceListView: View {
                 }
             }
             .navigationTitle("elepiano")
+            .sheet(isPresented: $showingBLEPairing, onDismiss: {
+                state.refreshInputs()
+            }) {
+                NavigationStack {
+                    BLEMIDIView()
+                        .navigationTitle("BLE-MIDI")
+                        .navigationBarTitleDisplayMode(.inline)
+                        .toolbar {
+                            ToolbarItem(placement: .confirmationAction) {
+                                Button("Done") { showingBLEPairing = false }
+                            }
+                        }
+                }
+            }
         }
     }
 }

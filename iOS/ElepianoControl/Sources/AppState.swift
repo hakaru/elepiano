@@ -1,7 +1,7 @@
 import Foundation
 import MIDIKitIO
 
-@Observable
+@MainActor @Observable
 final class AppState {
     let midiManager = MIDIManager(
         clientName: "ElepianoControl",
@@ -11,8 +11,10 @@ final class AppState {
 
     // MIDI 接続状態
     private(set) var isConnected = false
+    private(set) var connectedEndpointID: MIDIIdentifier?
     private(set) var connectedDeviceName: String?
     private(set) var availableInputs: [MIDIInputEndpoint] = []
+    private var started = false
 
     // 現在のモード
     var mode: EngineMode = .piano
@@ -49,6 +51,8 @@ final class AppState {
     private static let connectionTag = "ElepianoOutput"
 
     func start() {
+        guard !started else { return }
+        started = true
         do {
             try midiManager.start()
         } catch {
@@ -72,6 +76,7 @@ final class AppState {
                 tag: Self.connectionTag
             )
             isConnected = true
+            connectedEndpointID = endpoint.uniqueID
             connectedDeviceName = endpoint.displayName
         } catch {
             print("[MIDI] connect failed: \(error)")
@@ -81,6 +86,7 @@ final class AppState {
     func disconnect() {
         midiManager.remove(.outputConnection, .withTag(Self.connectionTag))
         isConnected = false
+        connectedEndpointID = nil
         connectedDeviceName = nil
     }
 
@@ -101,19 +107,19 @@ final class AppState {
     func updateFX(cc: Int, value: Int) {
         let clamped = max(0, min(127, value))
         fxValues[cc] = clamped
-        sendCC(cc: UInt7(cc), value: UInt7(clamped))
+        guard let ccNum = UInt7(exactly: cc),
+              let ccVal = UInt7(exactly: clamped) else { return }
+        sendCC(cc: ccNum, value: ccVal)
     }
 
     // MARK: - Drawbar 送信
 
     func updateDrawbar(section: Int, index: Int, value: Int) {
-        guard section < 3, index < 9 else { return }
+        guard section < 3, index < 9,
+              let channel = UInt4(exactly: section),
+              let ccNum = UInt7(exactly: 12 + index) else { return }
         let clamped = max(0, min(8, value))
         drawbars[section][index] = clamped
-
-        let channel = UInt4(section)
-        let ccNum = UInt7(12 + index)
-        // drawbar 0-8 → CC 0-127
         let ccVal = UInt7(clamped * 127 / 8)
         sendCC(channel: channel, cc: ccNum, value: ccVal)
     }
@@ -145,7 +151,7 @@ final class AppState {
 
         // 全パラメータを送信
         for (cc, val) in fxValues {
-            sendCC(cc: UInt7(cc), value: UInt7(val))
+            updateFX(cc: cc, value: val)
         }
         for section in 0..<3 {
             for idx in 0..<9 {
