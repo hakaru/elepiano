@@ -13,6 +13,78 @@
 // フレーム0 は平文なので、そのまま読むと最初の4096サンプルしかデコードできない。
 static constexpr uint8_t XOR_KEY[4] = {0xEF, 0x42, 0x12, 0xBC};
 
+// FLAC CRC-8 (polynomial x^8 + x^2 + x^1 + x^0)
+static uint8_t flac_crc8(const uint8_t* data, size_t len)
+{
+    uint8_t crc = 0;
+    for (size_t i = 0; i < len; ++i) {
+        crc ^= data[i];
+        for (int j = 0; j < 8; ++j)
+            crc = (crc & 0x80) ? (crc << 1) ^ 0x07 : (crc << 1);
+    }
+    return crc;
+}
+
+// XOR 復号した FLAC フレームヘッダの CRC-8 を検証
+// フレームヘッダ: sync(2) + byte2(1) + byte3(1) + UTF-8(1-7) + [blocksize] + [samplerate] + CRC-8(1)
+static bool verify_header_crc8(const std::vector<uint8_t>& buf,
+                                size_t pos, int rot, int bs_code, int sr_code)
+{
+    if (pos + 16 > buf.size()) return false;
+
+    // XOR 復号しながらヘッダバイトを収集
+    uint8_t hdr[16];
+    for (int i = 0; i < 4; ++i)
+        hdr[i] = buf[pos + i] ^ XOR_KEY[(rot + i) & 3];
+    size_t hdr_len = 4;
+
+    // UTF-8 coded frame/sample number（可変長）
+    uint8_t lead = buf[pos + 4] ^ XOR_KEY[(rot + 4) & 3];
+    hdr[hdr_len++] = lead;
+    int extra = 0;
+    if      ((lead & 0x80) == 0x00) extra = 0;
+    else if ((lead & 0xE0) == 0xC0) extra = 1;
+    else if ((lead & 0xF0) == 0xE0) extra = 2;
+    else if ((lead & 0xF8) == 0xF0) extra = 3;
+    else if ((lead & 0xFC) == 0xF8) extra = 4;
+    else if ((lead & 0xFE) == 0xFC) extra = 5;
+    else if (lead == 0xFE)          extra = 6;
+    else return false;
+
+    if (pos + hdr_len + extra + 3 > buf.size()) return false;
+    for (int i = 0; i < extra; ++i) {
+        hdr[hdr_len] = buf[pos + hdr_len] ^ XOR_KEY[(rot + hdr_len) & 3];
+        if ((hdr[hdr_len] & 0xC0) != 0x80) return false;  // UTF-8 continuation
+        hdr_len++;
+    }
+
+    // オプショナルな blocksize（bs_code 6=8bit, 7=16bit）
+    if (bs_code == 6) {
+        hdr[hdr_len] = buf[pos + hdr_len] ^ XOR_KEY[(rot + hdr_len) & 3];
+        hdr_len++;
+    } else if (bs_code == 7) {
+        hdr[hdr_len] = buf[pos + hdr_len] ^ XOR_KEY[(rot + hdr_len) & 3];
+        hdr_len++;
+        hdr[hdr_len] = buf[pos + hdr_len] ^ XOR_KEY[(rot + hdr_len) & 3];
+        hdr_len++;
+    }
+    // オプショナルな sample rate（sr_code 12=8bit, 13,14=16bit）
+    if (sr_code == 12) {
+        hdr[hdr_len] = buf[pos + hdr_len] ^ XOR_KEY[(rot + hdr_len) & 3];
+        hdr_len++;
+    } else if (sr_code == 13 || sr_code == 14) {
+        hdr[hdr_len] = buf[pos + hdr_len] ^ XOR_KEY[(rot + hdr_len) & 3];
+        hdr_len++;
+        hdr[hdr_len] = buf[pos + hdr_len] ^ XOR_KEY[(rot + hdr_len) & 3];
+        hdr_len++;
+    }
+
+    // CRC-8 バイト
+    if (pos + hdr_len >= buf.size()) return false;
+    uint8_t crc_byte = buf[pos + hdr_len] ^ XOR_KEY[(rot + hdr_len) & 3];
+    return flac_crc8(hdr, hdr_len) == crc_byte;
+}
+
 // 暗号化された FLAC フレーム sync (0xFF 0xF8) を探す
 // channels, bps: STREAMINFO から取得した値で偽陽性を排除
 static bool try_find_encrypted_sync(const std::vector<uint8_t>& buf,
@@ -62,6 +134,10 @@ static bool try_find_encrypted_sync(const std::vector<uint8_t>& buf,
             if (ch_assign >= 8 && channels != 2) continue;
             // ビット深度の整合性（0=STREAMINFO参照 も許容）
             if (size_code != 0 && expected_size_code != 0 && size_code != expected_size_code)
+                continue;
+
+            // CRC-8 でフレームヘッダの正当性を確定
+            if (!verify_header_crc8(buf, pos, rot, bs_code, sr_code))
                 continue;
 
             out_pos = pos;
