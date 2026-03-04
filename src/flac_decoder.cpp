@@ -130,11 +130,9 @@ DecodedAudio decode_flac_file(const std::string& path, size_t max_frames)
         return result;
     }
 
-    // frame 0 は平文。STREAMINFO の max_blocksize (4096 typ) × チャンネル × ビット深度
-    // から frame 0 のおおよそのサイズを見積もり、その後ろから暗号化フレームを探す
-    // (frame 0 圧縮データ内の偽マッチを避けるため audio_start + 100 では不十分)
-    size_t frame0_min_size = 4096;  // 最小でもブロックサイズ分のバイトは超える
-    size_t search_begin = audio_start + frame0_min_size;
+    // frame 0 は平文。CRC 検証が有効なので偽マッチは CRC で排除される。
+    // frame 0 のヘッダー＋最低限のデータを飛ばした位置から探索開始
+    size_t search_begin = audio_start + 100;
 
     size_t enc_pos = 0;
     int enc_rot = 0;
@@ -161,9 +159,9 @@ DecodedAudio decode_flac_file(const std::string& path, size_t max_frames)
         drflac_uint64 xor_decoded = drflac_read_pcm_frames_f32(f, frames_to_read, xor_pcm.data());
         drflac_close(f);
 
-        // XOR 復号で十分な量をデコードできた場合のみ採用
-        // (部分デコードのノイズ混じりデータを避ける)
-        if (xor_decoded > plain_decoded && xor_decoded >= frames_to_read / 2) {
+        // XOR 復号で改善した場合のみ採用
+        // (CRC 検証が有効なので、デコードされたフレームは全て正常)
+        if (xor_decoded > plain_decoded) {
             xor_pcm.resize(static_cast<size_t>(xor_decoded) * xor_channels);
             result.pcm = std::move(xor_pcm);
         }
