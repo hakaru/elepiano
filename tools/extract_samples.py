@@ -23,6 +23,7 @@ import json
 import re
 import subprocess
 import sys
+from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 from dataclasses import dataclass, field
 
@@ -272,12 +273,11 @@ def decode_spca(spca_bytes: bytes, encrypted: bool = False) -> bytes:
         # フレームが1つのみ（または解析不能）
         return bytes(result)
 
-    # フレーム1以降を XOR 復号
+    # フレーム1以降を XOR 復号（インプレース）
     key = XOR_BASE_KEY[enc_rot:] + XOR_BASE_KEY[:enc_rot]
-    seg = bytes(result[enc_pos:])
-    result[enc_pos:] = bytes(b ^ key[i % 4] for i, b in enumerate(seg))
+    for i in range(enc_pos, len(result)):
+        result[i] ^= key[(i - enc_pos) % 4]
 
-    # dr_flac (DR_FLAC_NO_CRC) は CRC 不要 — CRC修復は偽sync位置を破損させるためスキップ
     return bytes(result)
 
 
@@ -435,6 +435,32 @@ def build_vel_max_ranges(vel_max_values: list[int]) -> dict[int, tuple[int, int]
 
 
 # ============================================================
+# 並列ワーカー
+# ============================================================
+def _process_entry(args: tuple) -> dict:
+    """
+    1エントリを decode して FLAC ファイルに書き出す（ProcessPoolExecutor 用）。
+    戻り値: {"ok": True, ...} or {"ok": False, "name": ..., "error": ...}
+    """
+    spca_bytes, flac_path_str, encrypted, midi_note, velocity_idx, round_robin, vel_min, vel_max = args
+    flac_path = Path(flac_path_str)
+    try:
+        flac_bytes = decode_spca(spca_bytes, encrypted=encrypted)
+        flac_path.write_bytes(flac_bytes)
+        return {
+            "ok": True,
+            "midi_note":    midi_note,
+            "velocity_min": vel_min,
+            "velocity_max": vel_max,
+            "velocity_idx": velocity_idx,
+            "round_robin":  round_robin,
+            "file":         f"audio/{flac_path.name}",
+        }
+    except Exception as e:
+        return {"ok": False, "name": flac_path.name, "error": str(e)}
+
+
+# ============================================================
 # メイン処理
 # ============================================================
 def extract(db_path: Path, output_dir: Path, mode: str = "pattern1") -> None:
@@ -521,41 +547,35 @@ def extract(db_path: Path, output_dir: Path, mode: str = "pattern1") -> None:
     audio_dir = output_dir / "audio"
     audio_dir.mkdir(parents=True, exist_ok=True)
 
-    samples_info = []
-    errors = []
-
-    for i, meta in enumerate(metas):
+    # ワーカー引数リストを構築（db_bytes のスライスをここで切り出す）
+    tasks = []
+    for meta in metas:
         entry = meta.file_entry
         abs_offset = data_start + entry.offset
         spca_bytes = db_bytes[abs_offset: abs_offset + entry.size]
-
         out_stem  = f"rr{meta.round_robin}_vel{meta.velocity_idx:03d}_n{meta.midi_note:03d}"
         flac_path = audio_dir / f"{out_stem}.flac"
+        if use_explicit_range:
+            vel_min = meta.vel_min_explicit
+            vel_max = meta.vel_max_explicit
+        else:
+            vel_min, vel_max = vel_ranges[meta.velocity_idx]
+        tasks.append((spca_bytes, str(flac_path), encrypted,
+                      meta.midi_note, meta.velocity_idx, meta.round_robin,
+                      vel_min, vel_max))
 
-        print(f"[{i+1:4d}/{len(metas)}] {entry.name} → {flac_path.name}", end=" ", flush=True)
+    samples_info = []
+    errors = []
+    log_interval = max(1, len(tasks) // 20)  # 5% ごとにログ出力
 
-        try:
-            flac_bytes = decode_spca(spca_bytes, encrypted=encrypted)
-            flac_path.write_bytes(flac_bytes)
-
-            if use_explicit_range:
-                vel_min = meta.vel_min_explicit
-                vel_max = meta.vel_max_explicit
+    with ProcessPoolExecutor() as pool:
+        for i, result in enumerate(pool.map(_process_entry, tasks)):
+            if (i + 1) % log_interval == 0 or i + 1 == len(tasks):
+                print(f"[{i+1:4d}/{len(tasks)}] {'OK' if result['ok'] else 'ERROR'}", flush=True)
+            if result["ok"]:
+                samples_info.append({k: v for k, v in result.items() if k != "ok"})
             else:
-                vel_min, vel_max = vel_ranges[meta.velocity_idx]
-
-            samples_info.append({
-                "midi_note":    meta.midi_note,
-                "velocity_min": vel_min,
-                "velocity_max": vel_max,
-                "velocity_idx": meta.velocity_idx,
-                "round_robin":  meta.round_robin,
-                "file":         f"audio/{flac_path.name}"
-            })
-            print("OK")
-        except Exception as e:
-            print(f"ERROR: {e}")
-            errors.append((entry.name, str(e)))
+                errors.append((result["name"], result["error"]))
 
     # samples.json 出力
     instrument_name = {
