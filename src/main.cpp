@@ -3,6 +3,7 @@
 #include "organ_engine.hpp"
 #include "midi_input.hpp"
 #include "audio_output.hpp"
+#include "fx_chain.hpp"
 #include <thread>
 #include <csignal>
 #include <cstdio>
@@ -144,14 +145,18 @@ static int run_piano(const char* json_path,
 
     AudioOutput audio(acfg);
     SynthEngine synth(db, acfg.sample_rate, release_db.get());
+    FxChain fx(acfg.sample_rate);
 
     audio.set_callback([&](float* buf, int frames) {
         synth.mix(buf, frames);
+        fx.process(buf, frames);
     });
 
     MidiInput midi("elepiano");
     midi.set_callback([&](const MidiEvent& ev) {
         log_midi_event(ev);
+        if (ev.type == MidiEvent::Type::CC)
+            fx.set_param(ev.note, ev.velocity);
         synth.push_event(ev);
     });
 
