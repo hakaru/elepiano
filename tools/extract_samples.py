@@ -155,8 +155,7 @@ def _find_sync(data: bytes, start: int = 0) -> int:
 
 
 def _find_encrypted_frame1(data: bytes, search_start: int,
-                            max_scan: int = 200_000,
-                            expected_sr_code: int = 9) -> tuple[int, int]:
+                            max_scan: int = 200_000) -> tuple[int, int]:
     """
     XOR 暗号化された FLAC フレーム同期ワードを探す（Sustain サンプル用）。
 
@@ -164,8 +163,7 @@ def _find_encrypted_frame1(data: bytes, search_start: int,
     data[pos+1] ^ XOR_BASE_KEY[(rot+1)%4] が 0xF8 または 0xF9
     になる (pos, rot) を返す。見つからなければ (-1, -1)。
 
-    expected_sr_code でサンプルレートコードを絞り込むことで
-    フレーム0 内の偽 sync 誤検出を防ぐ（44100Hz → sr_code=9）。
+    bs_code >= 1 かつ sr_code が有効 (1-14) であればマッチとする。
     """
     search_end = min(len(data) - 4, search_start + max_scan)
     for pos in range(search_start, search_end):
@@ -174,8 +172,9 @@ def _find_encrypted_frame1(data: bytes, search_start: int,
             b1 = data[pos + 1] ^ XOR_BASE_KEY[(rot + 1) % 4]
             if b0 == 0xFF and (b1 & 0xFE) == 0xF8:
                 b2 = data[pos + 2] ^ XOR_BASE_KEY[(rot + 2) % 4]
+                bs_code = (b2 >> 4) & 0x0F
                 sr_code = b2 & 0x0F
-                if sr_code == expected_sr_code:
+                if bs_code >= 1 and sr_code >= 1 and sr_code != 15:
                     return pos, rot
     return -1, -1
 
