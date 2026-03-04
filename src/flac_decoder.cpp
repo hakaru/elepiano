@@ -1,4 +1,5 @@
 #define DR_FLAC_IMPLEMENTATION
+#define DR_FLAC_NO_CRC
 #include "dr_flac.h"
 
 #include "flac_decoder.hpp"
@@ -104,7 +105,8 @@ DecodedAudio decode_flac_file(const std::string& path, size_t max_frames)
     result.bits_per_sample = static_cast<int>(f->bitsPerSample);
 
     const size_t channels = static_cast<size_t>(f->channels);
-    drflac_uint64 frames_to_read = f->totalPCMFrameCount;
+    const drflac_uint64 total_frames = f->totalPCMFrameCount;
+    drflac_uint64 frames_to_read = total_frames;
     if (max_frames > 0 && frames_to_read > max_frames)
         frames_to_read = max_frames;
 
@@ -113,8 +115,10 @@ DecodedAudio decode_flac_file(const std::string& path, size_t max_frames)
     result.pcm.resize(static_cast<size_t>(decoded) * channels);
     drflac_close(f);
 
-    // 十分にデコードできた → 通常 FLAC、そのまま返す
-    if (decoded > 8192) {
+    // デコード数が期待値とほぼ一致 → 通常の FLAC（非暗号化）
+    // DR_FLAC_NO_CRC では暗号化データの偽 sync でゴミフレームをデコードし
+    // decoded > 8192 になりうるため、totalPCMFrameCount と比較して判定する
+    if (decoded >= frames_to_read * 9 / 10) {
         if (result.pcm.empty())
             throw std::runtime_error("FLAC デコード結果が空: " + path);
         return result;
@@ -130,7 +134,6 @@ DecodedAudio decode_flac_file(const std::string& path, size_t max_frames)
         return result;
     }
 
-    // frame 0 は平文。CRC 検証が有効なので偽マッチは CRC で排除される。
     // frame 0 のヘッダー＋最低限のデータを飛ばした位置から探索開始
     size_t search_begin = audio_start + 100;
 
@@ -160,7 +163,6 @@ DecodedAudio decode_flac_file(const std::string& path, size_t max_frames)
         drflac_close(f);
 
         // XOR 復号で改善した場合のみ採用
-        // (CRC 検証が有効なので、デコードされたフレームは全て正常)
         if (xor_decoded > plain_decoded) {
             xor_pcm.resize(static_cast<size_t>(xor_decoded) * xor_channels);
             result.pcm = std::move(xor_pcm);
