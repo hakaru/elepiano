@@ -11,14 +11,15 @@ public:
     using FillCallback = std::function<void(float* buf, int frames)>;
 
     struct Config {
-        std::string device      = "hw:pisound";
+        std::string device      = "default";
         int         sample_rate = 44100;
         int         channels    = 2;
         int         period_size = 256;
         int         periods     = 4;
     };
 
-    explicit AudioOutput(const Config& cfg = {});
+    AudioOutput() : AudioOutput(Config{}) {}
+    explicit AudioOutput(const Config& cfg);
     ~AudioOutput();
 
     // コピー/ムーブ禁止（ALSA ハンドルを生ポインタで保持するため）

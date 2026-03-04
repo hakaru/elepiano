@@ -165,17 +165,17 @@ int main(int argc, char* argv[])
 
     // --organ [alsa_device]
     if (argc > 1 && std::string(argv[1]) == "--organ") {
-        const char* alsa_device = (argc > 2) ? argv[2] : "hw:pisound";
+        const char* alsa_device = (argc > 2) ? argv[2] : "default";
         return run_organ(alsa_device);
     }
 
     // [attack_json] [release_json] [alsa_device]
     const char* json_path         = "data/rhodes-classic/samples.json";
     const char* release_json_path = nullptr;
-    const char* alsa_device       = "hw:pisound";
+    const char* alsa_device       = "default";
 
     if (argc > 1) json_path         = argv[1];
-    if (argc > 2) release_json_path = argv[2];
+    if (argc > 2 && argv[2][0] != '\0') release_json_path = argv[2];
     if (argc > 3) alsa_device       = argv[3];
 
     return run_piano(json_path, release_json_path, alsa_device);
