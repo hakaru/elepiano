@@ -34,14 +34,16 @@ public:
     void stop() { running_.store(false); }
 
     int sample_rate() const { return cfg_.sample_rate; }
+    uint32_t underrun_count() const { return underrun_count_.load(std::memory_order_relaxed); }
 
 private:
     void open_pcm();
 
     Config              cfg_;
     snd_pcm_t*          pcm_    = nullptr;
-    std::atomic<bool>   running_{false};
-    FillCallback        fill_cb_;
+    std::atomic<bool>       running_{false};
+    std::atomic<uint32_t>   underrun_count_{0};
+    FillCallback            fill_cb_;
     std::vector<float>      float_buf_;
     std::vector<int16_t>    s16_buf_;
 };

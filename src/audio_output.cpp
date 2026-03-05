@@ -70,14 +70,20 @@ void AudioOutput::open_pcm()
 
     chk(snd_pcm_hw_params(pcm_, hw), "hw_params");
 
+    // ALSA が実際に確定した値を取得
+    snd_pcm_hw_params_get_periods(hw, &periods, nullptr);
+    snd_pcm_uframes_t buffer_size = 0;
+    snd_pcm_hw_params_get_buffer_size(hw, &buffer_size);
+
     snd_pcm_sw_params_t* sw;
     snd_pcm_sw_params_alloca(&sw);
     snd_pcm_sw_params_current(pcm_, sw);
     snd_pcm_sw_params_set_start_threshold(pcm_, sw, period);
     snd_pcm_sw_params(pcm_, sw);
 
-    fprintf(stderr, "[AudioOutput] device=%s rate=%u period=%d channels=%d\n",
-           cfg_.device.c_str(), rate, cfg_.period_size, cfg_.channels);
+    fprintf(stderr, "[AudioOutput] device=%s rate=%u period=%d periods=%u buffer=%lu channels=%d\n",
+           cfg_.device.c_str(), rate, cfg_.period_size, periods,
+           static_cast<unsigned long>(buffer_size), cfg_.channels);
 }
 
 void AudioOutput::run()
@@ -128,7 +134,7 @@ void AudioOutput::run()
                                      s16_buf_.data() + written * cfg_.channels,
                                      frames - written);
             if (ret == -EPIPE) {
-                fprintf(stderr, "[AudioOutput] underrun\n");
+                underrun_count_.fetch_add(1, std::memory_order_relaxed);
                 snd_pcm_prepare(pcm_);
             } else if (ret < 0) {
                 ret = snd_pcm_recover(pcm_, ret, 1);

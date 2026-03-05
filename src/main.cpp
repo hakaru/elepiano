@@ -4,38 +4,30 @@
 #include "midi_input.hpp"
 #include "audio_output.hpp"
 #include "fx_chain.hpp"
+#include "spsc_queue.hpp"
 #include <thread>
 #include <csignal>
 #include <cstdio>
+#include <cstdlib>
 #include <atomic>
 #include <memory>
 #include <string>
+#include <pthread.h>
 
 static std::atomic<bool> g_quit{false};
 static bool g_midi_log = false;
+static int  g_period_size = 256;
+static int  g_periods     = 4;
+static SpscQueue<MidiEvent, 128> g_midi_log_queue;
 
 static void sig_handler(int) { g_quit.store(true); }
 
 // ─── MIDI イベントログ出力（--midi-log または ELEPIANO_MIDI_LOG=1 で有効） ──
+// MIDI スレッドから呼ばれるため、fprintf を避けて SPSC キューに投入
 static void log_midi_event(const MidiEvent& ev)
 {
     if (!g_midi_log) return;
-    switch (ev.type) {
-    case MidiEvent::Type::NOTE_ON:
-        fprintf(stderr, "[MIDI] NOTE ON  ch=%d note=%d vel=%d\n",
-                ev.channel, ev.note, ev.velocity);
-        break;
-    case MidiEvent::Type::NOTE_OFF:
-        fprintf(stderr, "[MIDI] NOTE OFF ch=%d note=%d\n",
-                ev.channel, ev.note);
-        break;
-    case MidiEvent::Type::CC:
-        fprintf(stderr, "[MIDI] CC       ch=%d cc=%d val=%d\n",
-                ev.channel, ev.note, ev.velocity);
-        break;
-    default:
-        break;
-    }
+    g_midi_log_queue.push(ev);
 }
 
 // ─── RAII スレッドライフサイクル管理 ──────────────────────────
@@ -51,7 +43,16 @@ struct EngineGuard {
         : audio(a), midi(m),
           midi_thread([&]()  { midi.run(); }),
           audio_thread([&]() { audio.run(); })
-    {}
+    {
+        // オーディオスレッドに RT スケジューリングを設定
+        sched_param sp{};
+        sp.sched_priority = 80;
+        int ret = pthread_setschedparam(audio_thread.native_handle(), SCHED_FIFO, &sp);
+        if (ret != 0)
+            fprintf(stderr, "[AudioOutput] SCHED_FIFO 設定失敗 (ret=%d) — root権限が必要\n", ret);
+        else
+            fprintf(stderr, "[AudioOutput] SCHED_FIFO priority=80\n");
+    }
 
     ~EngineGuard() {
         midi.stop();
@@ -72,7 +73,34 @@ static void run_engine(AudioOutput& audio, MidiInput& midi)
 
     fprintf(stderr, "起動完了。Ctrl+C で終了。\n");
 
+    uint32_t last_xruns = 0;
     while (!g_quit.load()) {
+        // MIDI ログのキュー消費（メインスレッドで安全に出力）
+        while (auto ev = g_midi_log_queue.pop()) {
+            switch (ev->type) {
+            case MidiEvent::Type::NOTE_ON:
+                fprintf(stderr, "[MIDI] NOTE ON  ch=%d note=%d vel=%d\n",
+                        ev->channel, ev->note, ev->velocity);
+                break;
+            case MidiEvent::Type::NOTE_OFF:
+                fprintf(stderr, "[MIDI] NOTE OFF ch=%d note=%d\n",
+                        ev->channel, ev->note);
+                break;
+            case MidiEvent::Type::CC:
+                fprintf(stderr, "[MIDI] CC       ch=%d cc=%d val=%d\n",
+                        ev->channel, ev->note, ev->velocity);
+                break;
+            default: break;
+            }
+        }
+
+        // Underrun カウント表示
+        uint32_t xruns = audio.underrun_count();
+        if (xruns != last_xruns) {
+            fprintf(stderr, "[AudioOutput] underrun count: %u\n", xruns);
+            last_xruns = xruns;
+        }
+
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 
@@ -98,8 +126,8 @@ static int run_organ(const char* alsa_device)
     acfg.device      = alsa_device;
     acfg.sample_rate = SAMPLE_RATE;
     acfg.channels    = 2;
-    acfg.period_size = 256;
-    acfg.periods     = 4;
+    acfg.period_size = g_period_size;
+    acfg.periods     = g_periods;
 
     AudioOutput audio(acfg);
     OrganEngine organ(SAMPLE_RATE);
@@ -140,8 +168,8 @@ static int run_piano(const char* json_path,
     acfg.device      = alsa_device;
     acfg.sample_rate = db.sample_rate();
     acfg.channels    = 2;
-    acfg.period_size = 256;
-    acfg.periods     = 4;
+    acfg.period_size = g_period_size;
+    acfg.periods     = g_periods;
 
     AudioOutput audio(acfg);
     SynthEngine synth(db, acfg.sample_rate, release_db.get());
@@ -174,10 +202,19 @@ int main(int argc, char* argv[])
     if (const char* env = getenv("ELEPIANO_MIDI_LOG"); env && env[0] == '1')
         g_midi_log = true;
     for (int i = 1; i < argc; ++i) {
-        if (std::string(argv[i]) == "--midi-log") {
+        std::string arg(argv[i]);
+        if (arg == "--midi-log") {
             g_midi_log = true;
             for (int j = i; j < argc - 1; ++j) argv[j] = argv[j + 1];
             --argc; --i;
+        } else if (arg == "--period-size" && i + 1 < argc) {
+            g_period_size = std::atoi(argv[i + 1]);
+            for (int j = i; j < argc - 2; ++j) argv[j] = argv[j + 2];
+            argc -= 2; --i;
+        } else if (arg == "--periods" && i + 1 < argc) {
+            g_periods = std::atoi(argv[i + 1]);
+            for (int j = i; j < argc - 2; ++j) argv[j] = argv[j + 2];
+            argc -= 2; --i;
         }
     }
 
