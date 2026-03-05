@@ -180,7 +180,7 @@ static int run_piano(const char* json_path,
 
     audio.set_callback([&](float* buf, int frames) {
         synth.mix(buf, frames);
-        fx.process(buf, frames);
+        // fx.process(buf, frames);  // ノイズ切り分けのため一時無効化
     });
 
     MidiInput midi("elepiano");
