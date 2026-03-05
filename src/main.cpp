@@ -18,6 +18,7 @@ static std::atomic<bool> g_quit{false};
 static bool g_midi_log = false;
 static int  g_period_size = 256;
 static int  g_periods     = 4;
+static std::string g_wav_dump_path;
 static SpscQueue<MidiEvent, 128> g_midi_log_queue;
 
 static void sig_handler(int) { g_quit.store(true); }
@@ -123,11 +124,12 @@ static int run_organ(const char* alsa_device)
     static constexpr int SAMPLE_RATE = 44100;
 
     AudioOutput::Config acfg;
-    acfg.device      = alsa_device;
-    acfg.sample_rate = SAMPLE_RATE;
-    acfg.channels    = 2;
-    acfg.period_size = g_period_size;
-    acfg.periods     = g_periods;
+    acfg.device        = alsa_device;
+    acfg.sample_rate   = SAMPLE_RATE;
+    acfg.channels      = 2;
+    acfg.period_size   = g_period_size;
+    acfg.periods       = g_periods;
+    acfg.wav_dump_path = g_wav_dump_path;
 
     AudioOutput audio(acfg);
     OrganEngine organ(SAMPLE_RATE);
@@ -165,11 +167,12 @@ static int run_piano(const char* json_path,
     }
 
     AudioOutput::Config acfg;
-    acfg.device      = alsa_device;
-    acfg.sample_rate = db.sample_rate();
-    acfg.channels    = 2;
-    acfg.period_size = g_period_size;
-    acfg.periods     = g_periods;
+    acfg.device        = alsa_device;
+    acfg.sample_rate   = db.sample_rate();
+    acfg.channels      = 2;
+    acfg.period_size   = g_period_size;
+    acfg.periods       = g_periods;
+    acfg.wav_dump_path = g_wav_dump_path;
 
     AudioOutput audio(acfg);
     SynthEngine synth(db, acfg.sample_rate, release_db.get());
@@ -213,6 +216,10 @@ int main(int argc, char* argv[])
             argc -= 2; --i;
         } else if (arg == "--periods" && i + 1 < argc) {
             g_periods = std::atoi(argv[i + 1]);
+            for (int j = i; j < argc - 2; ++j) argv[j] = argv[j + 2];
+            argc -= 2; --i;
+        } else if (arg == "--wav-dump" && i + 1 < argc) {
+            g_wav_dump_path = argv[i + 1];
             for (int j = i; j < argc - 2; ++j) argv[j] = argv[j + 2];
             argc -= 2; --i;
         }

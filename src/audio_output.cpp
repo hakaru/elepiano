@@ -27,10 +27,66 @@ AudioOutput::AudioOutput(const Config& cfg) : cfg_(cfg)
 
 AudioOutput::~AudioOutput()
 {
+    close_wav_dump();
     if (pcm_) {
         snd_pcm_drain(pcm_);
         snd_pcm_close(pcm_);
     }
+}
+
+void AudioOutput::open_wav_dump()
+{
+    if (cfg_.wav_dump_path.empty()) return;
+
+    wav_file_ = fopen(cfg_.wav_dump_path.c_str(), "wb");
+    if (!wav_file_) {
+        fprintf(stderr, "[AudioOutput] WAV dump open 失敗: %s\n", cfg_.wav_dump_path.c_str());
+        return;
+    }
+
+    // WAV ヘッダ（data_size=0 仮置き、close 時に書き戻す）
+    uint32_t data_size = 0;
+    uint32_t file_size = 36;  // 仮
+    uint16_t audio_fmt = 1;   // PCM
+    uint16_t ch = static_cast<uint16_t>(cfg_.channels);
+    uint32_t sr = static_cast<uint32_t>(cfg_.sample_rate);
+    uint32_t byte_rate = sr * ch * 2;
+    uint16_t block_align = ch * 2;
+    uint16_t bits = 16;
+    uint32_t fmt_size = 16;
+
+    fwrite("RIFF", 1, 4, wav_file_);
+    fwrite(&file_size, 4, 1, wav_file_);
+    fwrite("WAVE", 1, 4, wav_file_);
+    fwrite("fmt ", 1, 4, wav_file_);
+    fwrite(&fmt_size, 4, 1, wav_file_);
+    fwrite(&audio_fmt, 2, 1, wav_file_);
+    fwrite(&ch, 2, 1, wav_file_);
+    fwrite(&sr, 4, 1, wav_file_);
+    fwrite(&byte_rate, 4, 1, wav_file_);
+    fwrite(&block_align, 2, 1, wav_file_);
+    fwrite(&bits, 2, 1, wav_file_);
+    fwrite("data", 1, 4, wav_file_);
+    fwrite(&data_size, 4, 1, wav_file_);
+
+    wav_data_bytes_ = 0;
+    fprintf(stderr, "[AudioOutput] WAV dump: %s\n", cfg_.wav_dump_path.c_str());
+}
+
+void AudioOutput::close_wav_dump()
+{
+    if (!wav_file_) return;
+
+    // ヘッダのサイズフィールドを書き戻す
+    uint32_t file_size = 36 + wav_data_bytes_;
+    fseek(wav_file_, 4, SEEK_SET);
+    fwrite(&file_size, 4, 1, wav_file_);
+    fseek(wav_file_, 40, SEEK_SET);
+    fwrite(&wav_data_bytes_, 4, 1, wav_file_);
+
+    fclose(wav_file_);
+    wav_file_ = nullptr;
+    fprintf(stderr, "[AudioOutput] WAV dump 完了: %u bytes\n", wav_data_bytes_);
 }
 
 void AudioOutput::open_pcm()
@@ -84,6 +140,8 @@ void AudioOutput::open_pcm()
     fprintf(stderr, "[AudioOutput] device=%s rate=%u period=%d periods=%u buffer=%lu channels=%d\n",
            cfg_.device.c_str(), rate, cfg_.period_size, periods,
            static_cast<unsigned long>(buffer_size), cfg_.channels);
+
+    open_wav_dump();
 }
 
 void AudioOutput::run()
@@ -126,6 +184,13 @@ void AudioOutput::run()
             s16_buf_[i] = static_cast<int16_t>(v * 32767.0f);
         }
 #endif
+
+        // WAV ダンプ
+        if (wav_file_) {
+            size_t n = static_cast<size_t>(frames * cfg_.channels);
+            fwrite(s16_buf_.data(), sizeof(int16_t), n, wav_file_);
+            wav_data_bytes_ += static_cast<uint32_t>(n * sizeof(int16_t));
+        }
 
         // 部分書き込みも含めてリトライ
         int written = 0;

@@ -5,6 +5,7 @@
 #include <vector>
 #include <cstdint>
 #include <atomic>
+#include <cstdio>
 
 class AudioOutput {
 public:
@@ -16,6 +17,7 @@ public:
         int         channels    = 2;
         int         period_size = 256;
         int         periods     = 4;
+        std::string wav_dump_path;  // 空なら無効
     };
 
     AudioOutput() : AudioOutput(Config{}) {}
@@ -39,8 +41,13 @@ public:
 private:
     void open_pcm();
 
+    void open_wav_dump();
+    void close_wav_dump();
+
     Config              cfg_;
     snd_pcm_t*          pcm_    = nullptr;
+    FILE*               wav_file_ = nullptr;
+    uint32_t            wav_data_bytes_ = 0;
     std::atomic<bool>       running_{false};
     std::atomic<uint32_t>   underrun_count_{0};
     FillCallback            fill_cb_;
