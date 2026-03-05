@@ -36,7 +36,7 @@ if [ ! -x "$SANITIZE_BIN" ]; then
     cd "$PROJECT_DIR"
     g++ -O2 -std=c++17 -o build/sanitize_flac \
         tools/sanitize_flac.cpp src/flac_decoder.cpp \
-        -I src -lstdc++fs 2>&1
+        -I src 2>&1
     echo "ビルド完了: $SANITIZE_BIN" >&2
 fi
 
@@ -46,6 +46,7 @@ mkdir -p "$OUTPUT_DIR"
 total=0
 ok=0
 burst_files=0
+silent=0
 errors=0
 
 for flac_file in "$INPUT_DIR"/*.flac; do
@@ -64,7 +65,12 @@ for flac_file in "$INPUT_DIR"/*.flac; do
 
     # サニタイズ実行
     target="${wav_tmp:-$out_file}"
-    if output=$("$SANITIZE_BIN" "$flac_file" "$target" --stats 2>&1); then
+    set +e
+    output=$("$SANITIZE_BIN" "$flac_file" "$target" --stats 2>&1)
+    ret=$?
+    set -e
+
+    if [ $ret -eq 0 ]; then
         # バースト検出があったかチェック
         if echo "$output" | grep -q "bursts:.*[1-9]"; then
             burst_files=$((burst_files + 1))
@@ -82,6 +88,10 @@ for flac_file in "$INPUT_DIR"/*.flac; do
         fi
 
         ok=$((ok + 1))
+    elif [ $ret -eq 2 ]; then
+        # 全ゼロ（CRC-16 ミュートで無音化）→ スキップ
+        silent=$((silent + 1))
+        rm -f "$target"
     else
         echo "[ERROR] $basename: $output" >&2
         errors=$((errors + 1))
@@ -99,5 +109,6 @@ echo "=== サニタイズ完了 ===" >&2
 echo "  合計:       $total 件" >&2
 echo "  成功:       $ok 件" >&2
 echo "  バースト修正: $burst_files 件" >&2
+echo "  無音スキップ: $silent 件" >&2
 echo "  エラー:     $errors 件" >&2
 echo "  出力先:     $OUTPUT_DIR" >&2

@@ -7913,14 +7913,6 @@
       "velocity_min": 69,
       "velocity_max": 96,
       "velocity_idx": 96,
-      "round_robin": 1,
-      "file": "audio/rr1_vel096_n070.flac"
-    },
-    {
-      "midi_note": 70,
-      "velocity_min": 69,
-      "velocity_max": 96,
-      "velocity_idx": 96,
       "round_robin": 2,
       "file": "audio/rr2_vel096_n070.flac"
     },

@@ -14,14 +14,6 @@
     },
     {
       "midi_note": 21,
-      "velocity_min": 7,
-      "velocity_max": 12,
-      "velocity_idx": 2,
-      "round_robin": 1,
-      "file": "audio/rr1_vel002_n021.flac"
-    },
-    {
-      "midi_note": 21,
       "velocity_min": 13,
       "velocity_max": 19,
       "velocity_idx": 3,
@@ -30,35 +22,11 @@
     },
     {
       "midi_note": 21,
-      "velocity_min": 20,
-      "velocity_max": 26,
-      "velocity_idx": 4,
-      "round_robin": 1,
-      "file": "audio/rr1_vel004_n021.flac"
-    },
-    {
-      "midi_note": 21,
-      "velocity_min": 27,
-      "velocity_max": 32,
-      "velocity_idx": 5,
-      "round_robin": 1,
-      "file": "audio/rr1_vel005_n021.flac"
-    },
-    {
-      "midi_note": 21,
       "velocity_min": 33,
       "velocity_max": 39,
       "velocity_idx": 6,
       "round_robin": 1,
       "file": "audio/rr1_vel006_n021.flac"
-    },
-    {
-      "midi_note": 21,
-      "velocity_min": 40,
-      "velocity_max": 46,
-      "velocity_idx": 7,
-      "round_robin": 1,
-      "file": "audio/rr1_vel007_n021.flac"
     },
     {
       "midi_note": 21,
@@ -86,14 +54,6 @@
     },
     {
       "midi_note": 21,
-      "velocity_min": 67,
-      "velocity_max": 73,
-      "velocity_idx": 11,
-      "round_robin": 1,
-      "file": "audio/rr1_vel011_n021.flac"
-    },
-    {
-      "midi_note": 21,
       "velocity_min": 74,
       "velocity_max": 79,
       "velocity_idx": 12,
@@ -107,38 +67,6 @@
       "velocity_idx": 13,
       "round_robin": 1,
       "file": "audio/rr1_vel013_n021.flac"
-    },
-    {
-      "midi_note": 21,
-      "velocity_min": 87,
-      "velocity_max": 93,
-      "velocity_idx": 14,
-      "round_robin": 1,
-      "file": "audio/rr1_vel014_n021.flac"
-    },
-    {
-      "midi_note": 21,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n021.flac"
-    },
-    {
-      "midi_note": 21,
-      "velocity_min": 100,
-      "velocity_max": 106,
-      "velocity_idx": 16,
-      "round_robin": 1,
-      "file": "audio/rr1_vel016_n021.flac"
-    },
-    {
-      "midi_note": 21,
-      "velocity_min": 107,
-      "velocity_max": 113,
-      "velocity_idx": 17,
-      "round_robin": 1,
-      "file": "audio/rr1_vel017_n021.flac"
     },
     {
       "midi_note": 21,
@@ -174,14 +102,6 @@
     },
     {
       "midi_note": 22,
-      "velocity_min": 13,
-      "velocity_max": 19,
-      "velocity_idx": 3,
-      "round_robin": 1,
-      "file": "audio/rr1_vel003_n022.flac"
-    },
-    {
-      "midi_note": 22,
       "velocity_min": 20,
       "velocity_max": 26,
       "velocity_idx": 4,
@@ -195,22 +115,6 @@
       "velocity_idx": 5,
       "round_robin": 1,
       "file": "audio/rr1_vel005_n022.flac"
-    },
-    {
-      "midi_note": 22,
-      "velocity_min": 33,
-      "velocity_max": 39,
-      "velocity_idx": 6,
-      "round_robin": 1,
-      "file": "audio/rr1_vel006_n022.flac"
-    },
-    {
-      "midi_note": 22,
-      "velocity_min": 40,
-      "velocity_max": 46,
-      "velocity_idx": 7,
-      "round_robin": 1,
-      "file": "audio/rr1_vel007_n022.flac"
     },
     {
       "midi_note": 22,
@@ -230,38 +134,6 @@
     },
     {
       "midi_note": 22,
-      "velocity_min": 60,
-      "velocity_max": 66,
-      "velocity_idx": 10,
-      "round_robin": 1,
-      "file": "audio/rr1_vel010_n022.flac"
-    },
-    {
-      "midi_note": 22,
-      "velocity_min": 67,
-      "velocity_max": 73,
-      "velocity_idx": 11,
-      "round_robin": 1,
-      "file": "audio/rr1_vel011_n022.flac"
-    },
-    {
-      "midi_note": 22,
-      "velocity_min": 74,
-      "velocity_max": 79,
-      "velocity_idx": 12,
-      "round_robin": 1,
-      "file": "audio/rr1_vel012_n022.flac"
-    },
-    {
-      "midi_note": 22,
-      "velocity_min": 80,
-      "velocity_max": 86,
-      "velocity_idx": 13,
-      "round_robin": 1,
-      "file": "audio/rr1_vel013_n022.flac"
-    },
-    {
-      "midi_note": 22,
       "velocity_min": 87,
       "velocity_max": 93,
       "velocity_idx": 14,
@@ -275,14 +147,6 @@
       "velocity_idx": 15,
       "round_robin": 1,
       "file": "audio/rr1_vel015_n022.flac"
-    },
-    {
-      "midi_note": 22,
-      "velocity_min": 100,
-      "velocity_max": 106,
-      "velocity_idx": 16,
-      "round_robin": 1,
-      "file": "audio/rr1_vel016_n022.flac"
     },
     {
       "midi_note": 22,
@@ -358,14 +222,6 @@
     },
     {
       "midi_note": 23,
-      "velocity_min": 40,
-      "velocity_max": 46,
-      "velocity_idx": 7,
-      "round_robin": 1,
-      "file": "audio/rr1_vel007_n023.flac"
-    },
-    {
-      "midi_note": 23,
       "velocity_min": 47,
       "velocity_max": 52,
       "velocity_idx": 8,
@@ -382,35 +238,11 @@
     },
     {
       "midi_note": 23,
-      "velocity_min": 60,
-      "velocity_max": 66,
-      "velocity_idx": 10,
-      "round_robin": 1,
-      "file": "audio/rr1_vel010_n023.flac"
-    },
-    {
-      "midi_note": 23,
       "velocity_min": 67,
       "velocity_max": 73,
       "velocity_idx": 11,
       "round_robin": 1,
       "file": "audio/rr1_vel011_n023.flac"
-    },
-    {
-      "midi_note": 23,
-      "velocity_min": 74,
-      "velocity_max": 79,
-      "velocity_idx": 12,
-      "round_robin": 1,
-      "file": "audio/rr1_vel012_n023.flac"
-    },
-    {
-      "midi_note": 23,
-      "velocity_min": 80,
-      "velocity_max": 86,
-      "velocity_idx": 13,
-      "round_robin": 1,
-      "file": "audio/rr1_vel013_n023.flac"
     },
     {
       "midi_note": 23,
@@ -446,35 +278,11 @@
     },
     {
       "midi_note": 23,
-      "velocity_min": 114,
-      "velocity_max": 119,
-      "velocity_idx": 18,
-      "round_robin": 1,
-      "file": "audio/rr1_vel018_n023.flac"
-    },
-    {
-      "midi_note": 23,
       "velocity_min": 120,
       "velocity_max": 127,
       "velocity_idx": 19,
       "round_robin": 1,
       "file": "audio/rr1_vel019_n023.flac"
-    },
-    {
-      "midi_note": 24,
-      "velocity_min": 0,
-      "velocity_max": 6,
-      "velocity_idx": 1,
-      "round_robin": 1,
-      "file": "audio/rr1_vel001_n024.flac"
-    },
-    {
-      "midi_note": 24,
-      "velocity_min": 7,
-      "velocity_max": 12,
-      "velocity_idx": 2,
-      "round_robin": 1,
-      "file": "audio/rr1_vel002_n024.flac"
     },
     {
       "midi_note": 24,
@@ -486,35 +294,11 @@
     },
     {
       "midi_note": 24,
-      "velocity_min": 20,
-      "velocity_max": 26,
-      "velocity_idx": 4,
-      "round_robin": 1,
-      "file": "audio/rr1_vel004_n024.flac"
-    },
-    {
-      "midi_note": 24,
       "velocity_min": 27,
       "velocity_max": 32,
       "velocity_idx": 5,
       "round_robin": 1,
       "file": "audio/rr1_vel005_n024.flac"
-    },
-    {
-      "midi_note": 24,
-      "velocity_min": 33,
-      "velocity_max": 39,
-      "velocity_idx": 6,
-      "round_robin": 1,
-      "file": "audio/rr1_vel006_n024.flac"
-    },
-    {
-      "midi_note": 24,
-      "velocity_min": 40,
-      "velocity_max": 46,
-      "velocity_idx": 7,
-      "round_robin": 1,
-      "file": "audio/rr1_vel007_n024.flac"
     },
     {
       "midi_note": 24,
@@ -542,22 +326,6 @@
     },
     {
       "midi_note": 24,
-      "velocity_min": 67,
-      "velocity_max": 73,
-      "velocity_idx": 11,
-      "round_robin": 1,
-      "file": "audio/rr1_vel011_n024.flac"
-    },
-    {
-      "midi_note": 24,
-      "velocity_min": 74,
-      "velocity_max": 79,
-      "velocity_idx": 12,
-      "round_robin": 1,
-      "file": "audio/rr1_vel012_n024.flac"
-    },
-    {
-      "midi_note": 24,
       "velocity_min": 80,
       "velocity_max": 86,
       "velocity_idx": 13,
@@ -571,14 +339,6 @@
       "velocity_idx": 14,
       "round_robin": 1,
       "file": "audio/rr1_vel014_n024.flac"
-    },
-    {
-      "midi_note": 24,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n024.flac"
     },
     {
       "midi_note": 24,
@@ -630,22 +390,6 @@
     },
     {
       "midi_note": 28,
-      "velocity_min": 13,
-      "velocity_max": 19,
-      "velocity_idx": 3,
-      "round_robin": 1,
-      "file": "audio/rr1_vel003_n028.flac"
-    },
-    {
-      "midi_note": 28,
-      "velocity_min": 20,
-      "velocity_max": 26,
-      "velocity_idx": 4,
-      "round_robin": 1,
-      "file": "audio/rr1_vel004_n028.flac"
-    },
-    {
-      "midi_note": 28,
       "velocity_min": 27,
       "velocity_max": 32,
       "velocity_idx": 5,
@@ -667,22 +411,6 @@
       "velocity_idx": 7,
       "round_robin": 1,
       "file": "audio/rr1_vel007_n028.flac"
-    },
-    {
-      "midi_note": 28,
-      "velocity_min": 47,
-      "velocity_max": 52,
-      "velocity_idx": 8,
-      "round_robin": 1,
-      "file": "audio/rr1_vel008_n028.flac"
-    },
-    {
-      "midi_note": 28,
-      "velocity_min": 53,
-      "velocity_max": 59,
-      "velocity_idx": 9,
-      "round_robin": 1,
-      "file": "audio/rr1_vel009_n028.flac"
     },
     {
       "midi_note": 28,
@@ -710,14 +438,6 @@
     },
     {
       "midi_note": 28,
-      "velocity_min": 80,
-      "velocity_max": 86,
-      "velocity_idx": 13,
-      "round_robin": 1,
-      "file": "audio/rr1_vel013_n028.flac"
-    },
-    {
-      "midi_note": 28,
       "velocity_min": 87,
       "velocity_max": 93,
       "velocity_idx": 14,
@@ -731,22 +451,6 @@
       "velocity_idx": 15,
       "round_robin": 1,
       "file": "audio/rr1_vel015_n028.flac"
-    },
-    {
-      "midi_note": 28,
-      "velocity_min": 100,
-      "velocity_max": 106,
-      "velocity_idx": 16,
-      "round_robin": 1,
-      "file": "audio/rr1_vel016_n028.flac"
-    },
-    {
-      "midi_note": 28,
-      "velocity_min": 107,
-      "velocity_max": 113,
-      "velocity_idx": 17,
-      "round_robin": 1,
-      "file": "audio/rr1_vel017_n028.flac"
     },
     {
       "midi_note": 28,
@@ -806,35 +510,11 @@
     },
     {
       "midi_note": 29,
-      "velocity_min": 33,
-      "velocity_max": 39,
-      "velocity_idx": 6,
-      "round_robin": 1,
-      "file": "audio/rr1_vel006_n029.flac"
-    },
-    {
-      "midi_note": 29,
-      "velocity_min": 40,
-      "velocity_max": 46,
-      "velocity_idx": 7,
-      "round_robin": 1,
-      "file": "audio/rr1_vel007_n029.flac"
-    },
-    {
-      "midi_note": 29,
       "velocity_min": 47,
       "velocity_max": 52,
       "velocity_idx": 8,
       "round_robin": 1,
       "file": "audio/rr1_vel008_n029.flac"
-    },
-    {
-      "midi_note": 29,
-      "velocity_min": 53,
-      "velocity_max": 59,
-      "velocity_idx": 9,
-      "round_robin": 1,
-      "file": "audio/rr1_vel009_n029.flac"
     },
     {
       "midi_note": 29,
@@ -846,35 +526,11 @@
     },
     {
       "midi_note": 29,
-      "velocity_min": 67,
-      "velocity_max": 73,
-      "velocity_idx": 11,
-      "round_robin": 1,
-      "file": "audio/rr1_vel011_n029.flac"
-    },
-    {
-      "midi_note": 29,
       "velocity_min": 74,
       "velocity_max": 79,
       "velocity_idx": 12,
       "round_robin": 1,
       "file": "audio/rr1_vel012_n029.flac"
-    },
-    {
-      "midi_note": 29,
-      "velocity_min": 80,
-      "velocity_max": 86,
-      "velocity_idx": 13,
-      "round_robin": 1,
-      "file": "audio/rr1_vel013_n029.flac"
-    },
-    {
-      "midi_note": 29,
-      "velocity_min": 87,
-      "velocity_max": 93,
-      "velocity_idx": 14,
-      "round_robin": 1,
-      "file": "audio/rr1_vel014_n029.flac"
     },
     {
       "midi_note": 29,
@@ -907,22 +563,6 @@
       "velocity_idx": 18,
       "round_robin": 1,
       "file": "audio/rr1_vel018_n029.flac"
-    },
-    {
-      "midi_note": 29,
-      "velocity_min": 120,
-      "velocity_max": 127,
-      "velocity_idx": 19,
-      "round_robin": 1,
-      "file": "audio/rr1_vel019_n029.flac"
-    },
-    {
-      "midi_note": 30,
-      "velocity_min": 0,
-      "velocity_max": 6,
-      "velocity_idx": 1,
-      "round_robin": 1,
-      "file": "audio/rr1_vel001_n030.flac"
     },
     {
       "midi_note": 30,
@@ -974,27 +614,11 @@
     },
     {
       "midi_note": 30,
-      "velocity_min": 47,
-      "velocity_max": 52,
-      "velocity_idx": 8,
-      "round_robin": 1,
-      "file": "audio/rr1_vel008_n030.flac"
-    },
-    {
-      "midi_note": 30,
       "velocity_min": 53,
       "velocity_max": 59,
       "velocity_idx": 9,
       "round_robin": 1,
       "file": "audio/rr1_vel009_n030.flac"
-    },
-    {
-      "midi_note": 30,
-      "velocity_min": 60,
-      "velocity_max": 66,
-      "velocity_idx": 10,
-      "round_robin": 1,
-      "file": "audio/rr1_vel010_n030.flac"
     },
     {
       "midi_note": 30,
@@ -1006,22 +630,6 @@
     },
     {
       "midi_note": 30,
-      "velocity_min": 74,
-      "velocity_max": 79,
-      "velocity_idx": 12,
-      "round_robin": 1,
-      "file": "audio/rr1_vel012_n030.flac"
-    },
-    {
-      "midi_note": 30,
-      "velocity_min": 80,
-      "velocity_max": 86,
-      "velocity_idx": 13,
-      "round_robin": 1,
-      "file": "audio/rr1_vel013_n030.flac"
-    },
-    {
-      "midi_note": 30,
       "velocity_min": 87,
       "velocity_max": 93,
       "velocity_idx": 14,
@@ -1030,51 +638,11 @@
     },
     {
       "midi_note": 30,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n030.flac"
-    },
-    {
-      "midi_note": 30,
-      "velocity_min": 100,
-      "velocity_max": 106,
-      "velocity_idx": 16,
-      "round_robin": 1,
-      "file": "audio/rr1_vel016_n030.flac"
-    },
-    {
-      "midi_note": 30,
-      "velocity_min": 107,
-      "velocity_max": 113,
-      "velocity_idx": 17,
-      "round_robin": 1,
-      "file": "audio/rr1_vel017_n030.flac"
-    },
-    {
-      "midi_note": 30,
       "velocity_min": 114,
       "velocity_max": 119,
       "velocity_idx": 18,
       "round_robin": 1,
       "file": "audio/rr1_vel018_n030.flac"
-    },
-    {
-      "midi_note": 30,
-      "velocity_min": 120,
-      "velocity_max": 127,
-      "velocity_idx": 19,
-      "round_robin": 1,
-      "file": "audio/rr1_vel019_n030.flac"
-    },
-    {
-      "midi_note": 31,
-      "velocity_min": 0,
-      "velocity_max": 6,
-      "velocity_idx": 1,
-      "round_robin": 1,
-      "file": "audio/rr1_vel001_n031.flac"
     },
     {
       "midi_note": 31,
@@ -1126,14 +694,6 @@
     },
     {
       "midi_note": 31,
-      "velocity_min": 47,
-      "velocity_max": 52,
-      "velocity_idx": 8,
-      "round_robin": 1,
-      "file": "audio/rr1_vel008_n031.flac"
-    },
-    {
-      "midi_note": 31,
       "velocity_min": 53,
       "velocity_max": 59,
       "velocity_idx": 9,
@@ -1158,14 +718,6 @@
     },
     {
       "midi_note": 31,
-      "velocity_min": 74,
-      "velocity_max": 79,
-      "velocity_idx": 12,
-      "round_robin": 1,
-      "file": "audio/rr1_vel012_n031.flac"
-    },
-    {
-      "midi_note": 31,
       "velocity_min": 80,
       "velocity_max": 86,
       "velocity_idx": 13,
@@ -1179,14 +731,6 @@
       "velocity_idx": 14,
       "round_robin": 1,
       "file": "audio/rr1_vel014_n031.flac"
-    },
-    {
-      "midi_note": 31,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n031.flac"
     },
     {
       "midi_note": 31,
@@ -1238,38 +782,6 @@
     },
     {
       "midi_note": 32,
-      "velocity_min": 13,
-      "velocity_max": 19,
-      "velocity_idx": 3,
-      "round_robin": 1,
-      "file": "audio/rr1_vel003_n032.flac"
-    },
-    {
-      "midi_note": 32,
-      "velocity_min": 20,
-      "velocity_max": 26,
-      "velocity_idx": 4,
-      "round_robin": 1,
-      "file": "audio/rr1_vel004_n032.flac"
-    },
-    {
-      "midi_note": 32,
-      "velocity_min": 27,
-      "velocity_max": 32,
-      "velocity_idx": 5,
-      "round_robin": 1,
-      "file": "audio/rr1_vel005_n032.flac"
-    },
-    {
-      "midi_note": 32,
-      "velocity_min": 33,
-      "velocity_max": 39,
-      "velocity_idx": 6,
-      "round_robin": 1,
-      "file": "audio/rr1_vel006_n032.flac"
-    },
-    {
-      "midi_note": 32,
       "velocity_min": 40,
       "velocity_max": 46,
       "velocity_idx": 7,
@@ -1283,14 +795,6 @@
       "velocity_idx": 8,
       "round_robin": 1,
       "file": "audio/rr1_vel008_n032.flac"
-    },
-    {
-      "midi_note": 32,
-      "velocity_min": 53,
-      "velocity_max": 59,
-      "velocity_idx": 9,
-      "round_robin": 1,
-      "file": "audio/rr1_vel009_n032.flac"
     },
     {
       "midi_note": 32,
@@ -1318,14 +822,6 @@
     },
     {
       "midi_note": 32,
-      "velocity_min": 80,
-      "velocity_max": 86,
-      "velocity_idx": 13,
-      "round_robin": 1,
-      "file": "audio/rr1_vel013_n032.flac"
-    },
-    {
-      "midi_note": 32,
       "velocity_min": 87,
       "velocity_max": 93,
       "velocity_idx": 14,
@@ -1334,27 +830,11 @@
     },
     {
       "midi_note": 32,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n032.flac"
-    },
-    {
-      "midi_note": 32,
       "velocity_min": 100,
       "velocity_max": 106,
       "velocity_idx": 16,
       "round_robin": 1,
       "file": "audio/rr1_vel016_n032.flac"
-    },
-    {
-      "midi_note": 32,
-      "velocity_min": 107,
-      "velocity_max": 113,
-      "velocity_idx": 17,
-      "round_robin": 1,
-      "file": "audio/rr1_vel017_n032.flac"
     },
     {
       "midi_note": 32,
@@ -1382,14 +862,6 @@
     },
     {
       "midi_note": 33,
-      "velocity_min": 7,
-      "velocity_max": 12,
-      "velocity_idx": 2,
-      "round_robin": 1,
-      "file": "audio/rr1_vel002_n033.flac"
-    },
-    {
-      "midi_note": 33,
       "velocity_min": 13,
       "velocity_max": 19,
       "velocity_idx": 3,
@@ -1414,35 +886,11 @@
     },
     {
       "midi_note": 33,
-      "velocity_min": 33,
-      "velocity_max": 39,
-      "velocity_idx": 6,
-      "round_robin": 1,
-      "file": "audio/rr1_vel006_n033.flac"
-    },
-    {
-      "midi_note": 33,
-      "velocity_min": 40,
-      "velocity_max": 46,
-      "velocity_idx": 7,
-      "round_robin": 1,
-      "file": "audio/rr1_vel007_n033.flac"
-    },
-    {
-      "midi_note": 33,
       "velocity_min": 47,
       "velocity_max": 52,
       "velocity_idx": 8,
       "round_robin": 1,
       "file": "audio/rr1_vel008_n033.flac"
-    },
-    {
-      "midi_note": 33,
-      "velocity_min": 53,
-      "velocity_max": 59,
-      "velocity_idx": 9,
-      "round_robin": 1,
-      "file": "audio/rr1_vel009_n033.flac"
     },
     {
       "midi_note": 33,
@@ -1494,35 +942,11 @@
     },
     {
       "midi_note": 33,
-      "velocity_min": 100,
-      "velocity_max": 106,
-      "velocity_idx": 16,
-      "round_robin": 1,
-      "file": "audio/rr1_vel016_n033.flac"
-    },
-    {
-      "midi_note": 33,
-      "velocity_min": 107,
-      "velocity_max": 113,
-      "velocity_idx": 17,
-      "round_robin": 1,
-      "file": "audio/rr1_vel017_n033.flac"
-    },
-    {
-      "midi_note": 33,
       "velocity_min": 114,
       "velocity_max": 119,
       "velocity_idx": 18,
       "round_robin": 1,
       "file": "audio/rr1_vel018_n033.flac"
-    },
-    {
-      "midi_note": 33,
-      "velocity_min": 120,
-      "velocity_max": 127,
-      "velocity_idx": 19,
-      "round_robin": 1,
-      "file": "audio/rr1_vel019_n033.flac"
     },
     {
       "midi_note": 34,
@@ -1574,14 +998,6 @@
     },
     {
       "midi_note": 34,
-      "velocity_min": 40,
-      "velocity_max": 46,
-      "velocity_idx": 7,
-      "round_robin": 1,
-      "file": "audio/rr1_vel007_n034.flac"
-    },
-    {
-      "midi_note": 34,
       "velocity_min": 47,
       "velocity_max": 52,
       "velocity_idx": 8,
@@ -1606,14 +1022,6 @@
     },
     {
       "midi_note": 34,
-      "velocity_min": 67,
-      "velocity_max": 73,
-      "velocity_idx": 11,
-      "round_robin": 1,
-      "file": "audio/rr1_vel011_n034.flac"
-    },
-    {
-      "midi_note": 34,
       "velocity_min": 74,
       "velocity_max": 79,
       "velocity_idx": 12,
@@ -1635,30 +1043,6 @@
       "velocity_idx": 14,
       "round_robin": 1,
       "file": "audio/rr1_vel014_n034.flac"
-    },
-    {
-      "midi_note": 34,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n034.flac"
-    },
-    {
-      "midi_note": 34,
-      "velocity_min": 100,
-      "velocity_max": 106,
-      "velocity_idx": 16,
-      "round_robin": 1,
-      "file": "audio/rr1_vel016_n034.flac"
-    },
-    {
-      "midi_note": 34,
-      "velocity_min": 107,
-      "velocity_max": 113,
-      "velocity_idx": 17,
-      "round_robin": 1,
-      "file": "audio/rr1_vel017_n034.flac"
     },
     {
       "midi_note": 34,
@@ -1726,22 +1110,6 @@
     },
     {
       "midi_note": 35,
-      "velocity_min": 40,
-      "velocity_max": 46,
-      "velocity_idx": 7,
-      "round_robin": 1,
-      "file": "audio/rr1_vel007_n035.flac"
-    },
-    {
-      "midi_note": 35,
-      "velocity_min": 47,
-      "velocity_max": 52,
-      "velocity_idx": 8,
-      "round_robin": 1,
-      "file": "audio/rr1_vel008_n035.flac"
-    },
-    {
-      "midi_note": 35,
       "velocity_min": 53,
       "velocity_max": 59,
       "velocity_idx": 9,
@@ -1755,14 +1123,6 @@
       "velocity_idx": 10,
       "round_robin": 1,
       "file": "audio/rr1_vel010_n035.flac"
-    },
-    {
-      "midi_note": 35,
-      "velocity_min": 67,
-      "velocity_max": 73,
-      "velocity_idx": 11,
-      "round_robin": 1,
-      "file": "audio/rr1_vel011_n035.flac"
     },
     {
       "midi_note": 35,
@@ -1798,22 +1158,6 @@
     },
     {
       "midi_note": 35,
-      "velocity_min": 100,
-      "velocity_max": 106,
-      "velocity_idx": 16,
-      "round_robin": 1,
-      "file": "audio/rr1_vel016_n035.flac"
-    },
-    {
-      "midi_note": 35,
-      "velocity_min": 107,
-      "velocity_max": 113,
-      "velocity_idx": 17,
-      "round_robin": 1,
-      "file": "audio/rr1_vel017_n035.flac"
-    },
-    {
-      "midi_note": 35,
       "velocity_min": 114,
       "velocity_max": 119,
       "velocity_idx": 18,
@@ -1830,51 +1174,11 @@
     },
     {
       "midi_note": 36,
-      "velocity_min": 0,
-      "velocity_max": 6,
-      "velocity_idx": 1,
-      "round_robin": 1,
-      "file": "audio/rr1_vel001_n036.flac"
-    },
-    {
-      "midi_note": 36,
       "velocity_min": 7,
       "velocity_max": 12,
       "velocity_idx": 2,
       "round_robin": 1,
       "file": "audio/rr1_vel002_n036.flac"
-    },
-    {
-      "midi_note": 36,
-      "velocity_min": 13,
-      "velocity_max": 19,
-      "velocity_idx": 3,
-      "round_robin": 1,
-      "file": "audio/rr1_vel003_n036.flac"
-    },
-    {
-      "midi_note": 36,
-      "velocity_min": 20,
-      "velocity_max": 26,
-      "velocity_idx": 4,
-      "round_robin": 1,
-      "file": "audio/rr1_vel004_n036.flac"
-    },
-    {
-      "midi_note": 36,
-      "velocity_min": 27,
-      "velocity_max": 32,
-      "velocity_idx": 5,
-      "round_robin": 1,
-      "file": "audio/rr1_vel005_n036.flac"
-    },
-    {
-      "midi_note": 36,
-      "velocity_min": 33,
-      "velocity_max": 39,
-      "velocity_idx": 6,
-      "round_robin": 1,
-      "file": "audio/rr1_vel006_n036.flac"
     },
     {
       "midi_note": 36,
@@ -1894,14 +1198,6 @@
     },
     {
       "midi_note": 36,
-      "velocity_min": 53,
-      "velocity_max": 59,
-      "velocity_idx": 9,
-      "round_robin": 1,
-      "file": "audio/rr1_vel009_n036.flac"
-    },
-    {
-      "midi_note": 36,
       "velocity_min": 60,
       "velocity_max": 66,
       "velocity_idx": 10,
@@ -1918,14 +1214,6 @@
     },
     {
       "midi_note": 36,
-      "velocity_min": 74,
-      "velocity_max": 79,
-      "velocity_idx": 12,
-      "round_robin": 1,
-      "file": "audio/rr1_vel012_n036.flac"
-    },
-    {
-      "midi_note": 36,
       "velocity_min": 80,
       "velocity_max": 86,
       "velocity_idx": 13,
@@ -1934,51 +1222,11 @@
     },
     {
       "midi_note": 36,
-      "velocity_min": 87,
-      "velocity_max": 93,
-      "velocity_idx": 14,
-      "round_robin": 1,
-      "file": "audio/rr1_vel014_n036.flac"
-    },
-    {
-      "midi_note": 36,
       "velocity_min": 94,
       "velocity_max": 99,
       "velocity_idx": 15,
       "round_robin": 1,
       "file": "audio/rr1_vel015_n036.flac"
-    },
-    {
-      "midi_note": 36,
-      "velocity_min": 100,
-      "velocity_max": 106,
-      "velocity_idx": 16,
-      "round_robin": 1,
-      "file": "audio/rr1_vel016_n036.flac"
-    },
-    {
-      "midi_note": 36,
-      "velocity_min": 107,
-      "velocity_max": 113,
-      "velocity_idx": 17,
-      "round_robin": 1,
-      "file": "audio/rr1_vel017_n036.flac"
-    },
-    {
-      "midi_note": 36,
-      "velocity_min": 114,
-      "velocity_max": 119,
-      "velocity_idx": 18,
-      "round_robin": 1,
-      "file": "audio/rr1_vel018_n036.flac"
-    },
-    {
-      "midi_note": 36,
-      "velocity_min": 120,
-      "velocity_max": 127,
-      "velocity_idx": 19,
-      "round_robin": 1,
-      "file": "audio/rr1_vel019_n036.flac"
     },
     {
       "midi_note": 37,
@@ -1995,22 +1243,6 @@
       "velocity_idx": 2,
       "round_robin": 1,
       "file": "audio/rr1_vel002_n037.flac"
-    },
-    {
-      "midi_note": 37,
-      "velocity_min": 13,
-      "velocity_max": 19,
-      "velocity_idx": 3,
-      "round_robin": 1,
-      "file": "audio/rr1_vel003_n037.flac"
-    },
-    {
-      "midi_note": 37,
-      "velocity_min": 20,
-      "velocity_max": 26,
-      "velocity_idx": 4,
-      "round_robin": 1,
-      "file": "audio/rr1_vel004_n037.flac"
     },
     {
       "midi_note": 37,
@@ -2062,22 +1294,6 @@
     },
     {
       "midi_note": 37,
-      "velocity_min": 67,
-      "velocity_max": 73,
-      "velocity_idx": 11,
-      "round_robin": 1,
-      "file": "audio/rr1_vel011_n037.flac"
-    },
-    {
-      "midi_note": 37,
-      "velocity_min": 74,
-      "velocity_max": 79,
-      "velocity_idx": 12,
-      "round_robin": 1,
-      "file": "audio/rr1_vel012_n037.flac"
-    },
-    {
-      "midi_note": 37,
       "velocity_min": 80,
       "velocity_max": 86,
       "velocity_idx": 13,
@@ -2091,22 +1307,6 @@
       "velocity_idx": 14,
       "round_robin": 1,
       "file": "audio/rr1_vel014_n037.flac"
-    },
-    {
-      "midi_note": 37,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n037.flac"
-    },
-    {
-      "midi_note": 37,
-      "velocity_min": 100,
-      "velocity_max": 106,
-      "velocity_idx": 16,
-      "round_robin": 1,
-      "file": "audio/rr1_vel016_n037.flac"
     },
     {
       "midi_note": 37,
@@ -2125,28 +1325,12 @@
       "file": "audio/rr1_vel018_n037.flac"
     },
     {
-      "midi_note": 37,
-      "velocity_min": 120,
-      "velocity_max": 127,
-      "velocity_idx": 19,
-      "round_robin": 1,
-      "file": "audio/rr1_vel019_n037.flac"
-    },
-    {
       "midi_note": 38,
       "velocity_min": 0,
       "velocity_max": 6,
       "velocity_idx": 1,
       "round_robin": 1,
       "file": "audio/rr1_vel001_n038.flac"
-    },
-    {
-      "midi_note": 38,
-      "velocity_min": 7,
-      "velocity_max": 12,
-      "velocity_idx": 2,
-      "round_robin": 1,
-      "file": "audio/rr1_vel002_n038.flac"
     },
     {
       "midi_note": 38,
@@ -2158,27 +1342,11 @@
     },
     {
       "midi_note": 38,
-      "velocity_min": 20,
-      "velocity_max": 26,
-      "velocity_idx": 4,
-      "round_robin": 1,
-      "file": "audio/rr1_vel004_n038.flac"
-    },
-    {
-      "midi_note": 38,
       "velocity_min": 27,
       "velocity_max": 32,
       "velocity_idx": 5,
       "round_robin": 1,
       "file": "audio/rr1_vel005_n038.flac"
-    },
-    {
-      "midi_note": 38,
-      "velocity_min": 33,
-      "velocity_max": 39,
-      "velocity_idx": 6,
-      "round_robin": 1,
-      "file": "audio/rr1_vel006_n038.flac"
     },
     {
       "midi_note": 38,
@@ -2230,22 +1398,6 @@
     },
     {
       "midi_note": 38,
-      "velocity_min": 80,
-      "velocity_max": 86,
-      "velocity_idx": 13,
-      "round_robin": 1,
-      "file": "audio/rr1_vel013_n038.flac"
-    },
-    {
-      "midi_note": 38,
-      "velocity_min": 87,
-      "velocity_max": 93,
-      "velocity_idx": 14,
-      "round_robin": 1,
-      "file": "audio/rr1_vel014_n038.flac"
-    },
-    {
-      "midi_note": 38,
       "velocity_min": 94,
       "velocity_max": 99,
       "velocity_idx": 15,
@@ -2262,27 +1414,11 @@
     },
     {
       "midi_note": 38,
-      "velocity_min": 107,
-      "velocity_max": 113,
-      "velocity_idx": 17,
-      "round_robin": 1,
-      "file": "audio/rr1_vel017_n038.flac"
-    },
-    {
-      "midi_note": 38,
       "velocity_min": 114,
       "velocity_max": 119,
       "velocity_idx": 18,
       "round_robin": 1,
       "file": "audio/rr1_vel018_n038.flac"
-    },
-    {
-      "midi_note": 38,
-      "velocity_min": 120,
-      "velocity_max": 127,
-      "velocity_idx": 19,
-      "round_robin": 1,
-      "file": "audio/rr1_vel019_n038.flac"
     },
     {
       "midi_note": 39,
@@ -2334,35 +1470,11 @@
     },
     {
       "midi_note": 39,
-      "velocity_min": 40,
-      "velocity_max": 46,
-      "velocity_idx": 7,
-      "round_robin": 1,
-      "file": "audio/rr1_vel007_n039.flac"
-    },
-    {
-      "midi_note": 39,
-      "velocity_min": 47,
-      "velocity_max": 52,
-      "velocity_idx": 8,
-      "round_robin": 1,
-      "file": "audio/rr1_vel008_n039.flac"
-    },
-    {
-      "midi_note": 39,
       "velocity_min": 53,
       "velocity_max": 59,
       "velocity_idx": 9,
       "round_robin": 1,
       "file": "audio/rr1_vel009_n039.flac"
-    },
-    {
-      "midi_note": 39,
-      "velocity_min": 60,
-      "velocity_max": 66,
-      "velocity_idx": 10,
-      "round_robin": 1,
-      "file": "audio/rr1_vel010_n039.flac"
     },
     {
       "midi_note": 39,
@@ -2374,14 +1486,6 @@
     },
     {
       "midi_note": 39,
-      "velocity_min": 74,
-      "velocity_max": 79,
-      "velocity_idx": 12,
-      "round_robin": 1,
-      "file": "audio/rr1_vel012_n039.flac"
-    },
-    {
-      "midi_note": 39,
       "velocity_min": 80,
       "velocity_max": 86,
       "velocity_idx": 13,
@@ -2390,35 +1494,11 @@
     },
     {
       "midi_note": 39,
-      "velocity_min": 87,
-      "velocity_max": 93,
-      "velocity_idx": 14,
-      "round_robin": 1,
-      "file": "audio/rr1_vel014_n039.flac"
-    },
-    {
-      "midi_note": 39,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n039.flac"
-    },
-    {
-      "midi_note": 39,
       "velocity_min": 100,
       "velocity_max": 106,
       "velocity_idx": 16,
       "round_robin": 1,
       "file": "audio/rr1_vel016_n039.flac"
-    },
-    {
-      "midi_note": 39,
-      "velocity_min": 107,
-      "velocity_max": 113,
-      "velocity_idx": 17,
-      "round_robin": 1,
-      "file": "audio/rr1_vel017_n039.flac"
     },
     {
       "midi_note": 39,
@@ -2435,22 +1515,6 @@
       "velocity_idx": 19,
       "round_robin": 1,
       "file": "audio/rr1_vel019_n039.flac"
-    },
-    {
-      "midi_note": 40,
-      "velocity_min": 0,
-      "velocity_max": 6,
-      "velocity_idx": 1,
-      "round_robin": 1,
-      "file": "audio/rr1_vel001_n040.flac"
-    },
-    {
-      "midi_note": 40,
-      "velocity_min": 7,
-      "velocity_max": 12,
-      "velocity_idx": 2,
-      "round_robin": 1,
-      "file": "audio/rr1_vel002_n040.flac"
     },
     {
       "midi_note": 40,
@@ -2475,14 +1539,6 @@
       "velocity_idx": 5,
       "round_robin": 1,
       "file": "audio/rr1_vel005_n040.flac"
-    },
-    {
-      "midi_note": 40,
-      "velocity_min": 33,
-      "velocity_max": 39,
-      "velocity_idx": 6,
-      "round_robin": 1,
-      "file": "audio/rr1_vel006_n040.flac"
     },
     {
       "midi_note": 40,
@@ -2518,27 +1574,11 @@
     },
     {
       "midi_note": 40,
-      "velocity_min": 67,
-      "velocity_max": 73,
-      "velocity_idx": 11,
-      "round_robin": 1,
-      "file": "audio/rr1_vel011_n040.flac"
-    },
-    {
-      "midi_note": 40,
       "velocity_min": 74,
       "velocity_max": 79,
       "velocity_idx": 12,
       "round_robin": 1,
       "file": "audio/rr1_vel012_n040.flac"
-    },
-    {
-      "midi_note": 40,
-      "velocity_min": 80,
-      "velocity_max": 86,
-      "velocity_idx": 13,
-      "round_robin": 1,
-      "file": "audio/rr1_vel013_n040.flac"
     },
     {
       "midi_note": 40,
@@ -2581,28 +1621,12 @@
       "file": "audio/rr1_vel018_n040.flac"
     },
     {
-      "midi_note": 40,
-      "velocity_min": 120,
-      "velocity_max": 127,
-      "velocity_idx": 19,
-      "round_robin": 1,
-      "file": "audio/rr1_vel019_n040.flac"
-    },
-    {
       "midi_note": 41,
       "velocity_min": 0,
       "velocity_max": 6,
       "velocity_idx": 1,
       "round_robin": 1,
       "file": "audio/rr1_vel001_n041.flac"
-    },
-    {
-      "midi_note": 41,
-      "velocity_min": 7,
-      "velocity_max": 12,
-      "velocity_idx": 2,
-      "round_robin": 1,
-      "file": "audio/rr1_vel002_n041.flac"
     },
     {
       "midi_note": 41,
@@ -2638,35 +1662,11 @@
     },
     {
       "midi_note": 41,
-      "velocity_min": 40,
-      "velocity_max": 46,
-      "velocity_idx": 7,
-      "round_robin": 1,
-      "file": "audio/rr1_vel007_n041.flac"
-    },
-    {
-      "midi_note": 41,
       "velocity_min": 47,
       "velocity_max": 52,
       "velocity_idx": 8,
       "round_robin": 1,
       "file": "audio/rr1_vel008_n041.flac"
-    },
-    {
-      "midi_note": 41,
-      "velocity_min": 53,
-      "velocity_max": 59,
-      "velocity_idx": 9,
-      "round_robin": 1,
-      "file": "audio/rr1_vel009_n041.flac"
-    },
-    {
-      "midi_note": 41,
-      "velocity_min": 60,
-      "velocity_max": 66,
-      "velocity_idx": 10,
-      "round_robin": 1,
-      "file": "audio/rr1_vel010_n041.flac"
     },
     {
       "midi_note": 41,
@@ -2718,51 +1718,11 @@
     },
     {
       "midi_note": 41,
-      "velocity_min": 107,
-      "velocity_max": 113,
-      "velocity_idx": 17,
-      "round_robin": 1,
-      "file": "audio/rr1_vel017_n041.flac"
-    },
-    {
-      "midi_note": 41,
-      "velocity_min": 114,
-      "velocity_max": 119,
-      "velocity_idx": 18,
-      "round_robin": 1,
-      "file": "audio/rr1_vel018_n041.flac"
-    },
-    {
-      "midi_note": 41,
       "velocity_min": 120,
       "velocity_max": 127,
       "velocity_idx": 19,
       "round_robin": 1,
       "file": "audio/rr1_vel019_n041.flac"
-    },
-    {
-      "midi_note": 42,
-      "velocity_min": 0,
-      "velocity_max": 6,
-      "velocity_idx": 1,
-      "round_robin": 1,
-      "file": "audio/rr1_vel001_n042.flac"
-    },
-    {
-      "midi_note": 42,
-      "velocity_min": 7,
-      "velocity_max": 12,
-      "velocity_idx": 2,
-      "round_robin": 1,
-      "file": "audio/rr1_vel002_n042.flac"
-    },
-    {
-      "midi_note": 42,
-      "velocity_min": 13,
-      "velocity_max": 19,
-      "velocity_idx": 3,
-      "round_robin": 1,
-      "file": "audio/rr1_vel003_n042.flac"
     },
     {
       "midi_note": 42,
@@ -2854,22 +1814,6 @@
     },
     {
       "midi_note": 42,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n042.flac"
-    },
-    {
-      "midi_note": 42,
-      "velocity_min": 100,
-      "velocity_max": 106,
-      "velocity_idx": 16,
-      "round_robin": 1,
-      "file": "audio/rr1_vel016_n042.flac"
-    },
-    {
-      "midi_note": 42,
       "velocity_min": 107,
       "velocity_max": 113,
       "velocity_idx": 17,
@@ -2885,28 +1829,12 @@
       "file": "audio/rr1_vel018_n042.flac"
     },
     {
-      "midi_note": 42,
-      "velocity_min": 120,
-      "velocity_max": 127,
-      "velocity_idx": 19,
-      "round_robin": 1,
-      "file": "audio/rr1_vel019_n042.flac"
-    },
-    {
       "midi_note": 43,
       "velocity_min": 0,
       "velocity_max": 6,
       "velocity_idx": 1,
       "round_robin": 1,
       "file": "audio/rr1_vel001_n043.flac"
-    },
-    {
-      "midi_note": 43,
-      "velocity_min": 7,
-      "velocity_max": 12,
-      "velocity_idx": 2,
-      "round_robin": 1,
-      "file": "audio/rr1_vel002_n043.flac"
     },
     {
       "midi_note": 43,
@@ -2931,14 +1859,6 @@
       "velocity_idx": 5,
       "round_robin": 1,
       "file": "audio/rr1_vel005_n043.flac"
-    },
-    {
-      "midi_note": 43,
-      "velocity_min": 33,
-      "velocity_max": 39,
-      "velocity_idx": 6,
-      "round_robin": 1,
-      "file": "audio/rr1_vel006_n043.flac"
     },
     {
       "midi_note": 43,
@@ -2998,35 +1918,11 @@
     },
     {
       "midi_note": 43,
-      "velocity_min": 87,
-      "velocity_max": 93,
-      "velocity_idx": 14,
-      "round_robin": 1,
-      "file": "audio/rr1_vel014_n043.flac"
-    },
-    {
-      "midi_note": 43,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n043.flac"
-    },
-    {
-      "midi_note": 43,
       "velocity_min": 100,
       "velocity_max": 106,
       "velocity_idx": 16,
       "round_robin": 1,
       "file": "audio/rr1_vel016_n043.flac"
-    },
-    {
-      "midi_note": 43,
-      "velocity_min": 107,
-      "velocity_max": 113,
-      "velocity_idx": 17,
-      "round_robin": 1,
-      "file": "audio/rr1_vel017_n043.flac"
     },
     {
       "midi_note": 43,
@@ -3067,14 +1963,6 @@
       "velocity_idx": 3,
       "round_robin": 1,
       "file": "audio/rr1_vel003_n044.flac"
-    },
-    {
-      "midi_note": 44,
-      "velocity_min": 20,
-      "velocity_max": 26,
-      "velocity_idx": 4,
-      "round_robin": 1,
-      "file": "audio/rr1_vel004_n044.flac"
     },
     {
       "midi_note": 44,
@@ -3126,14 +2014,6 @@
     },
     {
       "midi_note": 44,
-      "velocity_min": 67,
-      "velocity_max": 73,
-      "velocity_idx": 11,
-      "round_robin": 1,
-      "file": "audio/rr1_vel011_n044.flac"
-    },
-    {
-      "midi_note": 44,
       "velocity_min": 74,
       "velocity_max": 79,
       "velocity_idx": 12,
@@ -3150,27 +2030,11 @@
     },
     {
       "midi_note": 44,
-      "velocity_min": 87,
-      "velocity_max": 93,
-      "velocity_idx": 14,
-      "round_robin": 1,
-      "file": "audio/rr1_vel014_n044.flac"
-    },
-    {
-      "midi_note": 44,
       "velocity_min": 94,
       "velocity_max": 99,
       "velocity_idx": 15,
       "round_robin": 1,
       "file": "audio/rr1_vel015_n044.flac"
-    },
-    {
-      "midi_note": 44,
-      "velocity_min": 100,
-      "velocity_max": 106,
-      "velocity_idx": 16,
-      "round_robin": 1,
-      "file": "audio/rr1_vel016_n044.flac"
     },
     {
       "midi_note": 44,
@@ -3198,35 +2062,11 @@
     },
     {
       "midi_note": 45,
-      "velocity_min": 0,
-      "velocity_max": 6,
-      "velocity_idx": 1,
-      "round_robin": 1,
-      "file": "audio/rr1_vel001_n045.flac"
-    },
-    {
-      "midi_note": 45,
-      "velocity_min": 7,
-      "velocity_max": 12,
-      "velocity_idx": 2,
-      "round_robin": 1,
-      "file": "audio/rr1_vel002_n045.flac"
-    },
-    {
-      "midi_note": 45,
       "velocity_min": 13,
       "velocity_max": 19,
       "velocity_idx": 3,
       "round_robin": 1,
       "file": "audio/rr1_vel003_n045.flac"
-    },
-    {
-      "midi_note": 45,
-      "velocity_min": 20,
-      "velocity_max": 26,
-      "velocity_idx": 4,
-      "round_robin": 1,
-      "file": "audio/rr1_vel004_n045.flac"
     },
     {
       "midi_note": 45,
@@ -3270,22 +2110,6 @@
     },
     {
       "midi_note": 45,
-      "velocity_min": 60,
-      "velocity_max": 66,
-      "velocity_idx": 10,
-      "round_robin": 1,
-      "file": "audio/rr1_vel010_n045.flac"
-    },
-    {
-      "midi_note": 45,
-      "velocity_min": 67,
-      "velocity_max": 73,
-      "velocity_idx": 11,
-      "round_robin": 1,
-      "file": "audio/rr1_vel011_n045.flac"
-    },
-    {
-      "midi_note": 45,
       "velocity_min": 74,
       "velocity_max": 79,
       "velocity_idx": 12,
@@ -3310,14 +2134,6 @@
     },
     {
       "midi_note": 45,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n045.flac"
-    },
-    {
-      "midi_note": 45,
       "velocity_min": 100,
       "velocity_max": 106,
       "velocity_idx": 16,
@@ -3331,22 +2147,6 @@
       "velocity_idx": 17,
       "round_robin": 1,
       "file": "audio/rr1_vel017_n045.flac"
-    },
-    {
-      "midi_note": 45,
-      "velocity_min": 114,
-      "velocity_max": 119,
-      "velocity_idx": 18,
-      "round_robin": 1,
-      "file": "audio/rr1_vel018_n045.flac"
-    },
-    {
-      "midi_note": 45,
-      "velocity_min": 120,
-      "velocity_max": 127,
-      "velocity_idx": 19,
-      "round_robin": 1,
-      "file": "audio/rr1_vel019_n045.flac"
     },
     {
       "midi_note": 46,
@@ -3366,14 +2166,6 @@
     },
     {
       "midi_note": 46,
-      "velocity_min": 13,
-      "velocity_max": 19,
-      "velocity_idx": 3,
-      "round_robin": 1,
-      "file": "audio/rr1_vel003_n046.flac"
-    },
-    {
-      "midi_note": 46,
       "velocity_min": 20,
       "velocity_max": 26,
       "velocity_idx": 4,
@@ -3387,14 +2179,6 @@
       "velocity_idx": 5,
       "round_robin": 1,
       "file": "audio/rr1_vel005_n046.flac"
-    },
-    {
-      "midi_note": 46,
-      "velocity_min": 33,
-      "velocity_max": 39,
-      "velocity_idx": 6,
-      "round_robin": 1,
-      "file": "audio/rr1_vel006_n046.flac"
     },
     {
       "midi_note": 46,
@@ -3414,14 +2198,6 @@
     },
     {
       "midi_note": 46,
-      "velocity_min": 53,
-      "velocity_max": 59,
-      "velocity_idx": 9,
-      "round_robin": 1,
-      "file": "audio/rr1_vel009_n046.flac"
-    },
-    {
-      "midi_note": 46,
       "velocity_min": 60,
       "velocity_max": 66,
       "velocity_idx": 10,
@@ -3438,14 +2214,6 @@
     },
     {
       "midi_note": 46,
-      "velocity_min": 74,
-      "velocity_max": 79,
-      "velocity_idx": 12,
-      "round_robin": 1,
-      "file": "audio/rr1_vel012_n046.flac"
-    },
-    {
-      "midi_note": 46,
       "velocity_min": 80,
       "velocity_max": 86,
       "velocity_idx": 13,
@@ -3459,14 +2227,6 @@
       "velocity_idx": 14,
       "round_robin": 1,
       "file": "audio/rr1_vel014_n046.flac"
-    },
-    {
-      "midi_note": 46,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n046.flac"
     },
     {
       "midi_note": 46,
@@ -3534,14 +2294,6 @@
     },
     {
       "midi_note": 47,
-      "velocity_min": 27,
-      "velocity_max": 32,
-      "velocity_idx": 5,
-      "round_robin": 1,
-      "file": "audio/rr1_vel005_n047.flac"
-    },
-    {
-      "midi_note": 47,
       "velocity_min": 33,
       "velocity_max": 39,
       "velocity_idx": 6,
@@ -3574,14 +2326,6 @@
     },
     {
       "midi_note": 47,
-      "velocity_min": 60,
-      "velocity_max": 66,
-      "velocity_idx": 10,
-      "round_robin": 1,
-      "file": "audio/rr1_vel010_n047.flac"
-    },
-    {
-      "midi_note": 47,
       "velocity_min": 67,
       "velocity_max": 73,
       "velocity_idx": 11,
@@ -3606,22 +2350,6 @@
     },
     {
       "midi_note": 47,
-      "velocity_min": 87,
-      "velocity_max": 93,
-      "velocity_idx": 14,
-      "round_robin": 1,
-      "file": "audio/rr1_vel014_n047.flac"
-    },
-    {
-      "midi_note": 47,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n047.flac"
-    },
-    {
-      "midi_note": 47,
       "velocity_min": 100,
       "velocity_max": 106,
       "velocity_idx": 16,
@@ -3637,68 +2365,12 @@
       "file": "audio/rr1_vel017_n047.flac"
     },
     {
-      "midi_note": 47,
-      "velocity_min": 114,
-      "velocity_max": 119,
-      "velocity_idx": 18,
-      "round_robin": 1,
-      "file": "audio/rr1_vel018_n047.flac"
-    },
-    {
-      "midi_note": 47,
-      "velocity_min": 120,
-      "velocity_max": 127,
-      "velocity_idx": 19,
-      "round_robin": 1,
-      "file": "audio/rr1_vel019_n047.flac"
-    },
-    {
-      "midi_note": 48,
-      "velocity_min": 0,
-      "velocity_max": 6,
-      "velocity_idx": 1,
-      "round_robin": 1,
-      "file": "audio/rr1_vel001_n048.flac"
-    },
-    {
-      "midi_note": 48,
-      "velocity_min": 7,
-      "velocity_max": 12,
-      "velocity_idx": 2,
-      "round_robin": 1,
-      "file": "audio/rr1_vel002_n048.flac"
-    },
-    {
       "midi_note": 48,
       "velocity_min": 13,
       "velocity_max": 19,
       "velocity_idx": 3,
       "round_robin": 1,
       "file": "audio/rr1_vel003_n048.flac"
-    },
-    {
-      "midi_note": 48,
-      "velocity_min": 20,
-      "velocity_max": 26,
-      "velocity_idx": 4,
-      "round_robin": 1,
-      "file": "audio/rr1_vel004_n048.flac"
-    },
-    {
-      "midi_note": 48,
-      "velocity_min": 27,
-      "velocity_max": 32,
-      "velocity_idx": 5,
-      "round_robin": 1,
-      "file": "audio/rr1_vel005_n048.flac"
-    },
-    {
-      "midi_note": 48,
-      "velocity_min": 33,
-      "velocity_max": 39,
-      "velocity_idx": 6,
-      "round_robin": 1,
-      "file": "audio/rr1_vel006_n048.flac"
     },
     {
       "midi_note": 48,
@@ -3723,14 +2395,6 @@
       "velocity_idx": 9,
       "round_robin": 1,
       "file": "audio/rr1_vel009_n048.flac"
-    },
-    {
-      "midi_note": 48,
-      "velocity_min": 60,
-      "velocity_max": 66,
-      "velocity_idx": 10,
-      "round_robin": 1,
-      "file": "audio/rr1_vel010_n048.flac"
     },
     {
       "midi_note": 48,
@@ -3774,14 +2438,6 @@
     },
     {
       "midi_note": 48,
-      "velocity_min": 100,
-      "velocity_max": 106,
-      "velocity_idx": 16,
-      "round_robin": 1,
-      "file": "audio/rr1_vel016_n048.flac"
-    },
-    {
-      "midi_note": 48,
       "velocity_min": 107,
       "velocity_max": 113,
       "velocity_idx": 17,
@@ -3806,27 +2462,11 @@
     },
     {
       "midi_note": 49,
-      "velocity_min": 0,
-      "velocity_max": 6,
-      "velocity_idx": 1,
-      "round_robin": 1,
-      "file": "audio/rr1_vel001_n049.flac"
-    },
-    {
-      "midi_note": 49,
       "velocity_min": 7,
       "velocity_max": 12,
       "velocity_idx": 2,
       "round_robin": 1,
       "file": "audio/rr1_vel002_n049.flac"
-    },
-    {
-      "midi_note": 49,
-      "velocity_min": 13,
-      "velocity_max": 19,
-      "velocity_idx": 3,
-      "round_robin": 1,
-      "file": "audio/rr1_vel003_n049.flac"
     },
     {
       "midi_note": 49,
@@ -3843,22 +2483,6 @@
       "velocity_idx": 5,
       "round_robin": 1,
       "file": "audio/rr1_vel005_n049.flac"
-    },
-    {
-      "midi_note": 49,
-      "velocity_min": 33,
-      "velocity_max": 39,
-      "velocity_idx": 6,
-      "round_robin": 1,
-      "file": "audio/rr1_vel006_n049.flac"
-    },
-    {
-      "midi_note": 49,
-      "velocity_min": 40,
-      "velocity_max": 46,
-      "velocity_idx": 7,
-      "round_robin": 1,
-      "file": "audio/rr1_vel007_n049.flac"
     },
     {
       "midi_note": 49,
@@ -3902,14 +2526,6 @@
     },
     {
       "midi_note": 49,
-      "velocity_min": 80,
-      "velocity_max": 86,
-      "velocity_idx": 13,
-      "round_robin": 1,
-      "file": "audio/rr1_vel013_n049.flac"
-    },
-    {
-      "midi_note": 49,
       "velocity_min": 87,
       "velocity_max": 93,
       "velocity_idx": 14,
@@ -3926,43 +2542,11 @@
     },
     {
       "midi_note": 49,
-      "velocity_min": 100,
-      "velocity_max": 106,
-      "velocity_idx": 16,
-      "round_robin": 1,
-      "file": "audio/rr1_vel016_n049.flac"
-    },
-    {
-      "midi_note": 49,
       "velocity_min": 107,
       "velocity_max": 113,
       "velocity_idx": 17,
       "round_robin": 1,
       "file": "audio/rr1_vel017_n049.flac"
-    },
-    {
-      "midi_note": 49,
-      "velocity_min": 114,
-      "velocity_max": 119,
-      "velocity_idx": 18,
-      "round_robin": 1,
-      "file": "audio/rr1_vel018_n049.flac"
-    },
-    {
-      "midi_note": 49,
-      "velocity_min": 120,
-      "velocity_max": 127,
-      "velocity_idx": 19,
-      "round_robin": 1,
-      "file": "audio/rr1_vel019_n049.flac"
-    },
-    {
-      "midi_note": 50,
-      "velocity_min": 0,
-      "velocity_max": 6,
-      "velocity_idx": 1,
-      "round_robin": 1,
-      "file": "audio/rr1_vel001_n050.flac"
     },
     {
       "midi_note": 50,
@@ -3971,30 +2555,6 @@
       "velocity_idx": 2,
       "round_robin": 1,
       "file": "audio/rr1_vel002_n050.flac"
-    },
-    {
-      "midi_note": 50,
-      "velocity_min": 13,
-      "velocity_max": 19,
-      "velocity_idx": 3,
-      "round_robin": 1,
-      "file": "audio/rr1_vel003_n050.flac"
-    },
-    {
-      "midi_note": 50,
-      "velocity_min": 20,
-      "velocity_max": 26,
-      "velocity_idx": 4,
-      "round_robin": 1,
-      "file": "audio/rr1_vel004_n050.flac"
-    },
-    {
-      "midi_note": 50,
-      "velocity_min": 27,
-      "velocity_max": 32,
-      "velocity_idx": 5,
-      "round_robin": 1,
-      "file": "audio/rr1_vel005_n050.flac"
     },
     {
       "midi_note": 50,
@@ -4014,14 +2574,6 @@
     },
     {
       "midi_note": 50,
-      "velocity_min": 47,
-      "velocity_max": 52,
-      "velocity_idx": 8,
-      "round_robin": 1,
-      "file": "audio/rr1_vel008_n050.flac"
-    },
-    {
-      "midi_note": 50,
       "velocity_min": 53,
       "velocity_max": 59,
       "velocity_idx": 9,
@@ -4038,27 +2590,11 @@
     },
     {
       "midi_note": 50,
-      "velocity_min": 67,
-      "velocity_max": 73,
-      "velocity_idx": 11,
-      "round_robin": 1,
-      "file": "audio/rr1_vel011_n050.flac"
-    },
-    {
-      "midi_note": 50,
       "velocity_min": 74,
       "velocity_max": 79,
       "velocity_idx": 12,
       "round_robin": 1,
       "file": "audio/rr1_vel012_n050.flac"
-    },
-    {
-      "midi_note": 50,
-      "velocity_min": 80,
-      "velocity_max": 86,
-      "velocity_idx": 13,
-      "round_robin": 1,
-      "file": "audio/rr1_vel013_n050.flac"
     },
     {
       "midi_note": 50,
@@ -4101,14 +2637,6 @@
       "file": "audio/rr1_vel018_n050.flac"
     },
     {
-      "midi_note": 50,
-      "velocity_min": 120,
-      "velocity_max": 127,
-      "velocity_idx": 19,
-      "round_robin": 1,
-      "file": "audio/rr1_vel019_n050.flac"
-    },
-    {
       "midi_note": 51,
       "velocity_min": 0,
       "velocity_max": 6,
@@ -4134,43 +2662,11 @@
     },
     {
       "midi_note": 51,
-      "velocity_min": 20,
-      "velocity_max": 26,
-      "velocity_idx": 4,
-      "round_robin": 1,
-      "file": "audio/rr1_vel004_n051.flac"
-    },
-    {
-      "midi_note": 51,
-      "velocity_min": 27,
-      "velocity_max": 32,
-      "velocity_idx": 5,
-      "round_robin": 1,
-      "file": "audio/rr1_vel005_n051.flac"
-    },
-    {
-      "midi_note": 51,
-      "velocity_min": 33,
-      "velocity_max": 39,
-      "velocity_idx": 6,
-      "round_robin": 1,
-      "file": "audio/rr1_vel006_n051.flac"
-    },
-    {
-      "midi_note": 51,
       "velocity_min": 40,
       "velocity_max": 46,
       "velocity_idx": 7,
       "round_robin": 1,
       "file": "audio/rr1_vel007_n051.flac"
-    },
-    {
-      "midi_note": 51,
-      "velocity_min": 47,
-      "velocity_max": 52,
-      "velocity_idx": 8,
-      "round_robin": 1,
-      "file": "audio/rr1_vel008_n051.flac"
     },
     {
       "midi_note": 51,
@@ -4238,14 +2734,6 @@
     },
     {
       "midi_note": 51,
-      "velocity_min": 107,
-      "velocity_max": 113,
-      "velocity_idx": 17,
-      "round_robin": 1,
-      "file": "audio/rr1_vel017_n051.flac"
-    },
-    {
-      "midi_note": 51,
       "velocity_min": 114,
       "velocity_max": 119,
       "velocity_idx": 18,
@@ -4278,43 +2766,11 @@
     },
     {
       "midi_note": 52,
-      "velocity_min": 13,
-      "velocity_max": 19,
-      "velocity_idx": 3,
-      "round_robin": 1,
-      "file": "audio/rr1_vel003_n052.flac"
-    },
-    {
-      "midi_note": 52,
-      "velocity_min": 20,
-      "velocity_max": 26,
-      "velocity_idx": 4,
-      "round_robin": 1,
-      "file": "audio/rr1_vel004_n052.flac"
-    },
-    {
-      "midi_note": 52,
       "velocity_min": 27,
       "velocity_max": 32,
       "velocity_idx": 5,
       "round_robin": 1,
       "file": "audio/rr1_vel005_n052.flac"
-    },
-    {
-      "midi_note": 52,
-      "velocity_min": 33,
-      "velocity_max": 39,
-      "velocity_idx": 6,
-      "round_robin": 1,
-      "file": "audio/rr1_vel006_n052.flac"
-    },
-    {
-      "midi_note": 52,
-      "velocity_min": 40,
-      "velocity_max": 46,
-      "velocity_idx": 7,
-      "round_robin": 1,
-      "file": "audio/rr1_vel007_n052.flac"
     },
     {
       "midi_note": 52,
@@ -4342,14 +2798,6 @@
     },
     {
       "midi_note": 52,
-      "velocity_min": 67,
-      "velocity_max": 73,
-      "velocity_idx": 11,
-      "round_robin": 1,
-      "file": "audio/rr1_vel011_n052.flac"
-    },
-    {
-      "midi_note": 52,
       "velocity_min": 74,
       "velocity_max": 79,
       "velocity_idx": 12,
@@ -4363,14 +2811,6 @@
       "velocity_idx": 13,
       "round_robin": 1,
       "file": "audio/rr1_vel013_n052.flac"
-    },
-    {
-      "midi_note": 52,
-      "velocity_min": 87,
-      "velocity_max": 93,
-      "velocity_idx": 14,
-      "round_robin": 1,
-      "file": "audio/rr1_vel014_n052.flac"
     },
     {
       "midi_note": 52,
@@ -4390,22 +2830,6 @@
     },
     {
       "midi_note": 52,
-      "velocity_min": 107,
-      "velocity_max": 113,
-      "velocity_idx": 17,
-      "round_robin": 1,
-      "file": "audio/rr1_vel017_n052.flac"
-    },
-    {
-      "midi_note": 52,
-      "velocity_min": 114,
-      "velocity_max": 119,
-      "velocity_idx": 18,
-      "round_robin": 1,
-      "file": "audio/rr1_vel018_n052.flac"
-    },
-    {
-      "midi_note": 52,
       "velocity_min": 120,
       "velocity_max": 127,
       "velocity_idx": 19,
@@ -4422,27 +2846,11 @@
     },
     {
       "midi_note": 53,
-      "velocity_min": 7,
-      "velocity_max": 12,
-      "velocity_idx": 2,
-      "round_robin": 1,
-      "file": "audio/rr1_vel002_n053.flac"
-    },
-    {
-      "midi_note": 53,
       "velocity_min": 13,
       "velocity_max": 19,
       "velocity_idx": 3,
       "round_robin": 1,
       "file": "audio/rr1_vel003_n053.flac"
-    },
-    {
-      "midi_note": 53,
-      "velocity_min": 20,
-      "velocity_max": 26,
-      "velocity_idx": 4,
-      "round_robin": 1,
-      "file": "audio/rr1_vel004_n053.flac"
     },
     {
       "midi_note": 53,
@@ -4454,27 +2862,11 @@
     },
     {
       "midi_note": 53,
-      "velocity_min": 33,
-      "velocity_max": 39,
-      "velocity_idx": 6,
-      "round_robin": 1,
-      "file": "audio/rr1_vel006_n053.flac"
-    },
-    {
-      "midi_note": 53,
       "velocity_min": 40,
       "velocity_max": 46,
       "velocity_idx": 7,
       "round_robin": 1,
       "file": "audio/rr1_vel007_n053.flac"
-    },
-    {
-      "midi_note": 53,
-      "velocity_min": 47,
-      "velocity_max": 52,
-      "velocity_idx": 8,
-      "round_robin": 1,
-      "file": "audio/rr1_vel008_n053.flac"
     },
     {
       "midi_note": 53,
@@ -4494,30 +2886,6 @@
     },
     {
       "midi_note": 53,
-      "velocity_min": 67,
-      "velocity_max": 73,
-      "velocity_idx": 11,
-      "round_robin": 1,
-      "file": "audio/rr1_vel011_n053.flac"
-    },
-    {
-      "midi_note": 53,
-      "velocity_min": 74,
-      "velocity_max": 79,
-      "velocity_idx": 12,
-      "round_robin": 1,
-      "file": "audio/rr1_vel012_n053.flac"
-    },
-    {
-      "midi_note": 53,
-      "velocity_min": 80,
-      "velocity_max": 86,
-      "velocity_idx": 13,
-      "round_robin": 1,
-      "file": "audio/rr1_vel013_n053.flac"
-    },
-    {
-      "midi_note": 53,
       "velocity_min": 87,
       "velocity_max": 93,
       "velocity_idx": 14,
@@ -4526,35 +2894,11 @@
     },
     {
       "midi_note": 53,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n053.flac"
-    },
-    {
-      "midi_note": 53,
       "velocity_min": 100,
       "velocity_max": 106,
       "velocity_idx": 16,
       "round_robin": 1,
       "file": "audio/rr1_vel016_n053.flac"
-    },
-    {
-      "midi_note": 53,
-      "velocity_min": 107,
-      "velocity_max": 113,
-      "velocity_idx": 17,
-      "round_robin": 1,
-      "file": "audio/rr1_vel017_n053.flac"
-    },
-    {
-      "midi_note": 53,
-      "velocity_min": 114,
-      "velocity_max": 119,
-      "velocity_idx": 18,
-      "round_robin": 1,
-      "file": "audio/rr1_vel018_n053.flac"
     },
     {
       "midi_note": 53,
@@ -4574,27 +2918,11 @@
     },
     {
       "midi_note": 54,
-      "velocity_min": 7,
-      "velocity_max": 12,
-      "velocity_idx": 2,
-      "round_robin": 1,
-      "file": "audio/rr1_vel002_n054.flac"
-    },
-    {
-      "midi_note": 54,
       "velocity_min": 13,
       "velocity_max": 19,
       "velocity_idx": 3,
       "round_robin": 1,
       "file": "audio/rr1_vel003_n054.flac"
-    },
-    {
-      "midi_note": 54,
-      "velocity_min": 20,
-      "velocity_max": 26,
-      "velocity_idx": 4,
-      "round_robin": 1,
-      "file": "audio/rr1_vel004_n054.flac"
     },
     {
       "midi_note": 54,
@@ -4638,14 +2966,6 @@
     },
     {
       "midi_note": 54,
-      "velocity_min": 60,
-      "velocity_max": 66,
-      "velocity_idx": 10,
-      "round_robin": 1,
-      "file": "audio/rr1_vel010_n054.flac"
-    },
-    {
-      "midi_note": 54,
       "velocity_min": 67,
       "velocity_max": 73,
       "velocity_idx": 11,
@@ -4662,30 +2982,6 @@
     },
     {
       "midi_note": 54,
-      "velocity_min": 80,
-      "velocity_max": 86,
-      "velocity_idx": 13,
-      "round_robin": 1,
-      "file": "audio/rr1_vel013_n054.flac"
-    },
-    {
-      "midi_note": 54,
-      "velocity_min": 87,
-      "velocity_max": 93,
-      "velocity_idx": 14,
-      "round_robin": 1,
-      "file": "audio/rr1_vel014_n054.flac"
-    },
-    {
-      "midi_note": 54,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n054.flac"
-    },
-    {
-      "midi_note": 54,
       "velocity_min": 100,
       "velocity_max": 106,
       "velocity_idx": 16,
@@ -4694,27 +2990,11 @@
     },
     {
       "midi_note": 54,
-      "velocity_min": 107,
-      "velocity_max": 113,
-      "velocity_idx": 17,
-      "round_robin": 1,
-      "file": "audio/rr1_vel017_n054.flac"
-    },
-    {
-      "midi_note": 54,
       "velocity_min": 114,
       "velocity_max": 119,
       "velocity_idx": 18,
       "round_robin": 1,
       "file": "audio/rr1_vel018_n054.flac"
-    },
-    {
-      "midi_note": 54,
-      "velocity_min": 120,
-      "velocity_max": 127,
-      "velocity_idx": 19,
-      "round_robin": 1,
-      "file": "audio/rr1_vel019_n054.flac"
     },
     {
       "midi_note": 55,
@@ -4747,14 +3027,6 @@
       "velocity_idx": 4,
       "round_robin": 1,
       "file": "audio/rr1_vel004_n055.flac"
-    },
-    {
-      "midi_note": 55,
-      "velocity_min": 27,
-      "velocity_max": 32,
-      "velocity_idx": 5,
-      "round_robin": 1,
-      "file": "audio/rr1_vel005_n055.flac"
     },
     {
       "midi_note": 55,
@@ -4806,35 +3078,11 @@
     },
     {
       "midi_note": 55,
-      "velocity_min": 74,
-      "velocity_max": 79,
-      "velocity_idx": 12,
-      "round_robin": 1,
-      "file": "audio/rr1_vel012_n055.flac"
-    },
-    {
-      "midi_note": 55,
       "velocity_min": 80,
       "velocity_max": 86,
       "velocity_idx": 13,
       "round_robin": 1,
       "file": "audio/rr1_vel013_n055.flac"
-    },
-    {
-      "midi_note": 55,
-      "velocity_min": 87,
-      "velocity_max": 93,
-      "velocity_idx": 14,
-      "round_robin": 1,
-      "file": "audio/rr1_vel014_n055.flac"
-    },
-    {
-      "midi_note": 55,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n055.flac"
     },
     {
       "midi_note": 55,
@@ -4894,43 +3142,11 @@
     },
     {
       "midi_note": 56,
-      "velocity_min": 20,
-      "velocity_max": 26,
-      "velocity_idx": 4,
-      "round_robin": 1,
-      "file": "audio/rr1_vel004_n056.flac"
-    },
-    {
-      "midi_note": 56,
-      "velocity_min": 27,
-      "velocity_max": 32,
-      "velocity_idx": 5,
-      "round_robin": 1,
-      "file": "audio/rr1_vel005_n056.flac"
-    },
-    {
-      "midi_note": 56,
-      "velocity_min": 33,
-      "velocity_max": 39,
-      "velocity_idx": 6,
-      "round_robin": 1,
-      "file": "audio/rr1_vel006_n056.flac"
-    },
-    {
-      "midi_note": 56,
       "velocity_min": 40,
       "velocity_max": 46,
       "velocity_idx": 7,
       "round_robin": 1,
       "file": "audio/rr1_vel007_n056.flac"
-    },
-    {
-      "midi_note": 56,
-      "velocity_min": 47,
-      "velocity_max": 52,
-      "velocity_idx": 8,
-      "round_robin": 1,
-      "file": "audio/rr1_vel008_n056.flac"
     },
     {
       "midi_note": 56,
@@ -4950,22 +3166,6 @@
     },
     {
       "midi_note": 56,
-      "velocity_min": 67,
-      "velocity_max": 73,
-      "velocity_idx": 11,
-      "round_robin": 1,
-      "file": "audio/rr1_vel011_n056.flac"
-    },
-    {
-      "midi_note": 56,
-      "velocity_min": 74,
-      "velocity_max": 79,
-      "velocity_idx": 12,
-      "round_robin": 1,
-      "file": "audio/rr1_vel012_n056.flac"
-    },
-    {
-      "midi_note": 56,
       "velocity_min": 80,
       "velocity_max": 86,
       "velocity_idx": 13,
@@ -4979,22 +3179,6 @@
       "velocity_idx": 14,
       "round_robin": 1,
       "file": "audio/rr1_vel014_n056.flac"
-    },
-    {
-      "midi_note": 56,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n056.flac"
-    },
-    {
-      "midi_note": 56,
-      "velocity_min": 100,
-      "velocity_max": 106,
-      "velocity_idx": 16,
-      "round_robin": 1,
-      "file": "audio/rr1_vel016_n056.flac"
     },
     {
       "midi_note": 56,
@@ -5046,35 +3230,11 @@
     },
     {
       "midi_note": 57,
-      "velocity_min": 20,
-      "velocity_max": 26,
-      "velocity_idx": 4,
-      "round_robin": 1,
-      "file": "audio/rr1_vel004_n057.flac"
-    },
-    {
-      "midi_note": 57,
-      "velocity_min": 27,
-      "velocity_max": 32,
-      "velocity_idx": 5,
-      "round_robin": 1,
-      "file": "audio/rr1_vel005_n057.flac"
-    },
-    {
-      "midi_note": 57,
       "velocity_min": 33,
       "velocity_max": 39,
       "velocity_idx": 6,
       "round_robin": 1,
       "file": "audio/rr1_vel006_n057.flac"
-    },
-    {
-      "midi_note": 57,
-      "velocity_min": 40,
-      "velocity_max": 46,
-      "velocity_idx": 7,
-      "round_robin": 1,
-      "file": "audio/rr1_vel007_n057.flac"
     },
     {
       "midi_note": 57,
@@ -5086,27 +3246,11 @@
     },
     {
       "midi_note": 57,
-      "velocity_min": 53,
-      "velocity_max": 59,
-      "velocity_idx": 9,
-      "round_robin": 1,
-      "file": "audio/rr1_vel009_n057.flac"
-    },
-    {
-      "midi_note": 57,
       "velocity_min": 60,
       "velocity_max": 66,
       "velocity_idx": 10,
       "round_robin": 1,
       "file": "audio/rr1_vel010_n057.flac"
-    },
-    {
-      "midi_note": 57,
-      "velocity_min": 67,
-      "velocity_max": 73,
-      "velocity_idx": 11,
-      "round_robin": 1,
-      "file": "audio/rr1_vel011_n057.flac"
     },
     {
       "midi_note": 57,
@@ -5118,14 +3262,6 @@
     },
     {
       "midi_note": 57,
-      "velocity_min": 80,
-      "velocity_max": 86,
-      "velocity_idx": 13,
-      "round_robin": 1,
-      "file": "audio/rr1_vel013_n057.flac"
-    },
-    {
-      "midi_note": 57,
       "velocity_min": 87,
       "velocity_max": 93,
       "velocity_idx": 14,
@@ -5134,27 +3270,11 @@
     },
     {
       "midi_note": 57,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n057.flac"
-    },
-    {
-      "midi_note": 57,
       "velocity_min": 100,
       "velocity_max": 106,
       "velocity_idx": 16,
       "round_robin": 1,
       "file": "audio/rr1_vel016_n057.flac"
-    },
-    {
-      "midi_note": 57,
-      "velocity_min": 107,
-      "velocity_max": 113,
-      "velocity_idx": 17,
-      "round_robin": 1,
-      "file": "audio/rr1_vel017_n057.flac"
     },
     {
       "midi_note": 57,
@@ -5206,14 +3326,6 @@
     },
     {
       "midi_note": 58,
-      "velocity_min": 27,
-      "velocity_max": 32,
-      "velocity_idx": 5,
-      "round_robin": 1,
-      "file": "audio/rr1_vel005_n058.flac"
-    },
-    {
-      "midi_note": 58,
       "velocity_min": 33,
       "velocity_max": 39,
       "velocity_idx": 6,
@@ -5262,14 +3374,6 @@
     },
     {
       "midi_note": 58,
-      "velocity_min": 74,
-      "velocity_max": 79,
-      "velocity_idx": 12,
-      "round_robin": 1,
-      "file": "audio/rr1_vel012_n058.flac"
-    },
-    {
-      "midi_note": 58,
       "velocity_min": 80,
       "velocity_max": 86,
       "velocity_idx": 13,
@@ -5283,14 +3387,6 @@
       "velocity_idx": 14,
       "round_robin": 1,
       "file": "audio/rr1_vel014_n058.flac"
-    },
-    {
-      "midi_note": 58,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n058.flac"
     },
     {
       "midi_note": 58,
@@ -5323,14 +3419,6 @@
       "velocity_idx": 19,
       "round_robin": 1,
       "file": "audio/rr1_vel019_n058.flac"
-    },
-    {
-      "midi_note": 59,
-      "velocity_min": 0,
-      "velocity_max": 6,
-      "velocity_idx": 1,
-      "round_robin": 1,
-      "file": "audio/rr1_vel001_n059.flac"
     },
     {
       "midi_note": 59,
@@ -5382,38 +3470,6 @@
     },
     {
       "midi_note": 59,
-      "velocity_min": 47,
-      "velocity_max": 52,
-      "velocity_idx": 8,
-      "round_robin": 1,
-      "file": "audio/rr1_vel008_n059.flac"
-    },
-    {
-      "midi_note": 59,
-      "velocity_min": 53,
-      "velocity_max": 59,
-      "velocity_idx": 9,
-      "round_robin": 1,
-      "file": "audio/rr1_vel009_n059.flac"
-    },
-    {
-      "midi_note": 59,
-      "velocity_min": 60,
-      "velocity_max": 66,
-      "velocity_idx": 10,
-      "round_robin": 1,
-      "file": "audio/rr1_vel010_n059.flac"
-    },
-    {
-      "midi_note": 59,
-      "velocity_min": 67,
-      "velocity_max": 73,
-      "velocity_idx": 11,
-      "round_robin": 1,
-      "file": "audio/rr1_vel011_n059.flac"
-    },
-    {
-      "midi_note": 59,
       "velocity_min": 74,
       "velocity_max": 79,
       "velocity_idx": 12,
@@ -5422,27 +3478,11 @@
     },
     {
       "midi_note": 59,
-      "velocity_min": 80,
-      "velocity_max": 86,
-      "velocity_idx": 13,
-      "round_robin": 1,
-      "file": "audio/rr1_vel013_n059.flac"
-    },
-    {
-      "midi_note": 59,
       "velocity_min": 87,
       "velocity_max": 93,
       "velocity_idx": 14,
       "round_robin": 1,
       "file": "audio/rr1_vel014_n059.flac"
-    },
-    {
-      "midi_note": 59,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n059.flac"
     },
     {
       "midi_note": 59,
@@ -5459,14 +3499,6 @@
       "velocity_idx": 17,
       "round_robin": 1,
       "file": "audio/rr1_vel017_n059.flac"
-    },
-    {
-      "midi_note": 59,
-      "velocity_min": 114,
-      "velocity_max": 119,
-      "velocity_idx": 18,
-      "round_robin": 1,
-      "file": "audio/rr1_vel018_n059.flac"
     },
     {
       "midi_note": 59,
@@ -5494,30 +3526,6 @@
     },
     {
       "midi_note": 60,
-      "velocity_min": 13,
-      "velocity_max": 19,
-      "velocity_idx": 3,
-      "round_robin": 1,
-      "file": "audio/rr1_vel003_n060.flac"
-    },
-    {
-      "midi_note": 60,
-      "velocity_min": 20,
-      "velocity_max": 26,
-      "velocity_idx": 4,
-      "round_robin": 1,
-      "file": "audio/rr1_vel004_n060.flac"
-    },
-    {
-      "midi_note": 60,
-      "velocity_min": 27,
-      "velocity_max": 32,
-      "velocity_idx": 5,
-      "round_robin": 1,
-      "file": "audio/rr1_vel005_n060.flac"
-    },
-    {
-      "midi_note": 60,
       "velocity_min": 33,
       "velocity_max": 39,
       "velocity_idx": 6,
@@ -5526,51 +3534,11 @@
     },
     {
       "midi_note": 60,
-      "velocity_min": 40,
-      "velocity_max": 46,
-      "velocity_idx": 7,
-      "round_robin": 1,
-      "file": "audio/rr1_vel007_n060.flac"
-    },
-    {
-      "midi_note": 60,
       "velocity_min": 47,
       "velocity_max": 52,
       "velocity_idx": 8,
       "round_robin": 1,
       "file": "audio/rr1_vel008_n060.flac"
-    },
-    {
-      "midi_note": 60,
-      "velocity_min": 53,
-      "velocity_max": 59,
-      "velocity_idx": 9,
-      "round_robin": 1,
-      "file": "audio/rr1_vel009_n060.flac"
-    },
-    {
-      "midi_note": 60,
-      "velocity_min": 60,
-      "velocity_max": 66,
-      "velocity_idx": 10,
-      "round_robin": 1,
-      "file": "audio/rr1_vel010_n060.flac"
-    },
-    {
-      "midi_note": 60,
-      "velocity_min": 67,
-      "velocity_max": 73,
-      "velocity_idx": 11,
-      "round_robin": 1,
-      "file": "audio/rr1_vel011_n060.flac"
-    },
-    {
-      "midi_note": 60,
-      "velocity_min": 74,
-      "velocity_max": 79,
-      "velocity_idx": 12,
-      "round_robin": 1,
-      "file": "audio/rr1_vel012_n060.flac"
     },
     {
       "midi_note": 60,
@@ -5598,30 +3566,6 @@
     },
     {
       "midi_note": 60,
-      "velocity_min": 100,
-      "velocity_max": 106,
-      "velocity_idx": 16,
-      "round_robin": 1,
-      "file": "audio/rr1_vel016_n060.flac"
-    },
-    {
-      "midi_note": 60,
-      "velocity_min": 107,
-      "velocity_max": 113,
-      "velocity_idx": 17,
-      "round_robin": 1,
-      "file": "audio/rr1_vel017_n060.flac"
-    },
-    {
-      "midi_note": 60,
-      "velocity_min": 114,
-      "velocity_max": 119,
-      "velocity_idx": 18,
-      "round_robin": 1,
-      "file": "audio/rr1_vel018_n060.flac"
-    },
-    {
-      "midi_note": 60,
       "velocity_min": 120,
       "velocity_max": 127,
       "velocity_idx": 19,
@@ -5643,14 +3587,6 @@
       "velocity_idx": 2,
       "round_robin": 1,
       "file": "audio/rr1_vel002_n061.flac"
-    },
-    {
-      "midi_note": 61,
-      "velocity_min": 13,
-      "velocity_max": 19,
-      "velocity_idx": 3,
-      "round_robin": 1,
-      "file": "audio/rr1_vel003_n061.flac"
     },
     {
       "midi_note": 61,
@@ -5733,54 +3669,6 @@
       "file": "audio/rr1_vel013_n061.flac"
     },
     {
-      "midi_note": 61,
-      "velocity_min": 87,
-      "velocity_max": 93,
-      "velocity_idx": 14,
-      "round_robin": 1,
-      "file": "audio/rr1_vel014_n061.flac"
-    },
-    {
-      "midi_note": 61,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n061.flac"
-    },
-    {
-      "midi_note": 61,
-      "velocity_min": 100,
-      "velocity_max": 106,
-      "velocity_idx": 16,
-      "round_robin": 1,
-      "file": "audio/rr1_vel016_n061.flac"
-    },
-    {
-      "midi_note": 61,
-      "velocity_min": 107,
-      "velocity_max": 113,
-      "velocity_idx": 17,
-      "round_robin": 1,
-      "file": "audio/rr1_vel017_n061.flac"
-    },
-    {
-      "midi_note": 61,
-      "velocity_min": 114,
-      "velocity_max": 119,
-      "velocity_idx": 18,
-      "round_robin": 1,
-      "file": "audio/rr1_vel018_n061.flac"
-    },
-    {
-      "midi_note": 61,
-      "velocity_min": 120,
-      "velocity_max": 127,
-      "velocity_idx": 19,
-      "round_robin": 1,
-      "file": "audio/rr1_vel019_n061.flac"
-    },
-    {
       "midi_note": 62,
       "velocity_min": 0,
       "velocity_max": 6,
@@ -5803,14 +3691,6 @@
       "velocity_idx": 3,
       "round_robin": 1,
       "file": "audio/rr1_vel003_n062.flac"
-    },
-    {
-      "midi_note": 62,
-      "velocity_min": 20,
-      "velocity_max": 26,
-      "velocity_idx": 4,
-      "round_robin": 1,
-      "file": "audio/rr1_vel004_n062.flac"
     },
     {
       "midi_note": 62,
@@ -5846,22 +3726,6 @@
     },
     {
       "midi_note": 62,
-      "velocity_min": 53,
-      "velocity_max": 59,
-      "velocity_idx": 9,
-      "round_robin": 1,
-      "file": "audio/rr1_vel009_n062.flac"
-    },
-    {
-      "midi_note": 62,
-      "velocity_min": 60,
-      "velocity_max": 66,
-      "velocity_idx": 10,
-      "round_robin": 1,
-      "file": "audio/rr1_vel010_n062.flac"
-    },
-    {
-      "midi_note": 62,
       "velocity_min": 67,
       "velocity_max": 73,
       "velocity_idx": 11,
@@ -5886,30 +3750,6 @@
     },
     {
       "midi_note": 62,
-      "velocity_min": 87,
-      "velocity_max": 93,
-      "velocity_idx": 14,
-      "round_robin": 1,
-      "file": "audio/rr1_vel014_n062.flac"
-    },
-    {
-      "midi_note": 62,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n062.flac"
-    },
-    {
-      "midi_note": 62,
-      "velocity_min": 100,
-      "velocity_max": 106,
-      "velocity_idx": 16,
-      "round_robin": 1,
-      "file": "audio/rr1_vel016_n062.flac"
-    },
-    {
-      "midi_note": 62,
       "velocity_min": 107,
       "velocity_max": 113,
       "velocity_idx": 17,
@@ -5923,14 +3763,6 @@
       "velocity_idx": 18,
       "round_robin": 1,
       "file": "audio/rr1_vel018_n062.flac"
-    },
-    {
-      "midi_note": 62,
-      "velocity_min": 120,
-      "velocity_max": 127,
-      "velocity_idx": 19,
-      "round_robin": 1,
-      "file": "audio/rr1_vel019_n062.flac"
     },
     {
       "midi_note": 63,
@@ -5958,14 +3790,6 @@
     },
     {
       "midi_note": 63,
-      "velocity_min": 20,
-      "velocity_max": 26,
-      "velocity_idx": 4,
-      "round_robin": 1,
-      "file": "audio/rr1_vel004_n063.flac"
-    },
-    {
-      "midi_note": 63,
       "velocity_min": 27,
       "velocity_max": 32,
       "velocity_idx": 5,
@@ -5979,14 +3803,6 @@
       "velocity_idx": 6,
       "round_robin": 1,
       "file": "audio/rr1_vel006_n063.flac"
-    },
-    {
-      "midi_note": 63,
-      "velocity_min": 40,
-      "velocity_max": 46,
-      "velocity_idx": 7,
-      "round_robin": 1,
-      "file": "audio/rr1_vel007_n063.flac"
     },
     {
       "midi_note": 63,
@@ -6014,14 +3830,6 @@
     },
     {
       "midi_note": 63,
-      "velocity_min": 67,
-      "velocity_max": 73,
-      "velocity_idx": 11,
-      "round_robin": 1,
-      "file": "audio/rr1_vel011_n063.flac"
-    },
-    {
-      "midi_note": 63,
       "velocity_min": 74,
       "velocity_max": 79,
       "velocity_idx": 12,
@@ -6035,14 +3843,6 @@
       "velocity_idx": 13,
       "round_robin": 1,
       "file": "audio/rr1_vel013_n063.flac"
-    },
-    {
-      "midi_note": 63,
-      "velocity_min": 87,
-      "velocity_max": 93,
-      "velocity_idx": 14,
-      "round_robin": 1,
-      "file": "audio/rr1_vel014_n063.flac"
     },
     {
       "midi_note": 63,
@@ -6077,14 +3877,6 @@
       "file": "audio/rr1_vel018_n063.flac"
     },
     {
-      "midi_note": 63,
-      "velocity_min": 120,
-      "velocity_max": 127,
-      "velocity_idx": 19,
-      "round_robin": 1,
-      "file": "audio/rr1_vel019_n063.flac"
-    },
-    {
       "midi_note": 64,
       "velocity_min": 0,
       "velocity_max": 6,
@@ -6115,14 +3907,6 @@
       "velocity_idx": 4,
       "round_robin": 1,
       "file": "audio/rr1_vel004_n064.flac"
-    },
-    {
-      "midi_note": 64,
-      "velocity_min": 27,
-      "velocity_max": 32,
-      "velocity_idx": 5,
-      "round_robin": 1,
-      "file": "audio/rr1_vel005_n064.flac"
     },
     {
       "midi_note": 64,
@@ -6166,27 +3950,11 @@
     },
     {
       "midi_note": 64,
-      "velocity_min": 67,
-      "velocity_max": 73,
-      "velocity_idx": 11,
-      "round_robin": 1,
-      "file": "audio/rr1_vel011_n064.flac"
-    },
-    {
-      "midi_note": 64,
       "velocity_min": 74,
       "velocity_max": 79,
       "velocity_idx": 12,
       "round_robin": 1,
       "file": "audio/rr1_vel012_n064.flac"
-    },
-    {
-      "midi_note": 64,
-      "velocity_min": 80,
-      "velocity_max": 86,
-      "velocity_idx": 13,
-      "round_robin": 1,
-      "file": "audio/rr1_vel013_n064.flac"
     },
     {
       "midi_note": 64,
@@ -6246,35 +4014,11 @@
     },
     {
       "midi_note": 65,
-      "velocity_min": 7,
-      "velocity_max": 12,
-      "velocity_idx": 2,
-      "round_robin": 1,
-      "file": "audio/rr1_vel002_n065.flac"
-    },
-    {
-      "midi_note": 65,
       "velocity_min": 13,
       "velocity_max": 19,
       "velocity_idx": 3,
       "round_robin": 1,
       "file": "audio/rr1_vel003_n065.flac"
-    },
-    {
-      "midi_note": 65,
-      "velocity_min": 20,
-      "velocity_max": 26,
-      "velocity_idx": 4,
-      "round_robin": 1,
-      "file": "audio/rr1_vel004_n065.flac"
-    },
-    {
-      "midi_note": 65,
-      "velocity_min": 27,
-      "velocity_max": 32,
-      "velocity_idx": 5,
-      "round_robin": 1,
-      "file": "audio/rr1_vel005_n065.flac"
     },
     {
       "midi_note": 65,
@@ -6318,14 +4062,6 @@
     },
     {
       "midi_note": 65,
-      "velocity_min": 67,
-      "velocity_max": 73,
-      "velocity_idx": 11,
-      "round_robin": 1,
-      "file": "audio/rr1_vel011_n065.flac"
-    },
-    {
-      "midi_note": 65,
       "velocity_min": 74,
       "velocity_max": 79,
       "velocity_idx": 12,
@@ -6350,43 +4086,11 @@
     },
     {
       "midi_note": 65,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n065.flac"
-    },
-    {
-      "midi_note": 65,
-      "velocity_min": 100,
-      "velocity_max": 106,
-      "velocity_idx": 16,
-      "round_robin": 1,
-      "file": "audio/rr1_vel016_n065.flac"
-    },
-    {
-      "midi_note": 65,
       "velocity_min": 107,
       "velocity_max": 113,
       "velocity_idx": 17,
       "round_robin": 1,
       "file": "audio/rr1_vel017_n065.flac"
-    },
-    {
-      "midi_note": 65,
-      "velocity_min": 114,
-      "velocity_max": 119,
-      "velocity_idx": 18,
-      "round_robin": 1,
-      "file": "audio/rr1_vel018_n065.flac"
-    },
-    {
-      "midi_note": 65,
-      "velocity_min": 120,
-      "velocity_max": 127,
-      "velocity_idx": 19,
-      "round_robin": 1,
-      "file": "audio/rr1_vel019_n065.flac"
     },
     {
       "midi_note": 66,
@@ -6406,27 +4110,11 @@
     },
     {
       "midi_note": 66,
-      "velocity_min": 13,
-      "velocity_max": 19,
-      "velocity_idx": 3,
-      "round_robin": 1,
-      "file": "audio/rr1_vel003_n066.flac"
-    },
-    {
-      "midi_note": 66,
       "velocity_min": 20,
       "velocity_max": 26,
       "velocity_idx": 4,
       "round_robin": 1,
       "file": "audio/rr1_vel004_n066.flac"
-    },
-    {
-      "midi_note": 66,
-      "velocity_min": 27,
-      "velocity_max": 32,
-      "velocity_idx": 5,
-      "round_robin": 1,
-      "file": "audio/rr1_vel005_n066.flac"
     },
     {
       "midi_note": 66,
@@ -6454,27 +4142,11 @@
     },
     {
       "midi_note": 66,
-      "velocity_min": 53,
-      "velocity_max": 59,
-      "velocity_idx": 9,
-      "round_robin": 1,
-      "file": "audio/rr1_vel009_n066.flac"
-    },
-    {
-      "midi_note": 66,
       "velocity_min": 60,
       "velocity_max": 66,
       "velocity_idx": 10,
       "round_robin": 1,
       "file": "audio/rr1_vel010_n066.flac"
-    },
-    {
-      "midi_note": 66,
-      "velocity_min": 67,
-      "velocity_max": 73,
-      "velocity_idx": 11,
-      "round_robin": 1,
-      "file": "audio/rr1_vel011_n066.flac"
     },
     {
       "midi_note": 66,
@@ -6502,35 +4174,11 @@
     },
     {
       "midi_note": 66,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n066.flac"
-    },
-    {
-      "midi_note": 66,
       "velocity_min": 100,
       "velocity_max": 106,
       "velocity_idx": 16,
       "round_robin": 1,
       "file": "audio/rr1_vel016_n066.flac"
-    },
-    {
-      "midi_note": 66,
-      "velocity_min": 107,
-      "velocity_max": 113,
-      "velocity_idx": 17,
-      "round_robin": 1,
-      "file": "audio/rr1_vel017_n066.flac"
-    },
-    {
-      "midi_note": 66,
-      "velocity_min": 114,
-      "velocity_max": 119,
-      "velocity_idx": 18,
-      "round_robin": 1,
-      "file": "audio/rr1_vel018_n066.flac"
     },
     {
       "midi_note": 66,
@@ -6574,14 +4222,6 @@
     },
     {
       "midi_note": 67,
-      "velocity_min": 27,
-      "velocity_max": 32,
-      "velocity_idx": 5,
-      "round_robin": 1,
-      "file": "audio/rr1_vel005_n067.flac"
-    },
-    {
-      "midi_note": 67,
       "velocity_min": 33,
       "velocity_max": 39,
       "velocity_idx": 6,
@@ -6614,14 +4254,6 @@
     },
     {
       "midi_note": 67,
-      "velocity_min": 60,
-      "velocity_max": 66,
-      "velocity_idx": 10,
-      "round_robin": 1,
-      "file": "audio/rr1_vel010_n067.flac"
-    },
-    {
-      "midi_note": 67,
       "velocity_min": 67,
       "velocity_max": 73,
       "velocity_idx": 11,
@@ -6651,30 +4283,6 @@
       "velocity_idx": 14,
       "round_robin": 1,
       "file": "audio/rr1_vel014_n067.flac"
-    },
-    {
-      "midi_note": 67,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n067.flac"
-    },
-    {
-      "midi_note": 67,
-      "velocity_min": 100,
-      "velocity_max": 106,
-      "velocity_idx": 16,
-      "round_robin": 1,
-      "file": "audio/rr1_vel016_n067.flac"
-    },
-    {
-      "midi_note": 67,
-      "velocity_min": 107,
-      "velocity_max": 113,
-      "velocity_idx": 17,
-      "round_robin": 1,
-      "file": "audio/rr1_vel017_n067.flac"
     },
     {
       "midi_note": 67,
@@ -6750,27 +4358,11 @@
     },
     {
       "midi_note": 68,
-      "velocity_min": 47,
-      "velocity_max": 52,
-      "velocity_idx": 8,
-      "round_robin": 1,
-      "file": "audio/rr1_vel008_n068.flac"
-    },
-    {
-      "midi_note": 68,
       "velocity_min": 53,
       "velocity_max": 59,
       "velocity_idx": 9,
       "round_robin": 1,
       "file": "audio/rr1_vel009_n068.flac"
-    },
-    {
-      "midi_note": 68,
-      "velocity_min": 60,
-      "velocity_max": 66,
-      "velocity_idx": 10,
-      "round_robin": 1,
-      "file": "audio/rr1_vel010_n068.flac"
     },
     {
       "midi_note": 68,
@@ -6798,22 +4390,6 @@
     },
     {
       "midi_note": 68,
-      "velocity_min": 87,
-      "velocity_max": 93,
-      "velocity_idx": 14,
-      "round_robin": 1,
-      "file": "audio/rr1_vel014_n068.flac"
-    },
-    {
-      "midi_note": 68,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n068.flac"
-    },
-    {
-      "midi_note": 68,
       "velocity_min": 100,
       "velocity_max": 106,
       "velocity_idx": 16,
@@ -6829,44 +4405,12 @@
       "file": "audio/rr1_vel017_n068.flac"
     },
     {
-      "midi_note": 68,
-      "velocity_min": 114,
-      "velocity_max": 119,
-      "velocity_idx": 18,
-      "round_robin": 1,
-      "file": "audio/rr1_vel018_n068.flac"
-    },
-    {
-      "midi_note": 68,
-      "velocity_min": 120,
-      "velocity_max": 127,
-      "velocity_idx": 19,
-      "round_robin": 1,
-      "file": "audio/rr1_vel019_n068.flac"
-    },
-    {
       "midi_note": 69,
       "velocity_min": 0,
       "velocity_max": 6,
       "velocity_idx": 1,
       "round_robin": 1,
       "file": "audio/rr1_vel001_n069.flac"
-    },
-    {
-      "midi_note": 69,
-      "velocity_min": 7,
-      "velocity_max": 12,
-      "velocity_idx": 2,
-      "round_robin": 1,
-      "file": "audio/rr1_vel002_n069.flac"
-    },
-    {
-      "midi_note": 69,
-      "velocity_min": 13,
-      "velocity_max": 19,
-      "velocity_idx": 3,
-      "round_robin": 1,
-      "file": "audio/rr1_vel003_n069.flac"
     },
     {
       "midi_note": 69,
@@ -6883,14 +4427,6 @@
       "velocity_idx": 5,
       "round_robin": 1,
       "file": "audio/rr1_vel005_n069.flac"
-    },
-    {
-      "midi_note": 69,
-      "velocity_min": 33,
-      "velocity_max": 39,
-      "velocity_idx": 6,
-      "round_robin": 1,
-      "file": "audio/rr1_vel006_n069.flac"
     },
     {
       "midi_note": 69,
@@ -6931,22 +4467,6 @@
       "velocity_idx": 11,
       "round_robin": 1,
       "file": "audio/rr1_vel011_n069.flac"
-    },
-    {
-      "midi_note": 69,
-      "velocity_min": 74,
-      "velocity_max": 79,
-      "velocity_idx": 12,
-      "round_robin": 1,
-      "file": "audio/rr1_vel012_n069.flac"
-    },
-    {
-      "midi_note": 69,
-      "velocity_min": 80,
-      "velocity_max": 86,
-      "velocity_idx": 13,
-      "round_robin": 1,
-      "file": "audio/rr1_vel013_n069.flac"
     },
     {
       "midi_note": 69,
@@ -7038,14 +4558,6 @@
     },
     {
       "midi_note": 70,
-      "velocity_min": 33,
-      "velocity_max": 39,
-      "velocity_idx": 6,
-      "round_robin": 1,
-      "file": "audio/rr1_vel006_n070.flac"
-    },
-    {
-      "midi_note": 70,
       "velocity_min": 40,
       "velocity_max": 46,
       "velocity_idx": 7,
@@ -7086,14 +4598,6 @@
     },
     {
       "midi_note": 70,
-      "velocity_min": 74,
-      "velocity_max": 79,
-      "velocity_idx": 12,
-      "round_robin": 1,
-      "file": "audio/rr1_vel012_n070.flac"
-    },
-    {
-      "midi_note": 70,
       "velocity_min": 80,
       "velocity_max": 86,
       "velocity_idx": 13,
@@ -7131,14 +4635,6 @@
       "velocity_idx": 17,
       "round_robin": 1,
       "file": "audio/rr1_vel017_n070.flac"
-    },
-    {
-      "midi_note": 70,
-      "velocity_min": 114,
-      "velocity_max": 119,
-      "velocity_idx": 18,
-      "round_robin": 1,
-      "file": "audio/rr1_vel018_n070.flac"
     },
     {
       "midi_note": 70,
@@ -7206,14 +4702,6 @@
     },
     {
       "midi_note": 71,
-      "velocity_min": 47,
-      "velocity_max": 52,
-      "velocity_idx": 8,
-      "round_robin": 1,
-      "file": "audio/rr1_vel008_n071.flac"
-    },
-    {
-      "midi_note": 71,
       "velocity_min": 53,
       "velocity_max": 59,
       "velocity_idx": 9,
@@ -7238,35 +4726,11 @@
     },
     {
       "midi_note": 71,
-      "velocity_min": 74,
-      "velocity_max": 79,
-      "velocity_idx": 12,
-      "round_robin": 1,
-      "file": "audio/rr1_vel012_n071.flac"
-    },
-    {
-      "midi_note": 71,
-      "velocity_min": 80,
-      "velocity_max": 86,
-      "velocity_idx": 13,
-      "round_robin": 1,
-      "file": "audio/rr1_vel013_n071.flac"
-    },
-    {
-      "midi_note": 71,
       "velocity_min": 87,
       "velocity_max": 93,
       "velocity_idx": 14,
       "round_robin": 1,
       "file": "audio/rr1_vel014_n071.flac"
-    },
-    {
-      "midi_note": 71,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n071.flac"
     },
     {
       "midi_note": 71,
@@ -7286,27 +4750,11 @@
     },
     {
       "midi_note": 71,
-      "velocity_min": 114,
-      "velocity_max": 119,
-      "velocity_idx": 18,
-      "round_robin": 1,
-      "file": "audio/rr1_vel018_n071.flac"
-    },
-    {
-      "midi_note": 71,
       "velocity_min": 120,
       "velocity_max": 127,
       "velocity_idx": 19,
       "round_robin": 1,
       "file": "audio/rr1_vel019_n071.flac"
-    },
-    {
-      "midi_note": 72,
-      "velocity_min": 0,
-      "velocity_max": 6,
-      "velocity_idx": 1,
-      "round_robin": 1,
-      "file": "audio/rr1_vel001_n072.flac"
     },
     {
       "midi_note": 72,
@@ -7342,22 +4790,6 @@
     },
     {
       "midi_note": 72,
-      "velocity_min": 33,
-      "velocity_max": 39,
-      "velocity_idx": 6,
-      "round_robin": 1,
-      "file": "audio/rr1_vel006_n072.flac"
-    },
-    {
-      "midi_note": 72,
-      "velocity_min": 40,
-      "velocity_max": 46,
-      "velocity_idx": 7,
-      "round_robin": 1,
-      "file": "audio/rr1_vel007_n072.flac"
-    },
-    {
-      "midi_note": 72,
       "velocity_min": 47,
       "velocity_max": 52,
       "velocity_idx": 8,
@@ -7379,14 +4811,6 @@
       "velocity_idx": 10,
       "round_robin": 1,
       "file": "audio/rr1_vel010_n072.flac"
-    },
-    {
-      "midi_note": 72,
-      "velocity_min": 67,
-      "velocity_max": 73,
-      "velocity_idx": 11,
-      "round_robin": 1,
-      "file": "audio/rr1_vel011_n072.flac"
     },
     {
       "midi_note": 72,
@@ -7429,30 +4853,6 @@
       "file": "audio/rr1_vel016_n072.flac"
     },
     {
-      "midi_note": 72,
-      "velocity_min": 107,
-      "velocity_max": 113,
-      "velocity_idx": 17,
-      "round_robin": 1,
-      "file": "audio/rr1_vel017_n072.flac"
-    },
-    {
-      "midi_note": 72,
-      "velocity_min": 114,
-      "velocity_max": 119,
-      "velocity_idx": 18,
-      "round_robin": 1,
-      "file": "audio/rr1_vel018_n072.flac"
-    },
-    {
-      "midi_note": 72,
-      "velocity_min": 120,
-      "velocity_max": 127,
-      "velocity_idx": 19,
-      "round_robin": 1,
-      "file": "audio/rr1_vel019_n072.flac"
-    },
-    {
       "midi_note": 73,
       "velocity_min": 0,
       "velocity_max": 6,
@@ -7486,14 +4886,6 @@
     },
     {
       "midi_note": 73,
-      "velocity_min": 27,
-      "velocity_max": 32,
-      "velocity_idx": 5,
-      "round_robin": 1,
-      "file": "audio/rr1_vel005_n073.flac"
-    },
-    {
-      "midi_note": 73,
       "velocity_min": 33,
       "velocity_max": 39,
       "velocity_idx": 6,
@@ -7507,14 +4899,6 @@
       "velocity_idx": 7,
       "round_robin": 1,
       "file": "audio/rr1_vel007_n073.flac"
-    },
-    {
-      "midi_note": 73,
-      "velocity_min": 47,
-      "velocity_max": 52,
-      "velocity_idx": 8,
-      "round_robin": 1,
-      "file": "audio/rr1_vel008_n073.flac"
     },
     {
       "midi_note": 73,
@@ -7558,51 +4942,11 @@
     },
     {
       "midi_note": 73,
-      "velocity_min": 87,
-      "velocity_max": 93,
-      "velocity_idx": 14,
-      "round_robin": 1,
-      "file": "audio/rr1_vel014_n073.flac"
-    },
-    {
-      "midi_note": 73,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n073.flac"
-    },
-    {
-      "midi_note": 73,
       "velocity_min": 100,
       "velocity_max": 106,
       "velocity_idx": 16,
       "round_robin": 1,
       "file": "audio/rr1_vel016_n073.flac"
-    },
-    {
-      "midi_note": 73,
-      "velocity_min": 107,
-      "velocity_max": 113,
-      "velocity_idx": 17,
-      "round_robin": 1,
-      "file": "audio/rr1_vel017_n073.flac"
-    },
-    {
-      "midi_note": 73,
-      "velocity_min": 114,
-      "velocity_max": 119,
-      "velocity_idx": 18,
-      "round_robin": 1,
-      "file": "audio/rr1_vel018_n073.flac"
-    },
-    {
-      "midi_note": 73,
-      "velocity_min": 120,
-      "velocity_max": 127,
-      "velocity_idx": 19,
-      "round_robin": 1,
-      "file": "audio/rr1_vel019_n073.flac"
     },
     {
       "midi_note": 74,
@@ -7646,14 +4990,6 @@
     },
     {
       "midi_note": 74,
-      "velocity_min": 33,
-      "velocity_max": 39,
-      "velocity_idx": 6,
-      "round_robin": 1,
-      "file": "audio/rr1_vel006_n074.flac"
-    },
-    {
-      "midi_note": 74,
       "velocity_min": 40,
       "velocity_max": 46,
       "velocity_idx": 7,
@@ -7694,30 +5030,6 @@
     },
     {
       "midi_note": 74,
-      "velocity_min": 74,
-      "velocity_max": 79,
-      "velocity_idx": 12,
-      "round_robin": 1,
-      "file": "audio/rr1_vel012_n074.flac"
-    },
-    {
-      "midi_note": 74,
-      "velocity_min": 80,
-      "velocity_max": 86,
-      "velocity_idx": 13,
-      "round_robin": 1,
-      "file": "audio/rr1_vel013_n074.flac"
-    },
-    {
-      "midi_note": 74,
-      "velocity_min": 87,
-      "velocity_max": 93,
-      "velocity_idx": 14,
-      "round_robin": 1,
-      "file": "audio/rr1_vel014_n074.flac"
-    },
-    {
-      "midi_note": 74,
       "velocity_min": 94,
       "velocity_max": 99,
       "velocity_idx": 15,
@@ -7749,14 +5061,6 @@
       "file": "audio/rr1_vel018_n074.flac"
     },
     {
-      "midi_note": 74,
-      "velocity_min": 120,
-      "velocity_max": 127,
-      "velocity_idx": 19,
-      "round_robin": 1,
-      "file": "audio/rr1_vel019_n074.flac"
-    },
-    {
       "midi_note": 75,
       "velocity_min": 0,
       "velocity_max": 6,
@@ -7771,14 +5075,6 @@
       "velocity_idx": 2,
       "round_robin": 1,
       "file": "audio/rr1_vel002_n075.flac"
-    },
-    {
-      "midi_note": 75,
-      "velocity_min": 13,
-      "velocity_max": 19,
-      "velocity_idx": 3,
-      "round_robin": 1,
-      "file": "audio/rr1_vel003_n075.flac"
     },
     {
       "midi_note": 75,
@@ -7814,14 +5110,6 @@
     },
     {
       "midi_note": 75,
-      "velocity_min": 47,
-      "velocity_max": 52,
-      "velocity_idx": 8,
-      "round_robin": 1,
-      "file": "audio/rr1_vel008_n075.flac"
-    },
-    {
-      "midi_note": 75,
       "velocity_min": 53,
       "velocity_max": 59,
       "velocity_idx": 9,
@@ -7846,14 +5134,6 @@
     },
     {
       "midi_note": 75,
-      "velocity_min": 74,
-      "velocity_max": 79,
-      "velocity_idx": 12,
-      "round_robin": 1,
-      "file": "audio/rr1_vel012_n075.flac"
-    },
-    {
-      "midi_note": 75,
       "velocity_min": 80,
       "velocity_max": 86,
       "velocity_idx": 13,
@@ -7870,14 +5150,6 @@
     },
     {
       "midi_note": 75,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n075.flac"
-    },
-    {
-      "midi_note": 75,
       "velocity_min": 100,
       "velocity_max": 106,
       "velocity_idx": 16,
@@ -7891,22 +5163,6 @@
       "velocity_idx": 17,
       "round_robin": 1,
       "file": "audio/rr1_vel017_n075.flac"
-    },
-    {
-      "midi_note": 75,
-      "velocity_min": 114,
-      "velocity_max": 119,
-      "velocity_idx": 18,
-      "round_robin": 1,
-      "file": "audio/rr1_vel018_n075.flac"
-    },
-    {
-      "midi_note": 75,
-      "velocity_min": 120,
-      "velocity_max": 127,
-      "velocity_idx": 19,
-      "round_robin": 1,
-      "file": "audio/rr1_vel019_n075.flac"
     },
     {
       "midi_note": 76,
@@ -7966,14 +5222,6 @@
     },
     {
       "midi_note": 76,
-      "velocity_min": 47,
-      "velocity_max": 52,
-      "velocity_idx": 8,
-      "round_robin": 1,
-      "file": "audio/rr1_vel008_n076.flac"
-    },
-    {
-      "midi_note": 76,
       "velocity_min": 53,
       "velocity_max": 59,
       "velocity_idx": 9,
@@ -7998,22 +5246,6 @@
     },
     {
       "midi_note": 76,
-      "velocity_min": 74,
-      "velocity_max": 79,
-      "velocity_idx": 12,
-      "round_robin": 1,
-      "file": "audio/rr1_vel012_n076.flac"
-    },
-    {
-      "midi_note": 76,
-      "velocity_min": 80,
-      "velocity_max": 86,
-      "velocity_idx": 13,
-      "round_robin": 1,
-      "file": "audio/rr1_vel013_n076.flac"
-    },
-    {
-      "midi_note": 76,
       "velocity_min": 87,
       "velocity_max": 93,
       "velocity_idx": 14,
@@ -8022,51 +5254,11 @@
     },
     {
       "midi_note": 76,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n076.flac"
-    },
-    {
-      "midi_note": 76,
       "velocity_min": 100,
       "velocity_max": 106,
       "velocity_idx": 16,
       "round_robin": 1,
       "file": "audio/rr1_vel016_n076.flac"
-    },
-    {
-      "midi_note": 76,
-      "velocity_min": 107,
-      "velocity_max": 113,
-      "velocity_idx": 17,
-      "round_robin": 1,
-      "file": "audio/rr1_vel017_n076.flac"
-    },
-    {
-      "midi_note": 76,
-      "velocity_min": 114,
-      "velocity_max": 119,
-      "velocity_idx": 18,
-      "round_robin": 1,
-      "file": "audio/rr1_vel018_n076.flac"
-    },
-    {
-      "midi_note": 76,
-      "velocity_min": 120,
-      "velocity_max": 127,
-      "velocity_idx": 19,
-      "round_robin": 1,
-      "file": "audio/rr1_vel019_n076.flac"
-    },
-    {
-      "midi_note": 77,
-      "velocity_min": 0,
-      "velocity_max": 6,
-      "velocity_idx": 1,
-      "round_robin": 1,
-      "file": "audio/rr1_vel001_n077.flac"
     },
     {
       "midi_note": 77,
@@ -8086,35 +5278,11 @@
     },
     {
       "midi_note": 77,
-      "velocity_min": 20,
-      "velocity_max": 26,
-      "velocity_idx": 4,
-      "round_robin": 1,
-      "file": "audio/rr1_vel004_n077.flac"
-    },
-    {
-      "midi_note": 77,
       "velocity_min": 27,
       "velocity_max": 32,
       "velocity_idx": 5,
       "round_robin": 1,
       "file": "audio/rr1_vel005_n077.flac"
-    },
-    {
-      "midi_note": 77,
-      "velocity_min": 33,
-      "velocity_max": 39,
-      "velocity_idx": 6,
-      "round_robin": 1,
-      "file": "audio/rr1_vel006_n077.flac"
-    },
-    {
-      "midi_note": 77,
-      "velocity_min": 40,
-      "velocity_max": 46,
-      "velocity_idx": 7,
-      "round_robin": 1,
-      "file": "audio/rr1_vel007_n077.flac"
     },
     {
       "midi_note": 77,
@@ -8126,27 +5294,11 @@
     },
     {
       "midi_note": 77,
-      "velocity_min": 53,
-      "velocity_max": 59,
-      "velocity_idx": 9,
-      "round_robin": 1,
-      "file": "audio/rr1_vel009_n077.flac"
-    },
-    {
-      "midi_note": 77,
       "velocity_min": 60,
       "velocity_max": 66,
       "velocity_idx": 10,
       "round_robin": 1,
       "file": "audio/rr1_vel010_n077.flac"
-    },
-    {
-      "midi_note": 77,
-      "velocity_min": 67,
-      "velocity_max": 73,
-      "velocity_idx": 11,
-      "round_robin": 1,
-      "file": "audio/rr1_vel011_n077.flac"
     },
     {
       "midi_note": 77,
@@ -8171,14 +5323,6 @@
       "velocity_idx": 14,
       "round_robin": 1,
       "file": "audio/rr1_vel014_n077.flac"
-    },
-    {
-      "midi_note": 77,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n077.flac"
     },
     {
       "midi_note": 77,
@@ -8214,14 +5358,6 @@
     },
     {
       "midi_note": 78,
-      "velocity_min": 0,
-      "velocity_max": 6,
-      "velocity_idx": 1,
-      "round_robin": 1,
-      "file": "audio/rr1_vel001_n078.flac"
-    },
-    {
-      "midi_note": 78,
       "velocity_min": 7,
       "velocity_max": 12,
       "velocity_idx": 2,
@@ -8238,43 +5374,11 @@
     },
     {
       "midi_note": 78,
-      "velocity_min": 20,
-      "velocity_max": 26,
-      "velocity_idx": 4,
-      "round_robin": 1,
-      "file": "audio/rr1_vel004_n078.flac"
-    },
-    {
-      "midi_note": 78,
-      "velocity_min": 27,
-      "velocity_max": 32,
-      "velocity_idx": 5,
-      "round_robin": 1,
-      "file": "audio/rr1_vel005_n078.flac"
-    },
-    {
-      "midi_note": 78,
       "velocity_min": 33,
       "velocity_max": 39,
       "velocity_idx": 6,
       "round_robin": 1,
       "file": "audio/rr1_vel006_n078.flac"
-    },
-    {
-      "midi_note": 78,
-      "velocity_min": 40,
-      "velocity_max": 46,
-      "velocity_idx": 7,
-      "round_robin": 1,
-      "file": "audio/rr1_vel007_n078.flac"
-    },
-    {
-      "midi_note": 78,
-      "velocity_min": 47,
-      "velocity_max": 52,
-      "velocity_idx": 8,
-      "round_robin": 1,
-      "file": "audio/rr1_vel008_n078.flac"
     },
     {
       "midi_note": 78,
@@ -8302,35 +5406,11 @@
     },
     {
       "midi_note": 78,
-      "velocity_min": 74,
-      "velocity_max": 79,
-      "velocity_idx": 12,
-      "round_robin": 1,
-      "file": "audio/rr1_vel012_n078.flac"
-    },
-    {
-      "midi_note": 78,
-      "velocity_min": 80,
-      "velocity_max": 86,
-      "velocity_idx": 13,
-      "round_robin": 1,
-      "file": "audio/rr1_vel013_n078.flac"
-    },
-    {
-      "midi_note": 78,
       "velocity_min": 87,
       "velocity_max": 93,
       "velocity_idx": 14,
       "round_robin": 1,
       "file": "audio/rr1_vel014_n078.flac"
-    },
-    {
-      "midi_note": 78,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n078.flac"
     },
     {
       "midi_note": 78,
@@ -8357,28 +5437,12 @@
       "file": "audio/rr1_vel018_n078.flac"
     },
     {
-      "midi_note": 78,
-      "velocity_min": 120,
-      "velocity_max": 127,
-      "velocity_idx": 19,
-      "round_robin": 1,
-      "file": "audio/rr1_vel019_n078.flac"
-    },
-    {
       "midi_note": 79,
       "velocity_min": 0,
       "velocity_max": 6,
       "velocity_idx": 1,
       "round_robin": 1,
       "file": "audio/rr1_vel001_n079.flac"
-    },
-    {
-      "midi_note": 79,
-      "velocity_min": 7,
-      "velocity_max": 12,
-      "velocity_idx": 2,
-      "round_robin": 1,
-      "file": "audio/rr1_vel002_n079.flac"
     },
     {
       "midi_note": 79,
@@ -8414,35 +5478,11 @@
     },
     {
       "midi_note": 79,
-      "velocity_min": 40,
-      "velocity_max": 46,
-      "velocity_idx": 7,
-      "round_robin": 1,
-      "file": "audio/rr1_vel007_n079.flac"
-    },
-    {
-      "midi_note": 79,
-      "velocity_min": 47,
-      "velocity_max": 52,
-      "velocity_idx": 8,
-      "round_robin": 1,
-      "file": "audio/rr1_vel008_n079.flac"
-    },
-    {
-      "midi_note": 79,
       "velocity_min": 53,
       "velocity_max": 59,
       "velocity_idx": 9,
       "round_robin": 1,
       "file": "audio/rr1_vel009_n079.flac"
-    },
-    {
-      "midi_note": 79,
-      "velocity_min": 60,
-      "velocity_max": 66,
-      "velocity_idx": 10,
-      "round_robin": 1,
-      "file": "audio/rr1_vel010_n079.flac"
     },
     {
       "midi_note": 79,
@@ -8454,35 +5494,11 @@
     },
     {
       "midi_note": 79,
-      "velocity_min": 74,
-      "velocity_max": 79,
-      "velocity_idx": 12,
-      "round_robin": 1,
-      "file": "audio/rr1_vel012_n079.flac"
-    },
-    {
-      "midi_note": 79,
       "velocity_min": 80,
       "velocity_max": 86,
       "velocity_idx": 13,
       "round_robin": 1,
       "file": "audio/rr1_vel013_n079.flac"
-    },
-    {
-      "midi_note": 79,
-      "velocity_min": 87,
-      "velocity_max": 93,
-      "velocity_idx": 14,
-      "round_robin": 1,
-      "file": "audio/rr1_vel014_n079.flac"
-    },
-    {
-      "midi_note": 79,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n079.flac"
     },
     {
       "midi_note": 79,
@@ -8542,14 +5558,6 @@
     },
     {
       "midi_note": 80,
-      "velocity_min": 20,
-      "velocity_max": 26,
-      "velocity_idx": 4,
-      "round_robin": 1,
-      "file": "audio/rr1_vel004_n080.flac"
-    },
-    {
-      "midi_note": 80,
       "velocity_min": 27,
       "velocity_max": 32,
       "velocity_idx": 5,
@@ -8582,14 +5590,6 @@
     },
     {
       "midi_note": 80,
-      "velocity_min": 53,
-      "velocity_max": 59,
-      "velocity_idx": 9,
-      "round_robin": 1,
-      "file": "audio/rr1_vel009_n080.flac"
-    },
-    {
-      "midi_note": 80,
       "velocity_min": 60,
       "velocity_max": 66,
       "velocity_idx": 10,
@@ -8614,22 +5614,6 @@
     },
     {
       "midi_note": 80,
-      "velocity_min": 80,
-      "velocity_max": 86,
-      "velocity_idx": 13,
-      "round_robin": 1,
-      "file": "audio/rr1_vel013_n080.flac"
-    },
-    {
-      "midi_note": 80,
-      "velocity_min": 87,
-      "velocity_max": 93,
-      "velocity_idx": 14,
-      "round_robin": 1,
-      "file": "audio/rr1_vel014_n080.flac"
-    },
-    {
-      "midi_note": 80,
       "velocity_min": 94,
       "velocity_max": 99,
       "velocity_idx": 15,
@@ -8651,14 +5635,6 @@
       "velocity_idx": 17,
       "round_robin": 1,
       "file": "audio/rr1_vel017_n080.flac"
-    },
-    {
-      "midi_note": 80,
-      "velocity_min": 114,
-      "velocity_max": 119,
-      "velocity_idx": 18,
-      "round_robin": 1,
-      "file": "audio/rr1_vel018_n080.flac"
     },
     {
       "midi_note": 80,
@@ -8702,14 +5678,6 @@
     },
     {
       "midi_note": 81,
-      "velocity_min": 27,
-      "velocity_max": 32,
-      "velocity_idx": 5,
-      "round_robin": 1,
-      "file": "audio/rr1_vel005_n081.flac"
-    },
-    {
-      "midi_note": 81,
       "velocity_min": 33,
       "velocity_max": 39,
       "velocity_idx": 6,
@@ -8742,14 +5710,6 @@
     },
     {
       "midi_note": 81,
-      "velocity_min": 60,
-      "velocity_max": 66,
-      "velocity_idx": 10,
-      "round_robin": 1,
-      "file": "audio/rr1_vel010_n081.flac"
-    },
-    {
-      "midi_note": 81,
       "velocity_min": 67,
       "velocity_max": 73,
       "velocity_idx": 11,
@@ -8758,35 +5718,11 @@
     },
     {
       "midi_note": 81,
-      "velocity_min": 74,
-      "velocity_max": 79,
-      "velocity_idx": 12,
-      "round_robin": 1,
-      "file": "audio/rr1_vel012_n081.flac"
-    },
-    {
-      "midi_note": 81,
-      "velocity_min": 80,
-      "velocity_max": 86,
-      "velocity_idx": 13,
-      "round_robin": 1,
-      "file": "audio/rr1_vel013_n081.flac"
-    },
-    {
-      "midi_note": 81,
       "velocity_min": 87,
       "velocity_max": 93,
       "velocity_idx": 14,
       "round_robin": 1,
       "file": "audio/rr1_vel014_n081.flac"
-    },
-    {
-      "midi_note": 81,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n081.flac"
     },
     {
       "midi_note": 81,
@@ -8822,14 +5758,6 @@
     },
     {
       "midi_note": 82,
-      "velocity_min": 0,
-      "velocity_max": 6,
-      "velocity_idx": 1,
-      "round_robin": 1,
-      "file": "audio/rr1_vel001_n082.flac"
-    },
-    {
-      "midi_note": 82,
       "velocity_min": 7,
       "velocity_max": 12,
       "velocity_idx": 2,
@@ -8846,51 +5774,11 @@
     },
     {
       "midi_note": 82,
-      "velocity_min": 20,
-      "velocity_max": 26,
-      "velocity_idx": 4,
-      "round_robin": 1,
-      "file": "audio/rr1_vel004_n082.flac"
-    },
-    {
-      "midi_note": 82,
-      "velocity_min": 27,
-      "velocity_max": 32,
-      "velocity_idx": 5,
-      "round_robin": 1,
-      "file": "audio/rr1_vel005_n082.flac"
-    },
-    {
-      "midi_note": 82,
-      "velocity_min": 33,
-      "velocity_max": 39,
-      "velocity_idx": 6,
-      "round_robin": 1,
-      "file": "audio/rr1_vel006_n082.flac"
-    },
-    {
-      "midi_note": 82,
-      "velocity_min": 40,
-      "velocity_max": 46,
-      "velocity_idx": 7,
-      "round_robin": 1,
-      "file": "audio/rr1_vel007_n082.flac"
-    },
-    {
-      "midi_note": 82,
       "velocity_min": 47,
       "velocity_max": 52,
       "velocity_idx": 8,
       "round_robin": 1,
       "file": "audio/rr1_vel008_n082.flac"
-    },
-    {
-      "midi_note": 82,
-      "velocity_min": 53,
-      "velocity_max": 59,
-      "velocity_idx": 9,
-      "round_robin": 1,
-      "file": "audio/rr1_vel009_n082.flac"
     },
     {
       "midi_note": 82,
@@ -8926,14 +5814,6 @@
     },
     {
       "midi_note": 82,
-      "velocity_min": 87,
-      "velocity_max": 93,
-      "velocity_idx": 14,
-      "round_robin": 1,
-      "file": "audio/rr1_vel014_n082.flac"
-    },
-    {
-      "midi_note": 82,
       "velocity_min": 94,
       "velocity_max": 99,
       "velocity_idx": 15,
@@ -8947,22 +5827,6 @@
       "velocity_idx": 16,
       "round_robin": 1,
       "file": "audio/rr1_vel016_n082.flac"
-    },
-    {
-      "midi_note": 82,
-      "velocity_min": 107,
-      "velocity_max": 113,
-      "velocity_idx": 17,
-      "round_robin": 1,
-      "file": "audio/rr1_vel017_n082.flac"
-    },
-    {
-      "midi_note": 82,
-      "velocity_min": 114,
-      "velocity_max": 119,
-      "velocity_idx": 18,
-      "round_robin": 1,
-      "file": "audio/rr1_vel018_n082.flac"
     },
     {
       "midi_note": 82,
@@ -8987,14 +5851,6 @@
       "velocity_idx": 2,
       "round_robin": 1,
       "file": "audio/rr1_vel002_n083.flac"
-    },
-    {
-      "midi_note": 83,
-      "velocity_min": 13,
-      "velocity_max": 19,
-      "velocity_idx": 3,
-      "round_robin": 1,
-      "file": "audio/rr1_vel003_n083.flac"
     },
     {
       "midi_note": 83,
@@ -9038,51 +5894,11 @@
     },
     {
       "midi_note": 83,
-      "velocity_min": 53,
-      "velocity_max": 59,
-      "velocity_idx": 9,
-      "round_robin": 1,
-      "file": "audio/rr1_vel009_n083.flac"
-    },
-    {
-      "midi_note": 83,
-      "velocity_min": 60,
-      "velocity_max": 66,
-      "velocity_idx": 10,
-      "round_robin": 1,
-      "file": "audio/rr1_vel010_n083.flac"
-    },
-    {
-      "midi_note": 83,
-      "velocity_min": 67,
-      "velocity_max": 73,
-      "velocity_idx": 11,
-      "round_robin": 1,
-      "file": "audio/rr1_vel011_n083.flac"
-    },
-    {
-      "midi_note": 83,
-      "velocity_min": 74,
-      "velocity_max": 79,
-      "velocity_idx": 12,
-      "round_robin": 1,
-      "file": "audio/rr1_vel012_n083.flac"
-    },
-    {
-      "midi_note": 83,
       "velocity_min": 80,
       "velocity_max": 86,
       "velocity_idx": 13,
       "round_robin": 1,
       "file": "audio/rr1_vel013_n083.flac"
-    },
-    {
-      "midi_note": 83,
-      "velocity_min": 87,
-      "velocity_max": 93,
-      "velocity_idx": 14,
-      "round_robin": 1,
-      "file": "audio/rr1_vel014_n083.flac"
     },
     {
       "midi_note": 83,
@@ -9094,35 +5910,11 @@
     },
     {
       "midi_note": 83,
-      "velocity_min": 100,
-      "velocity_max": 106,
-      "velocity_idx": 16,
-      "round_robin": 1,
-      "file": "audio/rr1_vel016_n083.flac"
-    },
-    {
-      "midi_note": 83,
-      "velocity_min": 107,
-      "velocity_max": 113,
-      "velocity_idx": 17,
-      "round_robin": 1,
-      "file": "audio/rr1_vel017_n083.flac"
-    },
-    {
-      "midi_note": 83,
       "velocity_min": 114,
       "velocity_max": 119,
       "velocity_idx": 18,
       "round_robin": 1,
       "file": "audio/rr1_vel018_n083.flac"
-    },
-    {
-      "midi_note": 83,
-      "velocity_min": 120,
-      "velocity_max": 127,
-      "velocity_idx": 19,
-      "round_robin": 1,
-      "file": "audio/rr1_vel019_n083.flac"
     },
     {
       "midi_note": 84,
@@ -9134,22 +5926,6 @@
     },
     {
       "midi_note": 84,
-      "velocity_min": 7,
-      "velocity_max": 12,
-      "velocity_idx": 2,
-      "round_robin": 1,
-      "file": "audio/rr1_vel002_n084.flac"
-    },
-    {
-      "midi_note": 84,
-      "velocity_min": 13,
-      "velocity_max": 19,
-      "velocity_idx": 3,
-      "round_robin": 1,
-      "file": "audio/rr1_vel003_n084.flac"
-    },
-    {
-      "midi_note": 84,
       "velocity_min": 20,
       "velocity_max": 26,
       "velocity_idx": 4,
@@ -9158,59 +5934,11 @@
     },
     {
       "midi_note": 84,
-      "velocity_min": 27,
-      "velocity_max": 32,
-      "velocity_idx": 5,
-      "round_robin": 1,
-      "file": "audio/rr1_vel005_n084.flac"
-    },
-    {
-      "midi_note": 84,
       "velocity_min": 33,
       "velocity_max": 39,
       "velocity_idx": 6,
       "round_robin": 1,
       "file": "audio/rr1_vel006_n084.flac"
-    },
-    {
-      "midi_note": 84,
-      "velocity_min": 40,
-      "velocity_max": 46,
-      "velocity_idx": 7,
-      "round_robin": 1,
-      "file": "audio/rr1_vel007_n084.flac"
-    },
-    {
-      "midi_note": 84,
-      "velocity_min": 47,
-      "velocity_max": 52,
-      "velocity_idx": 8,
-      "round_robin": 1,
-      "file": "audio/rr1_vel008_n084.flac"
-    },
-    {
-      "midi_note": 84,
-      "velocity_min": 53,
-      "velocity_max": 59,
-      "velocity_idx": 9,
-      "round_robin": 1,
-      "file": "audio/rr1_vel009_n084.flac"
-    },
-    {
-      "midi_note": 84,
-      "velocity_min": 60,
-      "velocity_max": 66,
-      "velocity_idx": 10,
-      "round_robin": 1,
-      "file": "audio/rr1_vel010_n084.flac"
-    },
-    {
-      "midi_note": 84,
-      "velocity_min": 67,
-      "velocity_max": 73,
-      "velocity_idx": 11,
-      "round_robin": 1,
-      "file": "audio/rr1_vel011_n084.flac"
     },
     {
       "midi_note": 84,
@@ -9227,46 +5955,6 @@
       "velocity_idx": 13,
       "round_robin": 1,
       "file": "audio/rr1_vel013_n084.flac"
-    },
-    {
-      "midi_note": 84,
-      "velocity_min": 87,
-      "velocity_max": 93,
-      "velocity_idx": 14,
-      "round_robin": 1,
-      "file": "audio/rr1_vel014_n084.flac"
-    },
-    {
-      "midi_note": 84,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n084.flac"
-    },
-    {
-      "midi_note": 84,
-      "velocity_min": 100,
-      "velocity_max": 106,
-      "velocity_idx": 16,
-      "round_robin": 1,
-      "file": "audio/rr1_vel016_n084.flac"
-    },
-    {
-      "midi_note": 84,
-      "velocity_min": 107,
-      "velocity_max": 113,
-      "velocity_idx": 17,
-      "round_robin": 1,
-      "file": "audio/rr1_vel017_n084.flac"
-    },
-    {
-      "midi_note": 84,
-      "velocity_min": 114,
-      "velocity_max": 119,
-      "velocity_idx": 18,
-      "round_robin": 1,
-      "file": "audio/rr1_vel018_n084.flac"
     },
     {
       "midi_note": 84,
@@ -9302,14 +5990,6 @@
     },
     {
       "midi_note": 85,
-      "velocity_min": 20,
-      "velocity_max": 26,
-      "velocity_idx": 4,
-      "round_robin": 1,
-      "file": "audio/rr1_vel004_n085.flac"
-    },
-    {
-      "midi_note": 85,
       "velocity_min": 27,
       "velocity_max": 32,
       "velocity_idx": 5,
@@ -9323,38 +6003,6 @@
       "velocity_idx": 6,
       "round_robin": 1,
       "file": "audio/rr1_vel006_n085.flac"
-    },
-    {
-      "midi_note": 85,
-      "velocity_min": 40,
-      "velocity_max": 46,
-      "velocity_idx": 7,
-      "round_robin": 1,
-      "file": "audio/rr1_vel007_n085.flac"
-    },
-    {
-      "midi_note": 85,
-      "velocity_min": 47,
-      "velocity_max": 52,
-      "velocity_idx": 8,
-      "round_robin": 1,
-      "file": "audio/rr1_vel008_n085.flac"
-    },
-    {
-      "midi_note": 85,
-      "velocity_min": 53,
-      "velocity_max": 59,
-      "velocity_idx": 9,
-      "round_robin": 1,
-      "file": "audio/rr1_vel009_n085.flac"
-    },
-    {
-      "midi_note": 85,
-      "velocity_min": 60,
-      "velocity_max": 66,
-      "velocity_idx": 10,
-      "round_robin": 1,
-      "file": "audio/rr1_vel010_n085.flac"
     },
     {
       "midi_note": 85,
@@ -9390,14 +6038,6 @@
     },
     {
       "midi_note": 85,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n085.flac"
-    },
-    {
-      "midi_note": 85,
       "velocity_min": 100,
       "velocity_max": 106,
       "velocity_idx": 16,
@@ -9406,43 +6046,11 @@
     },
     {
       "midi_note": 85,
-      "velocity_min": 107,
-      "velocity_max": 113,
-      "velocity_idx": 17,
-      "round_robin": 1,
-      "file": "audio/rr1_vel017_n085.flac"
-    },
-    {
-      "midi_note": 85,
       "velocity_min": 114,
       "velocity_max": 119,
       "velocity_idx": 18,
       "round_robin": 1,
       "file": "audio/rr1_vel018_n085.flac"
-    },
-    {
-      "midi_note": 85,
-      "velocity_min": 120,
-      "velocity_max": 127,
-      "velocity_idx": 19,
-      "round_robin": 1,
-      "file": "audio/rr1_vel019_n085.flac"
-    },
-    {
-      "midi_note": 86,
-      "velocity_min": 0,
-      "velocity_max": 6,
-      "velocity_idx": 1,
-      "round_robin": 1,
-      "file": "audio/rr1_vel001_n086.flac"
-    },
-    {
-      "midi_note": 86,
-      "velocity_min": 7,
-      "velocity_max": 12,
-      "velocity_idx": 2,
-      "round_robin": 1,
-      "file": "audio/rr1_vel002_n086.flac"
     },
     {
       "midi_note": 86,
@@ -9478,43 +6086,11 @@
     },
     {
       "midi_note": 86,
-      "velocity_min": 40,
-      "velocity_max": 46,
-      "velocity_idx": 7,
-      "round_robin": 1,
-      "file": "audio/rr1_vel007_n086.flac"
-    },
-    {
-      "midi_note": 86,
       "velocity_min": 47,
       "velocity_max": 52,
       "velocity_idx": 8,
       "round_robin": 1,
       "file": "audio/rr1_vel008_n086.flac"
-    },
-    {
-      "midi_note": 86,
-      "velocity_min": 53,
-      "velocity_max": 59,
-      "velocity_idx": 9,
-      "round_robin": 1,
-      "file": "audio/rr1_vel009_n086.flac"
-    },
-    {
-      "midi_note": 86,
-      "velocity_min": 60,
-      "velocity_max": 66,
-      "velocity_idx": 10,
-      "round_robin": 1,
-      "file": "audio/rr1_vel010_n086.flac"
-    },
-    {
-      "midi_note": 86,
-      "velocity_min": 67,
-      "velocity_max": 73,
-      "velocity_idx": 11,
-      "round_robin": 1,
-      "file": "audio/rr1_vel011_n086.flac"
     },
     {
       "midi_note": 86,
@@ -9531,14 +6107,6 @@
       "velocity_idx": 13,
       "round_robin": 1,
       "file": "audio/rr1_vel013_n086.flac"
-    },
-    {
-      "midi_note": 86,
-      "velocity_min": 87,
-      "velocity_max": 93,
-      "velocity_idx": 14,
-      "round_robin": 1,
-      "file": "audio/rr1_vel014_n086.flac"
     },
     {
       "midi_note": 86,
@@ -9598,22 +6166,6 @@
     },
     {
       "midi_note": 87,
-      "velocity_min": 13,
-      "velocity_max": 19,
-      "velocity_idx": 3,
-      "round_robin": 1,
-      "file": "audio/rr1_vel003_n087.flac"
-    },
-    {
-      "midi_note": 87,
-      "velocity_min": 20,
-      "velocity_max": 26,
-      "velocity_idx": 4,
-      "round_robin": 1,
-      "file": "audio/rr1_vel004_n087.flac"
-    },
-    {
-      "midi_note": 87,
       "velocity_min": 27,
       "velocity_max": 32,
       "velocity_idx": 5,
@@ -9662,14 +6214,6 @@
     },
     {
       "midi_note": 87,
-      "velocity_min": 67,
-      "velocity_max": 73,
-      "velocity_idx": 11,
-      "round_robin": 1,
-      "file": "audio/rr1_vel011_n087.flac"
-    },
-    {
-      "midi_note": 87,
       "velocity_min": 74,
       "velocity_max": 79,
       "velocity_idx": 12,
@@ -9678,51 +6222,11 @@
     },
     {
       "midi_note": 87,
-      "velocity_min": 80,
-      "velocity_max": 86,
-      "velocity_idx": 13,
-      "round_robin": 1,
-      "file": "audio/rr1_vel013_n087.flac"
-    },
-    {
-      "midi_note": 87,
       "velocity_min": 87,
       "velocity_max": 93,
       "velocity_idx": 14,
       "round_robin": 1,
       "file": "audio/rr1_vel014_n087.flac"
-    },
-    {
-      "midi_note": 87,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n087.flac"
-    },
-    {
-      "midi_note": 87,
-      "velocity_min": 100,
-      "velocity_max": 106,
-      "velocity_idx": 16,
-      "round_robin": 1,
-      "file": "audio/rr1_vel016_n087.flac"
-    },
-    {
-      "midi_note": 87,
-      "velocity_min": 107,
-      "velocity_max": 113,
-      "velocity_idx": 17,
-      "round_robin": 1,
-      "file": "audio/rr1_vel017_n087.flac"
-    },
-    {
-      "midi_note": 87,
-      "velocity_min": 114,
-      "velocity_max": 119,
-      "velocity_idx": 18,
-      "round_robin": 1,
-      "file": "audio/rr1_vel018_n087.flac"
     },
     {
       "midi_note": 87,
@@ -9750,30 +6254,6 @@
     },
     {
       "midi_note": 88,
-      "velocity_min": 13,
-      "velocity_max": 19,
-      "velocity_idx": 3,
-      "round_robin": 1,
-      "file": "audio/rr1_vel003_n088.flac"
-    },
-    {
-      "midi_note": 88,
-      "velocity_min": 20,
-      "velocity_max": 26,
-      "velocity_idx": 4,
-      "round_robin": 1,
-      "file": "audio/rr1_vel004_n088.flac"
-    },
-    {
-      "midi_note": 88,
-      "velocity_min": 27,
-      "velocity_max": 32,
-      "velocity_idx": 5,
-      "round_robin": 1,
-      "file": "audio/rr1_vel005_n088.flac"
-    },
-    {
-      "midi_note": 88,
       "velocity_min": 33,
       "velocity_max": 39,
       "velocity_idx": 6,
@@ -9790,59 +6270,11 @@
     },
     {
       "midi_note": 88,
-      "velocity_min": 47,
-      "velocity_max": 52,
-      "velocity_idx": 8,
-      "round_robin": 1,
-      "file": "audio/rr1_vel008_n088.flac"
-    },
-    {
-      "midi_note": 88,
-      "velocity_min": 53,
-      "velocity_max": 59,
-      "velocity_idx": 9,
-      "round_robin": 1,
-      "file": "audio/rr1_vel009_n088.flac"
-    },
-    {
-      "midi_note": 88,
-      "velocity_min": 60,
-      "velocity_max": 66,
-      "velocity_idx": 10,
-      "round_robin": 1,
-      "file": "audio/rr1_vel010_n088.flac"
-    },
-    {
-      "midi_note": 88,
-      "velocity_min": 67,
-      "velocity_max": 73,
-      "velocity_idx": 11,
-      "round_robin": 1,
-      "file": "audio/rr1_vel011_n088.flac"
-    },
-    {
-      "midi_note": 88,
-      "velocity_min": 74,
-      "velocity_max": 79,
-      "velocity_idx": 12,
-      "round_robin": 1,
-      "file": "audio/rr1_vel012_n088.flac"
-    },
-    {
-      "midi_note": 88,
       "velocity_min": 80,
       "velocity_max": 86,
       "velocity_idx": 13,
       "round_robin": 1,
       "file": "audio/rr1_vel013_n088.flac"
-    },
-    {
-      "midi_note": 88,
-      "velocity_min": 87,
-      "velocity_max": 93,
-      "velocity_idx": 14,
-      "round_robin": 1,
-      "file": "audio/rr1_vel014_n088.flac"
     },
     {
       "midi_note": 88,
@@ -9861,30 +6293,6 @@
       "file": "audio/rr1_vel016_n088.flac"
     },
     {
-      "midi_note": 88,
-      "velocity_min": 107,
-      "velocity_max": 113,
-      "velocity_idx": 17,
-      "round_robin": 1,
-      "file": "audio/rr1_vel017_n088.flac"
-    },
-    {
-      "midi_note": 88,
-      "velocity_min": 114,
-      "velocity_max": 119,
-      "velocity_idx": 18,
-      "round_robin": 1,
-      "file": "audio/rr1_vel018_n088.flac"
-    },
-    {
-      "midi_note": 88,
-      "velocity_min": 120,
-      "velocity_max": 127,
-      "velocity_idx": 19,
-      "round_robin": 1,
-      "file": "audio/rr1_vel019_n088.flac"
-    },
-    {
       "midi_note": 89,
       "velocity_min": 0,
       "velocity_max": 6,
@@ -9894,43 +6302,11 @@
     },
     {
       "midi_note": 89,
-      "velocity_min": 7,
-      "velocity_max": 12,
-      "velocity_idx": 2,
-      "round_robin": 1,
-      "file": "audio/rr1_vel002_n089.flac"
-    },
-    {
-      "midi_note": 89,
-      "velocity_min": 13,
-      "velocity_max": 19,
-      "velocity_idx": 3,
-      "round_robin": 1,
-      "file": "audio/rr1_vel003_n089.flac"
-    },
-    {
-      "midi_note": 89,
       "velocity_min": 20,
       "velocity_max": 26,
       "velocity_idx": 4,
       "round_robin": 1,
       "file": "audio/rr1_vel004_n089.flac"
-    },
-    {
-      "midi_note": 89,
-      "velocity_min": 27,
-      "velocity_max": 32,
-      "velocity_idx": 5,
-      "round_robin": 1,
-      "file": "audio/rr1_vel005_n089.flac"
-    },
-    {
-      "midi_note": 89,
-      "velocity_min": 33,
-      "velocity_max": 39,
-      "velocity_idx": 6,
-      "round_robin": 1,
-      "file": "audio/rr1_vel006_n089.flac"
     },
     {
       "midi_note": 89,
@@ -9950,43 +6326,11 @@
     },
     {
       "midi_note": 89,
-      "velocity_min": 53,
-      "velocity_max": 59,
-      "velocity_idx": 9,
-      "round_robin": 1,
-      "file": "audio/rr1_vel009_n089.flac"
-    },
-    {
-      "midi_note": 89,
-      "velocity_min": 60,
-      "velocity_max": 66,
-      "velocity_idx": 10,
-      "round_robin": 1,
-      "file": "audio/rr1_vel010_n089.flac"
-    },
-    {
-      "midi_note": 89,
       "velocity_min": 67,
       "velocity_max": 73,
       "velocity_idx": 11,
       "round_robin": 1,
       "file": "audio/rr1_vel011_n089.flac"
-    },
-    {
-      "midi_note": 89,
-      "velocity_min": 74,
-      "velocity_max": 79,
-      "velocity_idx": 12,
-      "round_robin": 1,
-      "file": "audio/rr1_vel012_n089.flac"
-    },
-    {
-      "midi_note": 89,
-      "velocity_min": 80,
-      "velocity_max": 86,
-      "velocity_idx": 13,
-      "round_robin": 1,
-      "file": "audio/rr1_vel013_n089.flac"
     },
     {
       "midi_note": 89,
@@ -10078,35 +6422,11 @@
     },
     {
       "midi_note": 90,
-      "velocity_min": 33,
-      "velocity_max": 39,
-      "velocity_idx": 6,
-      "round_robin": 1,
-      "file": "audio/rr1_vel006_n090.flac"
-    },
-    {
-      "midi_note": 90,
       "velocity_min": 40,
       "velocity_max": 46,
       "velocity_idx": 7,
       "round_robin": 1,
       "file": "audio/rr1_vel007_n090.flac"
-    },
-    {
-      "midi_note": 90,
-      "velocity_min": 47,
-      "velocity_max": 52,
-      "velocity_idx": 8,
-      "round_robin": 1,
-      "file": "audio/rr1_vel008_n090.flac"
-    },
-    {
-      "midi_note": 90,
-      "velocity_min": 53,
-      "velocity_max": 59,
-      "velocity_idx": 9,
-      "round_robin": 1,
-      "file": "audio/rr1_vel009_n090.flac"
     },
     {
       "midi_note": 90,
@@ -10158,27 +6478,11 @@
     },
     {
       "midi_note": 90,
-      "velocity_min": 100,
-      "velocity_max": 106,
-      "velocity_idx": 16,
-      "round_robin": 1,
-      "file": "audio/rr1_vel016_n090.flac"
-    },
-    {
-      "midi_note": 90,
       "velocity_min": 107,
       "velocity_max": 113,
       "velocity_idx": 17,
       "round_robin": 1,
       "file": "audio/rr1_vel017_n090.flac"
-    },
-    {
-      "midi_note": 90,
-      "velocity_min": 114,
-      "velocity_max": 119,
-      "velocity_idx": 18,
-      "round_robin": 1,
-      "file": "audio/rr1_vel018_n090.flac"
     },
     {
       "midi_note": 90,
@@ -10203,38 +6507,6 @@
       "velocity_idx": 2,
       "round_robin": 1,
       "file": "audio/rr1_vel002_n091.flac"
-    },
-    {
-      "midi_note": 91,
-      "velocity_min": 13,
-      "velocity_max": 19,
-      "velocity_idx": 3,
-      "round_robin": 1,
-      "file": "audio/rr1_vel003_n091.flac"
-    },
-    {
-      "midi_note": 91,
-      "velocity_min": 20,
-      "velocity_max": 26,
-      "velocity_idx": 4,
-      "round_robin": 1,
-      "file": "audio/rr1_vel004_n091.flac"
-    },
-    {
-      "midi_note": 91,
-      "velocity_min": 27,
-      "velocity_max": 32,
-      "velocity_idx": 5,
-      "round_robin": 1,
-      "file": "audio/rr1_vel005_n091.flac"
-    },
-    {
-      "midi_note": 91,
-      "velocity_min": 33,
-      "velocity_max": 39,
-      "velocity_idx": 6,
-      "round_robin": 1,
-      "file": "audio/rr1_vel006_n091.flac"
     },
     {
       "midi_note": 91,
@@ -10270,14 +6542,6 @@
     },
     {
       "midi_note": 91,
-      "velocity_min": 67,
-      "velocity_max": 73,
-      "velocity_idx": 11,
-      "round_robin": 1,
-      "file": "audio/rr1_vel011_n091.flac"
-    },
-    {
-      "midi_note": 91,
       "velocity_min": 74,
       "velocity_max": 79,
       "velocity_idx": 12,
@@ -10299,22 +6563,6 @@
       "velocity_idx": 14,
       "round_robin": 1,
       "file": "audio/rr1_vel014_n091.flac"
-    },
-    {
-      "midi_note": 91,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n091.flac"
-    },
-    {
-      "midi_note": 91,
-      "velocity_min": 100,
-      "velocity_max": 106,
-      "velocity_idx": 16,
-      "round_robin": 1,
-      "file": "audio/rr1_vel016_n091.flac"
     },
     {
       "midi_note": 91,
@@ -10342,14 +6590,6 @@
     },
     {
       "midi_note": 92,
-      "velocity_min": 0,
-      "velocity_max": 6,
-      "velocity_idx": 1,
-      "round_robin": 1,
-      "file": "audio/rr1_vel001_n092.flac"
-    },
-    {
-      "midi_note": 92,
       "velocity_min": 7,
       "velocity_max": 12,
       "velocity_idx": 2,
@@ -10363,14 +6603,6 @@
       "velocity_idx": 3,
       "round_robin": 1,
       "file": "audio/rr1_vel003_n092.flac"
-    },
-    {
-      "midi_note": 92,
-      "velocity_min": 20,
-      "velocity_max": 26,
-      "velocity_idx": 4,
-      "round_robin": 1,
-      "file": "audio/rr1_vel004_n092.flac"
     },
     {
       "midi_note": 92,
@@ -10390,43 +6622,11 @@
     },
     {
       "midi_note": 92,
-      "velocity_min": 40,
-      "velocity_max": 46,
-      "velocity_idx": 7,
-      "round_robin": 1,
-      "file": "audio/rr1_vel007_n092.flac"
-    },
-    {
-      "midi_note": 92,
-      "velocity_min": 47,
-      "velocity_max": 52,
-      "velocity_idx": 8,
-      "round_robin": 1,
-      "file": "audio/rr1_vel008_n092.flac"
-    },
-    {
-      "midi_note": 92,
       "velocity_min": 53,
       "velocity_max": 59,
       "velocity_idx": 9,
       "round_robin": 1,
       "file": "audio/rr1_vel009_n092.flac"
-    },
-    {
-      "midi_note": 92,
-      "velocity_min": 60,
-      "velocity_max": 66,
-      "velocity_idx": 10,
-      "round_robin": 1,
-      "file": "audio/rr1_vel010_n092.flac"
-    },
-    {
-      "midi_note": 92,
-      "velocity_min": 67,
-      "velocity_max": 73,
-      "velocity_idx": 11,
-      "round_robin": 1,
-      "file": "audio/rr1_vel011_n092.flac"
     },
     {
       "midi_note": 92,
@@ -10438,35 +6638,11 @@
     },
     {
       "midi_note": 92,
-      "velocity_min": 80,
-      "velocity_max": 86,
-      "velocity_idx": 13,
-      "round_robin": 1,
-      "file": "audio/rr1_vel013_n092.flac"
-    },
-    {
-      "midi_note": 92,
       "velocity_min": 87,
       "velocity_max": 93,
       "velocity_idx": 14,
       "round_robin": 1,
       "file": "audio/rr1_vel014_n092.flac"
-    },
-    {
-      "midi_note": 92,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n092.flac"
-    },
-    {
-      "midi_note": 92,
-      "velocity_min": 100,
-      "velocity_max": 106,
-      "velocity_idx": 16,
-      "round_robin": 1,
-      "file": "audio/rr1_vel016_n092.flac"
     },
     {
       "midi_note": 92,
@@ -10478,27 +6654,11 @@
     },
     {
       "midi_note": 92,
-      "velocity_min": 114,
-      "velocity_max": 119,
-      "velocity_idx": 18,
-      "round_robin": 1,
-      "file": "audio/rr1_vel018_n092.flac"
-    },
-    {
-      "midi_note": 92,
       "velocity_min": 120,
       "velocity_max": 127,
       "velocity_idx": 19,
       "round_robin": 1,
       "file": "audio/rr1_vel019_n092.flac"
-    },
-    {
-      "midi_note": 93,
-      "velocity_min": 0,
-      "velocity_max": 6,
-      "velocity_idx": 1,
-      "round_robin": 1,
-      "file": "audio/rr1_vel001_n093.flac"
     },
     {
       "midi_note": 93,
@@ -10531,22 +6691,6 @@
       "velocity_idx": 5,
       "round_robin": 1,
       "file": "audio/rr1_vel005_n093.flac"
-    },
-    {
-      "midi_note": 93,
-      "velocity_min": 33,
-      "velocity_max": 39,
-      "velocity_idx": 6,
-      "round_robin": 1,
-      "file": "audio/rr1_vel006_n093.flac"
-    },
-    {
-      "midi_note": 93,
-      "velocity_min": 40,
-      "velocity_max": 46,
-      "velocity_idx": 7,
-      "round_robin": 1,
-      "file": "audio/rr1_vel007_n093.flac"
     },
     {
       "midi_note": 93,
@@ -10614,35 +6758,11 @@
     },
     {
       "midi_note": 93,
-      "velocity_min": 100,
-      "velocity_max": 106,
-      "velocity_idx": 16,
-      "round_robin": 1,
-      "file": "audio/rr1_vel016_n093.flac"
-    },
-    {
-      "midi_note": 93,
-      "velocity_min": 107,
-      "velocity_max": 113,
-      "velocity_idx": 17,
-      "round_robin": 1,
-      "file": "audio/rr1_vel017_n093.flac"
-    },
-    {
-      "midi_note": 93,
       "velocity_min": 114,
       "velocity_max": 119,
       "velocity_idx": 18,
       "round_robin": 1,
       "file": "audio/rr1_vel018_n093.flac"
-    },
-    {
-      "midi_note": 93,
-      "velocity_min": 120,
-      "velocity_max": 127,
-      "velocity_idx": 19,
-      "round_robin": 1,
-      "file": "audio/rr1_vel019_n093.flac"
     },
     {
       "midi_note": 94,
@@ -10710,14 +6830,6 @@
     },
     {
       "midi_note": 94,
-      "velocity_min": 53,
-      "velocity_max": 59,
-      "velocity_idx": 9,
-      "round_robin": 1,
-      "file": "audio/rr1_vel009_n094.flac"
-    },
-    {
-      "midi_note": 94,
       "velocity_min": 60,
       "velocity_max": 66,
       "velocity_idx": 10,
@@ -10750,59 +6862,11 @@
     },
     {
       "midi_note": 94,
-      "velocity_min": 87,
-      "velocity_max": 93,
-      "velocity_idx": 14,
-      "round_robin": 1,
-      "file": "audio/rr1_vel014_n094.flac"
-    },
-    {
-      "midi_note": 94,
       "velocity_min": 94,
       "velocity_max": 99,
       "velocity_idx": 15,
       "round_robin": 1,
       "file": "audio/rr1_vel015_n094.flac"
-    },
-    {
-      "midi_note": 94,
-      "velocity_min": 100,
-      "velocity_max": 106,
-      "velocity_idx": 16,
-      "round_robin": 1,
-      "file": "audio/rr1_vel016_n094.flac"
-    },
-    {
-      "midi_note": 94,
-      "velocity_min": 107,
-      "velocity_max": 113,
-      "velocity_idx": 17,
-      "round_robin": 1,
-      "file": "audio/rr1_vel017_n094.flac"
-    },
-    {
-      "midi_note": 94,
-      "velocity_min": 114,
-      "velocity_max": 119,
-      "velocity_idx": 18,
-      "round_robin": 1,
-      "file": "audio/rr1_vel018_n094.flac"
-    },
-    {
-      "midi_note": 94,
-      "velocity_min": 120,
-      "velocity_max": 127,
-      "velocity_idx": 19,
-      "round_robin": 1,
-      "file": "audio/rr1_vel019_n094.flac"
-    },
-    {
-      "midi_note": 95,
-      "velocity_min": 0,
-      "velocity_max": 6,
-      "velocity_idx": 1,
-      "round_robin": 1,
-      "file": "audio/rr1_vel001_n095.flac"
     },
     {
       "midi_note": 95,
@@ -10811,38 +6875,6 @@
       "velocity_idx": 2,
       "round_robin": 1,
       "file": "audio/rr1_vel002_n095.flac"
-    },
-    {
-      "midi_note": 95,
-      "velocity_min": 13,
-      "velocity_max": 19,
-      "velocity_idx": 3,
-      "round_robin": 1,
-      "file": "audio/rr1_vel003_n095.flac"
-    },
-    {
-      "midi_note": 95,
-      "velocity_min": 20,
-      "velocity_max": 26,
-      "velocity_idx": 4,
-      "round_robin": 1,
-      "file": "audio/rr1_vel004_n095.flac"
-    },
-    {
-      "midi_note": 95,
-      "velocity_min": 27,
-      "velocity_max": 32,
-      "velocity_idx": 5,
-      "round_robin": 1,
-      "file": "audio/rr1_vel005_n095.flac"
-    },
-    {
-      "midi_note": 95,
-      "velocity_min": 33,
-      "velocity_max": 39,
-      "velocity_idx": 6,
-      "round_robin": 1,
-      "file": "audio/rr1_vel006_n095.flac"
     },
     {
       "midi_note": 95,
@@ -10859,14 +6891,6 @@
       "velocity_idx": 8,
       "round_robin": 1,
       "file": "audio/rr1_vel008_n095.flac"
-    },
-    {
-      "midi_note": 95,
-      "velocity_min": 53,
-      "velocity_max": 59,
-      "velocity_idx": 9,
-      "round_robin": 1,
-      "file": "audio/rr1_vel009_n095.flac"
     },
     {
       "midi_note": 95,
@@ -10894,27 +6918,11 @@
     },
     {
       "midi_note": 95,
-      "velocity_min": 80,
-      "velocity_max": 86,
-      "velocity_idx": 13,
-      "round_robin": 1,
-      "file": "audio/rr1_vel013_n095.flac"
-    },
-    {
-      "midi_note": 95,
       "velocity_min": 87,
       "velocity_max": 93,
       "velocity_idx": 14,
       "round_robin": 1,
       "file": "audio/rr1_vel014_n095.flac"
-    },
-    {
-      "midi_note": 95,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n095.flac"
     },
     {
       "midi_note": 95,
@@ -10925,68 +6933,12 @@
       "file": "audio/rr1_vel016_n095.flac"
     },
     {
-      "midi_note": 95,
-      "velocity_min": 107,
-      "velocity_max": 113,
-      "velocity_idx": 17,
-      "round_robin": 1,
-      "file": "audio/rr1_vel017_n095.flac"
-    },
-    {
-      "midi_note": 95,
-      "velocity_min": 114,
-      "velocity_max": 119,
-      "velocity_idx": 18,
-      "round_robin": 1,
-      "file": "audio/rr1_vel018_n095.flac"
-    },
-    {
-      "midi_note": 95,
-      "velocity_min": 120,
-      "velocity_max": 127,
-      "velocity_idx": 19,
-      "round_robin": 1,
-      "file": "audio/rr1_vel019_n095.flac"
-    },
-    {
-      "midi_note": 96,
-      "velocity_min": 0,
-      "velocity_max": 6,
-      "velocity_idx": 1,
-      "round_robin": 1,
-      "file": "audio/rr1_vel001_n096.flac"
-    },
-    {
       "midi_note": 96,
       "velocity_min": 7,
       "velocity_max": 12,
       "velocity_idx": 2,
       "round_robin": 1,
       "file": "audio/rr1_vel002_n096.flac"
-    },
-    {
-      "midi_note": 96,
-      "velocity_min": 13,
-      "velocity_max": 19,
-      "velocity_idx": 3,
-      "round_robin": 1,
-      "file": "audio/rr1_vel003_n096.flac"
-    },
-    {
-      "midi_note": 96,
-      "velocity_min": 20,
-      "velocity_max": 26,
-      "velocity_idx": 4,
-      "round_robin": 1,
-      "file": "audio/rr1_vel004_n096.flac"
-    },
-    {
-      "midi_note": 96,
-      "velocity_min": 27,
-      "velocity_max": 32,
-      "velocity_idx": 5,
-      "round_robin": 1,
-      "file": "audio/rr1_vel005_n096.flac"
     },
     {
       "midi_note": 96,
@@ -11014,14 +6966,6 @@
     },
     {
       "midi_note": 96,
-      "velocity_min": 53,
-      "velocity_max": 59,
-      "velocity_idx": 9,
-      "round_robin": 1,
-      "file": "audio/rr1_vel009_n096.flac"
-    },
-    {
-      "midi_note": 96,
       "velocity_min": 60,
       "velocity_max": 66,
       "velocity_idx": 10,
@@ -11035,22 +6979,6 @@
       "velocity_idx": 11,
       "round_robin": 1,
       "file": "audio/rr1_vel011_n096.flac"
-    },
-    {
-      "midi_note": 96,
-      "velocity_min": 74,
-      "velocity_max": 79,
-      "velocity_idx": 12,
-      "round_robin": 1,
-      "file": "audio/rr1_vel012_n096.flac"
-    },
-    {
-      "midi_note": 96,
-      "velocity_min": 80,
-      "velocity_max": 86,
-      "velocity_idx": 13,
-      "round_robin": 1,
-      "file": "audio/rr1_vel013_n096.flac"
     },
     {
       "midi_note": 96,
@@ -11078,35 +7006,11 @@
     },
     {
       "midi_note": 96,
-      "velocity_min": 107,
-      "velocity_max": 113,
-      "velocity_idx": 17,
-      "round_robin": 1,
-      "file": "audio/rr1_vel017_n096.flac"
-    },
-    {
-      "midi_note": 96,
-      "velocity_min": 114,
-      "velocity_max": 119,
-      "velocity_idx": 18,
-      "round_robin": 1,
-      "file": "audio/rr1_vel018_n096.flac"
-    },
-    {
-      "midi_note": 96,
       "velocity_min": 120,
       "velocity_max": 127,
       "velocity_idx": 19,
       "round_robin": 1,
       "file": "audio/rr1_vel019_n096.flac"
-    },
-    {
-      "midi_note": 97,
-      "velocity_min": 0,
-      "velocity_max": 6,
-      "velocity_idx": 1,
-      "round_robin": 1,
-      "file": "audio/rr1_vel001_n097.flac"
     },
     {
       "midi_note": 97,
@@ -11126,35 +7030,11 @@
     },
     {
       "midi_note": 97,
-      "velocity_min": 20,
-      "velocity_max": 26,
-      "velocity_idx": 4,
-      "round_robin": 1,
-      "file": "audio/rr1_vel004_n097.flac"
-    },
-    {
-      "midi_note": 97,
-      "velocity_min": 27,
-      "velocity_max": 32,
-      "velocity_idx": 5,
-      "round_robin": 1,
-      "file": "audio/rr1_vel005_n097.flac"
-    },
-    {
-      "midi_note": 97,
       "velocity_min": 33,
       "velocity_max": 39,
       "velocity_idx": 6,
       "round_robin": 1,
       "file": "audio/rr1_vel006_n097.flac"
-    },
-    {
-      "midi_note": 97,
-      "velocity_min": 40,
-      "velocity_max": 46,
-      "velocity_idx": 7,
-      "round_robin": 1,
-      "file": "audio/rr1_vel007_n097.flac"
     },
     {
       "midi_note": 97,
@@ -11171,54 +7051,6 @@
       "velocity_idx": 9,
       "round_robin": 1,
       "file": "audio/rr1_vel009_n097.flac"
-    },
-    {
-      "midi_note": 97,
-      "velocity_min": 60,
-      "velocity_max": 66,
-      "velocity_idx": 10,
-      "round_robin": 1,
-      "file": "audio/rr1_vel010_n097.flac"
-    },
-    {
-      "midi_note": 97,
-      "velocity_min": 67,
-      "velocity_max": 73,
-      "velocity_idx": 11,
-      "round_robin": 1,
-      "file": "audio/rr1_vel011_n097.flac"
-    },
-    {
-      "midi_note": 97,
-      "velocity_min": 74,
-      "velocity_max": 79,
-      "velocity_idx": 12,
-      "round_robin": 1,
-      "file": "audio/rr1_vel012_n097.flac"
-    },
-    {
-      "midi_note": 97,
-      "velocity_min": 80,
-      "velocity_max": 86,
-      "velocity_idx": 13,
-      "round_robin": 1,
-      "file": "audio/rr1_vel013_n097.flac"
-    },
-    {
-      "midi_note": 97,
-      "velocity_min": 87,
-      "velocity_max": 93,
-      "velocity_idx": 14,
-      "round_robin": 1,
-      "file": "audio/rr1_vel014_n097.flac"
-    },
-    {
-      "midi_note": 97,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n097.flac"
     },
     {
       "midi_note": 97,
@@ -11245,28 +7077,12 @@
       "file": "audio/rr1_vel018_n097.flac"
     },
     {
-      "midi_note": 97,
-      "velocity_min": 120,
-      "velocity_max": 127,
-      "velocity_idx": 19,
-      "round_robin": 1,
-      "file": "audio/rr1_vel019_n097.flac"
-    },
-    {
       "midi_note": 98,
       "velocity_min": 0,
       "velocity_max": 6,
       "velocity_idx": 1,
       "round_robin": 1,
       "file": "audio/rr1_vel001_n098.flac"
-    },
-    {
-      "midi_note": 98,
-      "velocity_min": 7,
-      "velocity_max": 12,
-      "velocity_idx": 2,
-      "round_robin": 1,
-      "file": "audio/rr1_vel002_n098.flac"
     },
     {
       "midi_note": 98,
@@ -11310,43 +7126,11 @@
     },
     {
       "midi_note": 98,
-      "velocity_min": 47,
-      "velocity_max": 52,
-      "velocity_idx": 8,
-      "round_robin": 1,
-      "file": "audio/rr1_vel008_n098.flac"
-    },
-    {
-      "midi_note": 98,
-      "velocity_min": 53,
-      "velocity_max": 59,
-      "velocity_idx": 9,
-      "round_robin": 1,
-      "file": "audio/rr1_vel009_n098.flac"
-    },
-    {
-      "midi_note": 98,
       "velocity_min": 60,
       "velocity_max": 66,
       "velocity_idx": 10,
       "round_robin": 1,
       "file": "audio/rr1_vel010_n098.flac"
-    },
-    {
-      "midi_note": 98,
-      "velocity_min": 67,
-      "velocity_max": 73,
-      "velocity_idx": 11,
-      "round_robin": 1,
-      "file": "audio/rr1_vel011_n098.flac"
-    },
-    {
-      "midi_note": 98,
-      "velocity_min": 74,
-      "velocity_max": 79,
-      "velocity_idx": 12,
-      "round_robin": 1,
-      "file": "audio/rr1_vel012_n098.flac"
     },
     {
       "midi_note": 98,
@@ -11371,22 +7155,6 @@
       "velocity_idx": 15,
       "round_robin": 1,
       "file": "audio/rr1_vel015_n098.flac"
-    },
-    {
-      "midi_note": 98,
-      "velocity_min": 100,
-      "velocity_max": 106,
-      "velocity_idx": 16,
-      "round_robin": 1,
-      "file": "audio/rr1_vel016_n098.flac"
-    },
-    {
-      "midi_note": 98,
-      "velocity_min": 107,
-      "velocity_max": 113,
-      "velocity_idx": 17,
-      "round_robin": 1,
-      "file": "audio/rr1_vel017_n098.flac"
     },
     {
       "midi_note": 98,
@@ -11470,14 +7238,6 @@
     },
     {
       "midi_note": 99,
-      "velocity_min": 53,
-      "velocity_max": 59,
-      "velocity_idx": 9,
-      "round_robin": 1,
-      "file": "audio/rr1_vel009_n099.flac"
-    },
-    {
-      "midi_note": 99,
       "velocity_min": 60,
       "velocity_max": 66,
       "velocity_idx": 10,
@@ -11499,14 +7259,6 @@
       "velocity_idx": 12,
       "round_robin": 1,
       "file": "audio/rr1_vel012_n099.flac"
-    },
-    {
-      "midi_note": 99,
-      "velocity_min": 80,
-      "velocity_max": 86,
-      "velocity_idx": 13,
-      "round_robin": 1,
-      "file": "audio/rr1_vel013_n099.flac"
     },
     {
       "midi_note": 99,
@@ -11558,14 +7310,6 @@
     },
     {
       "midi_note": 100,
-      "velocity_min": 0,
-      "velocity_max": 6,
-      "velocity_idx": 1,
-      "round_robin": 1,
-      "file": "audio/rr1_vel001_n100.flac"
-    },
-    {
-      "midi_note": 100,
       "velocity_min": 7,
       "velocity_max": 12,
       "velocity_idx": 2,
@@ -11579,22 +7323,6 @@
       "velocity_idx": 3,
       "round_robin": 1,
       "file": "audio/rr1_vel003_n100.flac"
-    },
-    {
-      "midi_note": 100,
-      "velocity_min": 20,
-      "velocity_max": 26,
-      "velocity_idx": 4,
-      "round_robin": 1,
-      "file": "audio/rr1_vel004_n100.flac"
-    },
-    {
-      "midi_note": 100,
-      "velocity_min": 27,
-      "velocity_max": 32,
-      "velocity_idx": 5,
-      "round_robin": 1,
-      "file": "audio/rr1_vel005_n100.flac"
     },
     {
       "midi_note": 100,
@@ -11622,14 +7350,6 @@
     },
     {
       "midi_note": 100,
-      "velocity_min": 53,
-      "velocity_max": 59,
-      "velocity_idx": 9,
-      "round_robin": 1,
-      "file": "audio/rr1_vel009_n100.flac"
-    },
-    {
-      "midi_note": 100,
       "velocity_min": 60,
       "velocity_max": 66,
       "velocity_idx": 10,
@@ -11651,14 +7371,6 @@
       "velocity_idx": 12,
       "round_robin": 1,
       "file": "audio/rr1_vel012_n100.flac"
-    },
-    {
-      "midi_note": 100,
-      "velocity_min": 80,
-      "velocity_max": 86,
-      "velocity_idx": 13,
-      "round_robin": 1,
-      "file": "audio/rr1_vel013_n100.flac"
     },
     {
       "midi_note": 100,
@@ -11693,36 +7405,12 @@
       "file": "audio/rr1_vel017_n100.flac"
     },
     {
-      "midi_note": 100,
-      "velocity_min": 114,
-      "velocity_max": 119,
-      "velocity_idx": 18,
-      "round_robin": 1,
-      "file": "audio/rr1_vel018_n100.flac"
-    },
-    {
-      "midi_note": 100,
-      "velocity_min": 120,
-      "velocity_max": 127,
-      "velocity_idx": 19,
-      "round_robin": 1,
-      "file": "audio/rr1_vel019_n100.flac"
-    },
-    {
       "midi_note": 101,
       "velocity_min": 0,
       "velocity_max": 6,
       "velocity_idx": 1,
       "round_robin": 1,
       "file": "audio/rr1_vel001_n101.flac"
-    },
-    {
-      "midi_note": 101,
-      "velocity_min": 7,
-      "velocity_max": 12,
-      "velocity_idx": 2,
-      "round_robin": 1,
-      "file": "audio/rr1_vel002_n101.flac"
     },
     {
       "midi_note": 101,
@@ -11742,35 +7430,11 @@
     },
     {
       "midi_note": 101,
-      "velocity_min": 27,
-      "velocity_max": 32,
-      "velocity_idx": 5,
-      "round_robin": 1,
-      "file": "audio/rr1_vel005_n101.flac"
-    },
-    {
-      "midi_note": 101,
       "velocity_min": 33,
       "velocity_max": 39,
       "velocity_idx": 6,
       "round_robin": 1,
       "file": "audio/rr1_vel006_n101.flac"
-    },
-    {
-      "midi_note": 101,
-      "velocity_min": 40,
-      "velocity_max": 46,
-      "velocity_idx": 7,
-      "round_robin": 1,
-      "file": "audio/rr1_vel007_n101.flac"
-    },
-    {
-      "midi_note": 101,
-      "velocity_min": 47,
-      "velocity_max": 52,
-      "velocity_idx": 8,
-      "round_robin": 1,
-      "file": "audio/rr1_vel008_n101.flac"
     },
     {
       "midi_note": 101,
@@ -11822,14 +7486,6 @@
     },
     {
       "midi_note": 101,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n101.flac"
-    },
-    {
-      "midi_note": 101,
       "velocity_min": 100,
       "velocity_max": 106,
       "velocity_idx": 16,
@@ -11843,22 +7499,6 @@
       "velocity_idx": 17,
       "round_robin": 1,
       "file": "audio/rr1_vel017_n101.flac"
-    },
-    {
-      "midi_note": 101,
-      "velocity_min": 114,
-      "velocity_max": 119,
-      "velocity_idx": 18,
-      "round_robin": 1,
-      "file": "audio/rr1_vel018_n101.flac"
-    },
-    {
-      "midi_note": 101,
-      "velocity_min": 120,
-      "velocity_max": 127,
-      "velocity_idx": 19,
-      "round_robin": 1,
-      "file": "audio/rr1_vel019_n101.flac"
     },
     {
       "midi_note": 102,
@@ -11891,14 +7531,6 @@
       "velocity_idx": 4,
       "round_robin": 1,
       "file": "audio/rr1_vel004_n102.flac"
-    },
-    {
-      "midi_note": 102,
-      "velocity_min": 27,
-      "velocity_max": 32,
-      "velocity_idx": 5,
-      "round_robin": 1,
-      "file": "audio/rr1_vel005_n102.flac"
     },
     {
       "midi_note": 102,
@@ -11942,14 +7574,6 @@
     },
     {
       "midi_note": 102,
-      "velocity_min": 67,
-      "velocity_max": 73,
-      "velocity_idx": 11,
-      "round_robin": 1,
-      "file": "audio/rr1_vel011_n102.flac"
-    },
-    {
-      "midi_note": 102,
       "velocity_min": 74,
       "velocity_max": 79,
       "velocity_idx": 12,
@@ -11989,30 +7613,6 @@
       "file": "audio/rr1_vel016_n102.flac"
     },
     {
-      "midi_note": 102,
-      "velocity_min": 107,
-      "velocity_max": 113,
-      "velocity_idx": 17,
-      "round_robin": 1,
-      "file": "audio/rr1_vel017_n102.flac"
-    },
-    {
-      "midi_note": 102,
-      "velocity_min": 114,
-      "velocity_max": 119,
-      "velocity_idx": 18,
-      "round_robin": 1,
-      "file": "audio/rr1_vel018_n102.flac"
-    },
-    {
-      "midi_note": 102,
-      "velocity_min": 120,
-      "velocity_max": 127,
-      "velocity_idx": 19,
-      "round_robin": 1,
-      "file": "audio/rr1_vel019_n102.flac"
-    },
-    {
       "midi_note": 103,
       "velocity_min": 0,
       "velocity_max": 6,
@@ -12030,43 +7630,11 @@
     },
     {
       "midi_note": 103,
-      "velocity_min": 13,
-      "velocity_max": 19,
-      "velocity_idx": 3,
-      "round_robin": 1,
-      "file": "audio/rr1_vel003_n103.flac"
-    },
-    {
-      "midi_note": 103,
       "velocity_min": 20,
       "velocity_max": 26,
       "velocity_idx": 4,
       "round_robin": 1,
       "file": "audio/rr1_vel004_n103.flac"
-    },
-    {
-      "midi_note": 103,
-      "velocity_min": 27,
-      "velocity_max": 32,
-      "velocity_idx": 5,
-      "round_robin": 1,
-      "file": "audio/rr1_vel005_n103.flac"
-    },
-    {
-      "midi_note": 103,
-      "velocity_min": 33,
-      "velocity_max": 39,
-      "velocity_idx": 6,
-      "round_robin": 1,
-      "file": "audio/rr1_vel006_n103.flac"
-    },
-    {
-      "midi_note": 103,
-      "velocity_min": 40,
-      "velocity_max": 46,
-      "velocity_idx": 7,
-      "round_robin": 1,
-      "file": "audio/rr1_vel007_n103.flac"
     },
     {
       "midi_note": 103,
@@ -12094,27 +7662,11 @@
     },
     {
       "midi_note": 103,
-      "velocity_min": 67,
-      "velocity_max": 73,
-      "velocity_idx": 11,
-      "round_robin": 1,
-      "file": "audio/rr1_vel011_n103.flac"
-    },
-    {
-      "midi_note": 103,
       "velocity_min": 74,
       "velocity_max": 79,
       "velocity_idx": 12,
       "round_robin": 1,
       "file": "audio/rr1_vel012_n103.flac"
-    },
-    {
-      "midi_note": 103,
-      "velocity_min": 80,
-      "velocity_max": 86,
-      "velocity_idx": 13,
-      "round_robin": 1,
-      "file": "audio/rr1_vel013_n103.flac"
     },
     {
       "midi_note": 103,
@@ -12134,22 +7686,6 @@
     },
     {
       "midi_note": 103,
-      "velocity_min": 100,
-      "velocity_max": 106,
-      "velocity_idx": 16,
-      "round_robin": 1,
-      "file": "audio/rr1_vel016_n103.flac"
-    },
-    {
-      "midi_note": 103,
-      "velocity_min": 107,
-      "velocity_max": 113,
-      "velocity_idx": 17,
-      "round_robin": 1,
-      "file": "audio/rr1_vel017_n103.flac"
-    },
-    {
-      "midi_note": 103,
       "velocity_min": 114,
       "velocity_max": 119,
       "velocity_idx": 18,
@@ -12163,14 +7699,6 @@
       "velocity_idx": 19,
       "round_robin": 1,
       "file": "audio/rr1_vel019_n103.flac"
-    },
-    {
-      "midi_note": 104,
-      "velocity_min": 0,
-      "velocity_max": 6,
-      "velocity_idx": 1,
-      "round_robin": 1,
-      "file": "audio/rr1_vel001_n104.flac"
     },
     {
       "midi_note": 104,
@@ -12214,30 +7742,6 @@
     },
     {
       "midi_note": 104,
-      "velocity_min": 40,
-      "velocity_max": 46,
-      "velocity_idx": 7,
-      "round_robin": 1,
-      "file": "audio/rr1_vel007_n104.flac"
-    },
-    {
-      "midi_note": 104,
-      "velocity_min": 47,
-      "velocity_max": 52,
-      "velocity_idx": 8,
-      "round_robin": 1,
-      "file": "audio/rr1_vel008_n104.flac"
-    },
-    {
-      "midi_note": 104,
-      "velocity_min": 53,
-      "velocity_max": 59,
-      "velocity_idx": 9,
-      "round_robin": 1,
-      "file": "audio/rr1_vel009_n104.flac"
-    },
-    {
-      "midi_note": 104,
       "velocity_min": 60,
       "velocity_max": 66,
       "velocity_idx": 10,
@@ -12254,27 +7758,11 @@
     },
     {
       "midi_note": 104,
-      "velocity_min": 74,
-      "velocity_max": 79,
-      "velocity_idx": 12,
-      "round_robin": 1,
-      "file": "audio/rr1_vel012_n104.flac"
-    },
-    {
-      "midi_note": 104,
       "velocity_min": 80,
       "velocity_max": 86,
       "velocity_idx": 13,
       "round_robin": 1,
       "file": "audio/rr1_vel013_n104.flac"
-    },
-    {
-      "midi_note": 104,
-      "velocity_min": 87,
-      "velocity_max": 93,
-      "velocity_idx": 14,
-      "round_robin": 1,
-      "file": "audio/rr1_vel014_n104.flac"
     },
     {
       "midi_note": 104,
@@ -12286,35 +7774,11 @@
     },
     {
       "midi_note": 104,
-      "velocity_min": 100,
-      "velocity_max": 106,
-      "velocity_idx": 16,
-      "round_robin": 1,
-      "file": "audio/rr1_vel016_n104.flac"
-    },
-    {
-      "midi_note": 104,
       "velocity_min": 107,
       "velocity_max": 113,
       "velocity_idx": 17,
       "round_robin": 1,
       "file": "audio/rr1_vel017_n104.flac"
-    },
-    {
-      "midi_note": 104,
-      "velocity_min": 114,
-      "velocity_max": 119,
-      "velocity_idx": 18,
-      "round_robin": 1,
-      "file": "audio/rr1_vel018_n104.flac"
-    },
-    {
-      "midi_note": 104,
-      "velocity_min": 120,
-      "velocity_max": 127,
-      "velocity_idx": 19,
-      "round_robin": 1,
-      "file": "audio/rr1_vel019_n104.flac"
     },
     {
       "midi_note": 105,
@@ -12331,14 +7795,6 @@
       "velocity_idx": 2,
       "round_robin": 1,
       "file": "audio/rr1_vel002_n105.flac"
-    },
-    {
-      "midi_note": 105,
-      "velocity_min": 13,
-      "velocity_max": 19,
-      "velocity_idx": 3,
-      "round_robin": 1,
-      "file": "audio/rr1_vel003_n105.flac"
     },
     {
       "midi_note": 105,
@@ -12382,14 +7838,6 @@
     },
     {
       "midi_note": 105,
-      "velocity_min": 53,
-      "velocity_max": 59,
-      "velocity_idx": 9,
-      "round_robin": 1,
-      "file": "audio/rr1_vel009_n105.flac"
-    },
-    {
-      "midi_note": 105,
       "velocity_min": 60,
       "velocity_max": 66,
       "velocity_idx": 10,
@@ -12414,14 +7862,6 @@
     },
     {
       "midi_note": 105,
-      "velocity_min": 80,
-      "velocity_max": 86,
-      "velocity_idx": 13,
-      "round_robin": 1,
-      "file": "audio/rr1_vel013_n105.flac"
-    },
-    {
-      "midi_note": 105,
       "velocity_min": 87,
       "velocity_max": 93,
       "velocity_idx": 14,
@@ -12438,35 +7878,11 @@
     },
     {
       "midi_note": 105,
-      "velocity_min": 100,
-      "velocity_max": 106,
-      "velocity_idx": 16,
-      "round_robin": 1,
-      "file": "audio/rr1_vel016_n105.flac"
-    },
-    {
-      "midi_note": 105,
-      "velocity_min": 107,
-      "velocity_max": 113,
-      "velocity_idx": 17,
-      "round_robin": 1,
-      "file": "audio/rr1_vel017_n105.flac"
-    },
-    {
-      "midi_note": 105,
       "velocity_min": 114,
       "velocity_max": 119,
       "velocity_idx": 18,
       "round_robin": 1,
       "file": "audio/rr1_vel018_n105.flac"
-    },
-    {
-      "midi_note": 105,
-      "velocity_min": 120,
-      "velocity_max": 127,
-      "velocity_idx": 19,
-      "round_robin": 1,
-      "file": "audio/rr1_vel019_n105.flac"
     },
     {
       "midi_note": 106,
@@ -12478,35 +7894,11 @@
     },
     {
       "midi_note": 106,
-      "velocity_min": 7,
-      "velocity_max": 12,
-      "velocity_idx": 2,
-      "round_robin": 1,
-      "file": "audio/rr1_vel002_n106.flac"
-    },
-    {
-      "midi_note": 106,
-      "velocity_min": 13,
-      "velocity_max": 19,
-      "velocity_idx": 3,
-      "round_robin": 1,
-      "file": "audio/rr1_vel003_n106.flac"
-    },
-    {
-      "midi_note": 106,
       "velocity_min": 20,
       "velocity_max": 26,
       "velocity_idx": 4,
       "round_robin": 1,
       "file": "audio/rr1_vel004_n106.flac"
-    },
-    {
-      "midi_note": 106,
-      "velocity_min": 27,
-      "velocity_max": 32,
-      "velocity_idx": 5,
-      "round_robin": 1,
-      "file": "audio/rr1_vel005_n106.flac"
     },
     {
       "midi_note": 106,
@@ -12550,27 +7942,11 @@
     },
     {
       "midi_note": 106,
-      "velocity_min": 67,
-      "velocity_max": 73,
-      "velocity_idx": 11,
-      "round_robin": 1,
-      "file": "audio/rr1_vel011_n106.flac"
-    },
-    {
-      "midi_note": 106,
       "velocity_min": 74,
       "velocity_max": 79,
       "velocity_idx": 12,
       "round_robin": 1,
       "file": "audio/rr1_vel012_n106.flac"
-    },
-    {
-      "midi_note": 106,
-      "velocity_min": 80,
-      "velocity_max": 86,
-      "velocity_idx": 13,
-      "round_robin": 1,
-      "file": "audio/rr1_vel013_n106.flac"
     },
     {
       "midi_note": 106,
@@ -12587,14 +7963,6 @@
       "velocity_idx": 15,
       "round_robin": 1,
       "file": "audio/rr1_vel015_n106.flac"
-    },
-    {
-      "midi_note": 106,
-      "velocity_min": 100,
-      "velocity_max": 106,
-      "velocity_idx": 16,
-      "round_robin": 1,
-      "file": "audio/rr1_vel016_n106.flac"
     },
     {
       "midi_note": 106,
@@ -12646,14 +8014,6 @@
     },
     {
       "midi_note": 107,
-      "velocity_min": 20,
-      "velocity_max": 26,
-      "velocity_idx": 4,
-      "round_robin": 1,
-      "file": "audio/rr1_vel004_n107.flac"
-    },
-    {
-      "midi_note": 107,
       "velocity_min": 27,
       "velocity_max": 32,
       "velocity_idx": 5,
@@ -12678,35 +8038,11 @@
     },
     {
       "midi_note": 107,
-      "velocity_min": 47,
-      "velocity_max": 52,
-      "velocity_idx": 8,
-      "round_robin": 1,
-      "file": "audio/rr1_vel008_n107.flac"
-    },
-    {
-      "midi_note": 107,
       "velocity_min": 53,
       "velocity_max": 59,
       "velocity_idx": 9,
       "round_robin": 1,
       "file": "audio/rr1_vel009_n107.flac"
-    },
-    {
-      "midi_note": 107,
-      "velocity_min": 60,
-      "velocity_max": 66,
-      "velocity_idx": 10,
-      "round_robin": 1,
-      "file": "audio/rr1_vel010_n107.flac"
-    },
-    {
-      "midi_note": 107,
-      "velocity_min": 67,
-      "velocity_max": 73,
-      "velocity_idx": 11,
-      "round_robin": 1,
-      "file": "audio/rr1_vel011_n107.flac"
     },
     {
       "midi_note": 107,
@@ -12718,27 +8054,11 @@
     },
     {
       "midi_note": 107,
-      "velocity_min": 80,
-      "velocity_max": 86,
-      "velocity_idx": 13,
-      "round_robin": 1,
-      "file": "audio/rr1_vel013_n107.flac"
-    },
-    {
-      "midi_note": 107,
       "velocity_min": 87,
       "velocity_max": 93,
       "velocity_idx": 14,
       "round_robin": 1,
       "file": "audio/rr1_vel014_n107.flac"
-    },
-    {
-      "midi_note": 107,
-      "velocity_min": 94,
-      "velocity_max": 99,
-      "velocity_idx": 15,
-      "round_robin": 1,
-      "file": "audio/rr1_vel015_n107.flac"
     },
     {
       "midi_note": 107,
@@ -12774,14 +8094,6 @@
     },
     {
       "midi_note": 108,
-      "velocity_min": 0,
-      "velocity_max": 6,
-      "velocity_idx": 1,
-      "round_robin": 1,
-      "file": "audio/rr1_vel001_n108.flac"
-    },
-    {
-      "midi_note": 108,
       "velocity_min": 7,
       "velocity_max": 12,
       "velocity_idx": 2,
@@ -12790,27 +8102,11 @@
     },
     {
       "midi_note": 108,
-      "velocity_min": 13,
-      "velocity_max": 19,
-      "velocity_idx": 3,
-      "round_robin": 1,
-      "file": "audio/rr1_vel003_n108.flac"
-    },
-    {
-      "midi_note": 108,
       "velocity_min": 20,
       "velocity_max": 26,
       "velocity_idx": 4,
       "round_robin": 1,
       "file": "audio/rr1_vel004_n108.flac"
-    },
-    {
-      "midi_note": 108,
-      "velocity_min": 27,
-      "velocity_max": 32,
-      "velocity_idx": 5,
-      "round_robin": 1,
-      "file": "audio/rr1_vel005_n108.flac"
     },
     {
       "midi_note": 108,
@@ -12830,30 +8126,6 @@
     },
     {
       "midi_note": 108,
-      "velocity_min": 47,
-      "velocity_max": 52,
-      "velocity_idx": 8,
-      "round_robin": 1,
-      "file": "audio/rr1_vel008_n108.flac"
-    },
-    {
-      "midi_note": 108,
-      "velocity_min": 53,
-      "velocity_max": 59,
-      "velocity_idx": 9,
-      "round_robin": 1,
-      "file": "audio/rr1_vel009_n108.flac"
-    },
-    {
-      "midi_note": 108,
-      "velocity_min": 60,
-      "velocity_max": 66,
-      "velocity_idx": 10,
-      "round_robin": 1,
-      "file": "audio/rr1_vel010_n108.flac"
-    },
-    {
-      "midi_note": 108,
       "velocity_min": 67,
       "velocity_max": 73,
       "velocity_idx": 11,
@@ -12867,22 +8139,6 @@
       "velocity_idx": 12,
       "round_robin": 1,
       "file": "audio/rr1_vel012_n108.flac"
-    },
-    {
-      "midi_note": 108,
-      "velocity_min": 80,
-      "velocity_max": 86,
-      "velocity_idx": 13,
-      "round_robin": 1,
-      "file": "audio/rr1_vel013_n108.flac"
-    },
-    {
-      "midi_note": 108,
-      "velocity_min": 87,
-      "velocity_max": 93,
-      "velocity_idx": 14,
-      "round_robin": 1,
-      "file": "audio/rr1_vel014_n108.flac"
     },
     {
       "midi_note": 108,

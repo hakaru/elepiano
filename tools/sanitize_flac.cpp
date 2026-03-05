@@ -1,5 +1,6 @@
 // SpCA 抽出 FLAC のサニタイズツール
-// dr_flac デコード + CRC-16 ミュート + PCM バースト検出 → クリーン WAV 出力
+// dr_flac デコード + CRC-16 ミュート + PCM バースト検出 → クリーン 24-bit WAV 出力
+// CRC-16 で全フレームがゼロ化された場合は exit(2) で通知
 // Usage: ./sanitize_flac input.flac output.wav [--stats]
 #include "../src/flac_decoder.hpp"
 #include <cstdio>
@@ -12,7 +13,7 @@
 
 // PCM バースト検出: スライディングウィンドウ中央値との比較で
 // CRC-16 をすり抜けた破損フレームを検出・ミュート
-static int detect_and_mute_bursts(std::vector<float>& pcm, int sample_rate)
+static int detect_and_mute_bursts(std::vector<float>& pcm, int /*sample_rate*/)
 {
     const int block_samples = 256;  // ~5.8ms at 44100Hz
     const int total = static_cast<int>(pcm.size());
@@ -41,11 +42,9 @@ static int detect_and_mute_bursts(std::vector<float>& pcm, int sample_rate)
     std::vector<float> window_buf;
 
     for (int b = 0; b < num_blocks; ++b) {
-        // ウィンドウ範囲
         int w_start = std::max(0, b - half_window);
         int w_end   = std::min(num_blocks, b + half_window + 1);
 
-        // ウィンドウ内 RMS のソートで中央値を求める
         window_buf.clear();
         for (int w = w_start; w < w_end; ++w)
             window_buf.push_back(rms[w]);
@@ -87,6 +86,17 @@ static int detect_and_mute_bursts(std::vector<float>& pcm, int sample_rate)
     }
 
     return muted;
+}
+
+// 全サンプルがゼロ（または同一値）かチェック
+static bool is_all_silent(const std::vector<float>& pcm)
+{
+    if (pcm.empty()) return true;
+    float first = pcm[0];
+    for (float v : pcm) {
+        if (std::fabs(v - first) > 1e-6f) return false;
+    }
+    return true;
 }
 
 static void write_wav(const char* path, const float* pcm, size_t num_samples,
@@ -159,6 +169,12 @@ int main(int argc, char** argv)
             fprintf(stderr, "  decode: rate=%d ch=%d bps=%d samples=%zu\n",
                     audio.sample_rate, audio.num_channels, audio.bits_per_sample,
                     audio.pcm.size());
+        }
+
+        // CRC-16 ミュートで全ゼロになった場合はスキップ（exit 2）
+        if (is_all_silent(audio.pcm)) {
+            fprintf(stderr, "  SILENT: all samples zero after CRC-16 muting\n");
+            return 2;
         }
 
         // PCM バースト検出 & ミュート
