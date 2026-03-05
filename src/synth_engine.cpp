@@ -36,11 +36,15 @@ void SynthEngine::mix(float* buf, int frames)
         }
     }
 
-    // ポリフォニーによるクリッピング防止（tanh ソフトリミッター）
-    static constexpr float MASTER_GAIN = 0.25f;
+    // ポリフォニーによるクリッピング防止
+    // 単音はほぼ透過、多声時にソフト圧縮
     const int total = frames * 2;
-    for (int i = 0; i < total; ++i)
-        buf[i] = tanhf(buf[i] * MASTER_GAIN);
+    for (int i = 0; i < total; ++i) {
+        float x = buf[i];
+        if (x > 1.0f)       buf[i] = 1.0f;
+        else if (x < -1.0f) buf[i] = -1.0f;
+        else                 buf[i] = x * (1.5f - 0.5f * x * x);
+    }
 
     sample_counter_ += static_cast<uint64_t>(frames);
 }
