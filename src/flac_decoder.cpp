@@ -9,6 +9,17 @@
 #include <fstream>
 
 // ─── FLAC CRC ────────────────────────────────────────────────────
+static uint8_t flac_crc8(const uint8_t* data, size_t len)
+{
+    uint8_t crc = 0;
+    for (size_t i = 0; i < len; ++i) {
+        crc ^= data[i];
+        for (int j = 0; j < 8; ++j)
+            crc = (crc & 0x80) ? (crc << 1) ^ 0x07 : (crc << 1);
+    }
+    return crc;
+}
+
 static uint16_t flac_crc16(const uint8_t* data, size_t len)
 {
     uint16_t crc = 0;
@@ -18,6 +29,41 @@ static uint16_t flac_crc16(const uint8_t* data, size_t len)
             crc = (crc & 0x8000) ? (crc << 1) ^ 0x8005 : (crc << 1);
     }
     return crc;
+}
+
+// FLAC フレームヘッダの長さを返す（CRC-8 バイト含む）。不正なら -1
+static int flac_header_len(const uint8_t* p, size_t avail)
+{
+    if (avail < 6) return -1;
+
+    int len = 4;  // sync(2) + byte2 + byte3
+
+    // UTF-8 coded frame/sample number
+    uint8_t first = p[4];
+    int utf8_len;
+    if      ((first & 0x80) == 0)    utf8_len = 1;
+    else if ((first & 0xE0) == 0xC0) utf8_len = 2;
+    else if ((first & 0xF0) == 0xE0) utf8_len = 3;
+    else if ((first & 0xF8) == 0xF0) utf8_len = 4;
+    else if ((first & 0xFC) == 0xF8) utf8_len = 5;
+    else if ((first & 0xFE) == 0xFC) utf8_len = 6;
+    else if (first == 0xFE)          utf8_len = 7;
+    else return -1;
+
+    len += utf8_len;
+
+    int bs_code = (p[2] >> 4) & 0x0F;
+    if (bs_code == 6) len += 1;
+    else if (bs_code == 7) len += 2;
+
+    int sr_code = p[2] & 0x0F;
+    if (sr_code == 12) len += 1;
+    else if (sr_code == 13 || sr_code == 14) len += 2;
+
+    len += 1;  // CRC-8
+
+    if (static_cast<size_t>(len) > avail) return -1;
+    return len;
 }
 
 static constexpr std::streamoff MAX_FILE_SIZE = 64 * 1024 * 1024; // 64 MB
@@ -69,11 +115,11 @@ static size_t find_audio_start(const std::vector<uint8_t>& buf, int& block_size)
     return pos;
 }
 
-// FLAC フレーム境界を検出（平文 sync 0xFFF8/0xFFF9）
+// FLAC フレーム境界を検出（CRC-8 ヘッダ検証付き）
 static std::vector<size_t> find_frame_starts(const std::vector<uint8_t>& buf, size_t audio_start)
 {
     std::vector<size_t> starts;
-    for (size_t pos = audio_start; pos + 4 < buf.size(); ++pos) {
+    for (size_t pos = audio_start; pos + 6 < buf.size(); ++pos) {
         if (buf[pos] != 0xFF || (buf[pos + 1] & 0xFE) != 0xF8)
             continue;
         uint8_t b2 = buf[pos + 2];
@@ -81,21 +127,31 @@ static std::vector<size_t> find_frame_starts(const std::vector<uint8_t>& buf, si
         int bs_code = (b2 >> 4) & 0x0F;
         int sr_code = b2 & 0x0F;
         int reserved = b3 & 0x01;
-        if (bs_code >= 1 && sr_code >= 1 && sr_code != 15 && reserved == 0)
-            starts.push_back(pos);
+        if (bs_code < 1 || sr_code < 1 || sr_code == 15 || reserved != 0)
+            continue;
+
+        // CRC-8 ヘッダ検証で偽陽性を排除
+        int hdr_len = flac_header_len(&buf[pos], buf.size() - pos);
+        if (hdr_len < 0) continue;
+
+        uint8_t computed = flac_crc8(&buf[pos], hdr_len - 1);
+        if (computed != buf[pos + hdr_len - 1]) continue;
+
+        starts.push_back(pos);
     }
     return starts;
 }
 
 // 不良フレームの PCM 範囲をゼロ埋め + 境界フェード
-static void mute_bad_frames(std::vector<float>& pcm, int block_size,
+static void mute_bad_frames(std::vector<float>& pcm, int block_size, int channels,
                              const std::vector<uint8_t>& buf,
                              const std::vector<size_t>& frame_starts)
 {
-    if (frame_starts.empty() || block_size <= 0) return;
+    if (frame_starts.empty() || block_size <= 0 || channels <= 0) return;
 
     const size_t total_samples = pcm.size();
-    const int fade_len = 64;  // 境界フェード（サンプル数）
+    const size_t frame_pcm_len = static_cast<size_t>(block_size) * static_cast<size_t>(channels);
+    const int fade_len = 64;
     int muted = 0;
 
     for (size_t i = 0; i < frame_starts.size(); ++i) {
@@ -110,8 +166,8 @@ static void mute_bad_frames(std::vector<float>& pcm, int block_size,
         if (computed == stored) continue;  // CRC OK
 
         // CRC NG → 該当フレームの PCM をゼロ埋め
-        size_t sample_start = static_cast<size_t>(i) * static_cast<size_t>(block_size);
-        size_t sample_end = sample_start + static_cast<size_t>(block_size);
+        size_t sample_start = i * frame_pcm_len;
+        size_t sample_end = sample_start + frame_pcm_len;
         if (sample_start >= total_samples) continue;
         if (sample_end > total_samples) sample_end = total_samples;
 
@@ -123,7 +179,7 @@ static void mute_bad_frames(std::vector<float>& pcm, int block_size,
                                 ? sample_start - fade_len : 0;
             for (size_t s = fade_start; s < sample_start && s < total_samples; ++s) {
                 float t = static_cast<float>(s - fade_start) / fade_len;
-                pcm[s] *= (1.0f - t);  // フェードアウト
+                pcm[s] *= (1.0f - t);
             }
         }
         if (sample_end < total_samples) {
@@ -131,7 +187,7 @@ static void mute_bad_frames(std::vector<float>& pcm, int block_size,
             if (fade_end > total_samples) fade_end = total_samples;
             for (size_t s = sample_end; s < fade_end; ++s) {
                 float t = static_cast<float>(s - sample_end) / fade_len;
-                pcm[s] *= t;  // フェードイン
+                pcm[s] *= t;
             }
         }
         ++muted;
@@ -175,7 +231,7 @@ DecodedAudio decode_flac_file(const std::string& path, size_t max_frames)
     size_t audio_start = find_audio_start(buf, block_size);
     if (audio_start > 0 && block_size > 0) {
         auto frame_starts = find_frame_starts(buf, audio_start);
-        mute_bad_frames(result.pcm, block_size, buf, frame_starts);
+        mute_bad_frames(result.pcm, block_size, result.num_channels, buf, frame_starts);
     }
 
     return result;

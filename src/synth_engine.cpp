@@ -2,6 +2,7 @@
 #include <cstring>
 #include <climits>
 #include <cstdio>
+#include <cmath>
 
 SynthEngine::SynthEngine(SampleDB& attack_db, int sample_rate, SampleDB* release_db)
     : db_(attack_db), release_db_(release_db), sample_rate_(sample_rate)
@@ -34,6 +35,12 @@ void SynthEngine::mix(float* buf, int frames)
             v.mix(buf, frames);
         }
     }
+
+    // ポリフォニーによるクリッピング防止（tanh ソフトリミッター）
+    static constexpr float MASTER_GAIN = 0.25f;
+    const int total = frames * 2;
+    for (int i = 0; i < total; ++i)
+        buf[i] = tanhf(buf[i] * MASTER_GAIN);
 
     sample_counter_ += static_cast<uint64_t>(frames);
 }
