@@ -1,18 +1,27 @@
 #pragma once
 #include <cstring>
+#include <memory>
 #include "spsc_queue.hpp"
+
+#ifdef ELEPIANO_ENABLE_LV2
+class Lv2Host;
+#endif
 
 // Rhodes FX チェーン: トレモロ → プリアンプ → EQ → コーラス → テープディレイ
 // ステレオ float バッファ（インターリーブ L,R,L,R...）をインプレース処理
 class FxChain {
 public:
     explicit FxChain(int sample_rate);
+    ~FxChain();
 
     void process(float* buf, int frames);   // オーディオスレッドから呼ぶ
     void set_param(int cc, int value);      // MIDIスレッドから呼ぶ（ロックフリー push）
 
 private:
     int sr_;
+#ifdef ELEPIANO_ENABLE_LV2
+    std::unique_ptr<Lv2Host> lv2_;
+#endif
 
     // ── MIDI→オーディオ スレッド間パラメータ転送 ──
     struct FxEvent { int cc; int value; };

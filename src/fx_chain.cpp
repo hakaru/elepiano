@@ -2,6 +2,11 @@
 #include <cmath>
 #include <algorithm>
 #include <cstdio>
+#include <cstdlib>
+
+#ifdef ELEPIANO_ENABLE_LV2
+#include "lv2_host.hpp"
+#endif
 
 static constexpr double PI2 = 2.0 * M_PI;
 
@@ -34,7 +39,18 @@ FxChain::FxChain(int sample_rate) : sr_(sample_rate)
     setup_room(0.5f, 0.7f);
     // Plate reverb 初期設定
     setup_plate(0.7f);
+
+#ifdef ELEPIANO_ENABLE_LV2
+    lv2_ = std::make_unique<::Lv2Host>(sample_rate, 8192);
+    if (lv2_->initialize_from_env()) {
+        fprintf(stderr, "[FxChain] LV2 host enabled from environment\n");
+    } else {
+        lv2_.reset();
+    }
+#endif
 }
+
+FxChain::~FxChain() = default;
 
 // ─── メイン処理（信号順: トレモロ→プリアンプ→EQ→コーラス→テープディレイ）──
 void FxChain::process(float* buf, int frames)
@@ -51,6 +67,9 @@ void FxChain::process(float* buf, int frames)
     if (eq_hi_db_ != 0.0f)          process_biquad(eq_hi_, buf, frames);
     if (chorus_.wet > 0.001f)        process_chorus(buf, frames);
     if (space_wet_ > 0.001f)         process_space(buf, frames);
+#ifdef ELEPIANO_ENABLE_LV2
+    if (lv2_)                        lv2_->process(buf, frames);
+#endif
 }
 
 // ─── MIDI CC パラメータ（MIDIスレッドから呼ばれる → キューに push） ──
@@ -63,6 +82,10 @@ void FxChain::set_param(int cc, int value)
 void FxChain::apply_param(int cc, int val)
 {
     const float v = val / 127.0f;  // 0.0〜1.0
+
+#ifdef ELEPIANO_ENABLE_LV2
+    if (lv2_) lv2_->set_cc(cc, v);
+#endif
 
     switch (cc) {
     // ── Tremolo (CC1-2) ──
