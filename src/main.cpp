@@ -225,6 +225,16 @@ int main(int argc, char* argv[])
         }
     }
 
+    // CLI 引数バリデーション
+    if (g_period_size < 16 || g_period_size > 8192) {
+        fprintf(stderr, "[WARNING] --period-size %d は範囲外 (16-8192)、デフォルト 128 を使用\n", g_period_size);
+        g_period_size = 128;
+    }
+    if (g_periods < 2 || g_periods > 8) {
+        fprintf(stderr, "[WARNING] --periods %d は範囲外 (2-8)、デフォルト 3 を使用\n", g_periods);
+        g_periods = 3;
+    }
+
     // --organ [alsa_device]
     if (argc > 1 && std::string(argv[1]) == "--organ") {
         const char* alsa_device = (argc > 2) ? argv[2] : "default";

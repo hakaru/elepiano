@@ -7,6 +7,7 @@
 #include <cstdio>
 #include <cstring>
 #include <fstream>
+#include <memory>
 
 // ─── FLAC CRC ────────────────────────────────────────────────────
 static uint8_t flac_crc8(const uint8_t* data, size_t len)
@@ -201,7 +202,12 @@ static void mute_bad_frames(std::vector<float>& pcm, int block_size, int channel
 // ─── メインデコード関数 ────────────────────────────────────────
 DecodedAudio decode_flac_file(const std::string& path, size_t max_frames)
 {
-    drflac* f = drflac_open_file(path.c_str(), nullptr);
+    // ファイルを1回だけ読み込み、メモリからデコード + CRC検証
+    auto buf = read_file_bytes(path);
+
+    auto closer = [](drflac* p) { if (p) drflac_close(p); };
+    std::unique_ptr<drflac, decltype(closer)> f(
+        drflac_open_memory(buf.data(), buf.size(), nullptr), closer);
     if (!f)
         throw std::runtime_error("FLAC open 失敗: " + path);
 
@@ -218,15 +224,13 @@ DecodedAudio decode_flac_file(const std::string& path, size_t max_frames)
         frames_to_read = max_frames;
 
     result.pcm.resize(static_cast<size_t>(frames_to_read) * channels);
-    drflac_uint64 decoded = drflac_read_pcm_frames_f32(f, frames_to_read, result.pcm.data());
+    drflac_uint64 decoded = drflac_read_pcm_frames_f32(f.get(), frames_to_read, result.pcm.data());
     result.pcm.resize(static_cast<size_t>(decoded) * channels);
-    drflac_close(f);
 
     if (result.pcm.empty())
         throw std::runtime_error("FLAC デコード結果が空: " + path);
 
     // CRC-16 検証: 不良フレームをミュートしてデジタルノイズを除去
-    auto buf = read_file_bytes(path);
     int block_size = 0;
     size_t audio_start = find_audio_start(buf, block_size);
     if (audio_start > 0 && block_size > 0) {

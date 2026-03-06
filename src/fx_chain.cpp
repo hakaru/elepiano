@@ -21,6 +21,9 @@ FxChain::FxChain(int sample_rate) : sr_(sample_rate)
 // ─── メイン処理（信号順: トレモロ→プリアンプ→EQ→コーラス→テープディレイ）──
 void FxChain::process(float* buf, int frames)
 {
+    // MIDIスレッドからのパラメータ変更をオーディオスレッドで適用
+    while (auto ev = param_queue_.pop())
+        apply_param(ev->cc, ev->value);
     if (trem_.depth > 0.001f)        process_tremolo(buf, frames);
     if (preamp_.drive > 1.01f)       process_preamp(buf, frames);
     if (eq_lo_db_ != 0.0f)          process_biquad(eq_lo_, buf, frames);
@@ -29,8 +32,14 @@ void FxChain::process(float* buf, int frames)
     if (delay_.delay_samples > 1.0f) process_delay(buf, frames);
 }
 
-// ─── MIDI CC パラメータ ────────────────────────────────────────
-void FxChain::set_param(int cc, int val)
+// ─── MIDI CC パラメータ（MIDIスレッドから呼ばれる → キューに push） ──
+void FxChain::set_param(int cc, int value)
+{
+    param_queue_.push({cc, value});
+}
+
+// ─── パラメータ適用（オーディオスレッド内で呼ばれる） ──────────
+void FxChain::apply_param(int cc, int val)
 {
     const float v = val / 127.0f;  // 0.0〜1.0
 
@@ -175,10 +184,8 @@ void FxChain::process_delay(float* buf, int frames)
         float d = delay_.delay_samples;
         int d0 = static_cast<int>(d);
         float frac = d - static_cast<float>(d0);
-        int r0_l = (delay_.write - d0)     % DELAY_BUF;
-        int r1_l = (delay_.write - d0 - 1) % DELAY_BUF;
-        if (r0_l < 0) r0_l += DELAY_BUF;
-        if (r1_l < 0) r1_l += DELAY_BUF;
+        int r0_l = (delay_.write - d0)     & (DELAY_BUF - 1);
+        int r1_l = (delay_.write - d0 - 1) & (DELAY_BUF - 1);
 
         float tap_l = delay_.buf_l[r0_l] * (1.0f - frac) + delay_.buf_l[r1_l] * frac;
         float tap_r = delay_.buf_r[r0_l] * (1.0f - frac) + delay_.buf_r[r1_l] * frac;
@@ -195,6 +202,6 @@ void FxChain::process_delay(float* buf, int frames)
         buf[i * 2 + 0] = dry_l + tap_l;
         buf[i * 2 + 1] = dry_r + tap_r;
 
-        delay_.write = (delay_.write + 1) % DELAY_BUF;
+        delay_.write = (delay_.write + 1) & (DELAY_BUF - 1);
     }
 }

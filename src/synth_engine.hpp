@@ -36,5 +36,5 @@ private:
     bool      sustain_held_   = false;       // CC64 サステインペダル状態
 
     std::array<Voice, MAX_VOICES> voices_;   // オーディオスレッドのみ
-    SpscQueue<MidiEvent, 64>      event_queue_;  // MIDI → オーディオスレッド間
+    SpscQueue<MidiEvent, 256>     event_queue_;  // MIDI → オーディオスレッド間
 };

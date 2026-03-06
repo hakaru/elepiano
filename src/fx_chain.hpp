@@ -1,5 +1,6 @@
 #pragma once
 #include <cstring>
+#include "spsc_queue.hpp"
 
 // Rhodes FX チェーン: トレモロ → プリアンプ → EQ → コーラス → テープディレイ
 // ステレオ float バッファ（インターリーブ L,R,L,R...）をインプレース処理
@@ -7,11 +8,16 @@ class FxChain {
 public:
     explicit FxChain(int sample_rate);
 
-    void process(float* buf, int frames);
-    void set_param(int cc, int value);  // MIDI CC (0-127)
+    void process(float* buf, int frames);   // オーディオスレッドから呼ぶ
+    void set_param(int cc, int value);      // MIDIスレッドから呼ぶ（ロックフリー push）
 
 private:
     int sr_;
+
+    // ── MIDI→オーディオ スレッド間パラメータ転送 ──
+    struct FxEvent { int cc; int value; };
+    SpscQueue<FxEvent, 32> param_queue_;
+    void apply_param(int cc, int value);    // オーディオスレッド内でパラメータ適用
 
     // ── トレモロ（AM変調, L/R 90° 位相差） ──
     struct {
@@ -50,7 +56,7 @@ private:
     void process_chorus(float* buf, int frames);
 
     // ── テープディレイ（フィードバック + LPF） ──
-    static constexpr int DELAY_BUF = 22050;  // 最大 0.5秒
+    static constexpr int DELAY_BUF = 32768;  // 2のべき乗（ビットマスク高速化）
     struct {
         float buf_l[DELAY_BUF]={}, buf_r[DELAY_BUF]={};
         int   write = 0;
