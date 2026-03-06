@@ -617,3 +617,45 @@
 決定事項: ユーザー確認OK — Wurlitzer の音が正常に出ている
 次のTODO: コミット・プッシュ
 ---
+
+---
+2026-03-06 21:45
+作業項目: Space エフェクト切替 — Tape Echo / Room Reverb / Plate Reverb
+追加機能の説明:
+  - CC75-77 のディレイスロットを「Space エフェクト」に拡張
+  - CC85 で切替: 0-42=Tape Echo, 43-84=Room Reverb, 85-127=Plate Reverb
+  - 共通CC: CC76=Decay/Feedback, CC77=Wet
+  - Room Reverb: Schroeder reverb (4 comb + 2 allpass)
+  - Plate Reverb: 高密度反射 (6 allpass chain)
+決定事項: 実装開始
+次のTODO: 設計→実装→ビルド→テスト
+---
+
+---
+2026-03-06 21:50
+作業項目: CC番号整列
+追加機能の説明:
+  - Space Mode Select を CC85→CC75 に移動
+  - Space パラメータを CC76-78 に（Time/Size, Decay/FB, Wet）
+  - Chorus を CC79-81 に（Rate, Depth, Wet）
+決定事項:
+  - CC1-2: Tremolo
+  - CC70-71: Overdrive
+  - CC72-73: EQ
+  - CC74: Release Time
+  - CC75: Space Mode (Tape/Room/Plate)
+  - CC76-78: Space (Time/Size, Decay/FB, Wet)
+  - CC79-81: Chorus (Rate, Depth, Wet)
+次のTODO: ビルド・デプロイ
+---
+
+---
+2026-03-06 21:54
+作業項目: オーバードライブ高品位化
+追加機能の説明:
+  - 2x オーバーサンプリング（エイリアシング除去）
+  - 2段カスケードサチュレーション（プリ→パワー段）
+  - キャビネットシミュレーション（Suitcase スピーカー風 BPF）
+決定事項: 全部入りで実装・ユーザー確認OK
+次のTODO: コミット
+---

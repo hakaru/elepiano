@@ -1,6 +1,7 @@
 #include "fx_chain.hpp"
 #include <cmath>
 #include <algorithm>
+#include <cstdio>
 
 static constexpr double PI2 = 2.0 * M_PI;
 
@@ -14,14 +15,25 @@ FxChain::FxChain(int sample_rate) : sr_(sample_rate)
     chorus_.inc = 1.0 / sr_; // 1 Hz
 
     // EQ: フラット初期状態
-    compute_shelf(eq_lo_, 200.0f, 0.0f, false);
-    compute_shelf(eq_hi_, 4000.0f, 0.0f, true);
+    compute_shelf(eq_lo_, 150.0f, 0.0f, false);
+    compute_shelf(eq_hi_, 3000.0f, 0.0f, true);
+
+    // キャビネットシム: Suitcase スピーカー風 (HPF 200Hz + LPF 5kHz)
+    compute_shelf(cab_lo_, 200.0f, -24.0f, false);  // 200Hz 以下をカット
+    compute_shelf(cab_hi_, 5000.0f, -18.0f, true);   // 5kHz 以上をカット
 
     // テープエコー: ドット8分 @120BPM = 375ms デフォルト
     delay_.delay_samples = 0.375f * sr_;
     delay_.feedback = 0.4f;
-    delay_.wet = 0.5f;
-    delay_.wet_target = 0.5f;
+
+    // Space エフェクト デフォルト
+    space_wet_ = 0.5f;
+    space_wet_target_ = 0.5f;
+
+    // Room reverb 初期設定
+    setup_room(0.5f, 0.7f);
+    // Plate reverb 初期設定
+    setup_plate(0.7f);
 }
 
 // ─── メイン処理（信号順: トレモロ→プリアンプ→EQ→コーラス→テープディレイ）──
@@ -31,11 +43,14 @@ void FxChain::process(float* buf, int frames)
     while (auto ev = param_queue_.pop())
         apply_param(ev->cc, ev->value);
     if (trem_.depth > 0.001f)        process_tremolo(buf, frames);
-    if (preamp_.drive > 1.01f)       process_preamp(buf, frames);
+    if (preamp_.drive > 1.01f) {
+        process_preamp(buf, frames);
+        process_cabinet(buf, frames);
+    }
     if (eq_lo_db_ != 0.0f)          process_biquad(eq_lo_, buf, frames);
     if (eq_hi_db_ != 0.0f)          process_biquad(eq_hi_, buf, frames);
     if (chorus_.wet > 0.001f)        process_chorus(buf, frames);
-    if (delay_.delay_samples > 1.0f && delay_.wet > 0.001f) process_delay(buf, frames);
+    if (space_wet_ > 0.001f)         process_space(buf, frames);
 }
 
 // ─── MIDI CC パラメータ（MIDIスレッドから呼ばれる → キューに push） ──
@@ -60,26 +75,56 @@ void FxChain::apply_param(int cc, int val)
 
     // ── EQ (CC72-73) ──
     case 72:
-        eq_lo_db_ = (val - 64) * (12.0f / 64.0f);        // Lo EQ -12〜+12 dB
-        compute_shelf(eq_lo_, 200.0f, eq_lo_db_, false);
+        eq_lo_db_ = (val - 64) * (20.0f / 64.0f);        // Lo EQ -20〜+20 dB @ 150Hz
+        compute_shelf(eq_lo_, 150.0f, eq_lo_db_, false);
         break;
     case 73:
-        eq_hi_db_ = (val - 64) * (12.0f / 64.0f);        // Hi EQ -12〜+12 dB
-        compute_shelf(eq_hi_, 4000.0f, eq_hi_db_, true);
+        eq_hi_db_ = (val - 64) * (20.0f / 64.0f);        // Hi EQ -20〜+20 dB @ 3kHz
+        compute_shelf(eq_hi_, 3000.0f, eq_hi_db_, true);
         break;
 
-    // ── Tape Echo (CC75-77) ──
-    case 75:                                               // Delay Time 0〜500ms
-        delay_.delay_samples = v * 0.5f * sr_;
-        delay_.wet = (v > 0.01f) ? delay_.wet_target : 0.0f;
+    // ── Space エフェクト (CC75-78) ──
+    case 75: {                                             // Space モード切替
+        SpaceMode new_mode;
+        if (val < 43)       new_mode = SpaceMode::TAPE_ECHO;
+        else if (val < 85)  new_mode = SpaceMode::ROOM;
+        else                new_mode = SpaceMode::PLATE;
+        if (new_mode != space_mode_) {
+            space_mode_ = new_mode;
+            fprintf(stderr, "[FxChain] Space: %s\n",
+                    new_mode == SpaceMode::TAPE_ECHO ? "Tape Echo" :
+                    new_mode == SpaceMode::ROOM ? "Room Reverb" : "Plate Reverb");
+        }
         break;
-    case 76: delay_.feedback = v * 0.85f; break;          // Feedback 0〜0.85
-    case 77: delay_.wet_target = v; delay_.wet = v; break; // Wet レベル
+    }
+    case 76:                                               // Tape: Time / Room: Size
+        if (space_mode_ == SpaceMode::TAPE_ECHO) {
+            delay_.delay_samples = v * 0.5f * sr_;
+        } else if (space_mode_ == SpaceMode::ROOM) {
+            room_size_ = v;
+            setup_room(v, room_decay_);
+        }
+        break;
+    case 77:                                               // Tape: Feedback / Reverb: Decay
+        if (space_mode_ == SpaceMode::TAPE_ECHO) {
+            delay_.feedback = v * 0.85f;
+        } else if (space_mode_ == SpaceMode::ROOM) {
+            room_decay_ = 0.3f + v * 0.65f;
+            setup_room(room_size_, room_decay_);
+        } else {
+            plate_decay_ = 0.3f + v * 0.65f;
+            setup_plate(plate_decay_);
+        }
+        break;
+    case 78:                                               // Wet レベル（共通）
+        space_wet_target_ = v;
+        space_wet_ = v;
+        break;
 
-    // ── Chorus (CC78-80) ──
-    case 78: chorus_.inc = (0.5 + v * 1.5) / sr_; break;  // Rate 0.5〜2 Hz
-    case 79: chorus_.depth_ms = v * 20.0f; break;          // Depth 0〜20 ms
-    case 80: chorus_.wet = v; break;                        // Wet レベル
+    // ── Chorus (CC79-81) ──
+    case 79: chorus_.inc = (0.5 + v * 1.5) / sr_; break;  // Rate 0.5〜2 Hz
+    case 80: chorus_.depth_ms = v * 20.0f; break;          // Depth 0〜20 ms
+    case 81: chorus_.wet = v; break;                        // Wet レベル
     }
 }
 
@@ -98,42 +143,81 @@ void FxChain::process_tremolo(float* buf, int frames)
     }
 }
 
-// ─── オーバードライブ（非対称クリッピング + トーンフィルタ） ─────
-// Rhodes Suitcase amp 風: 正側はハードクリップ気味、負側はソフトに潰れる
-// 偶数次倍音が出て「品がない」温かみのある歪み
+// ─── オーバードライブ（2段カスケード + 2x オーバーサンプリング） ──
+// Stage 1: プリアンプ段（緩い非対称サチュレーション）
+// Stage 2: パワーアンプ段（ソフトクリップ）
+// 2x オーバーサンプリングでエイリアシングを除去
+//
+// 非対称クリッピング → 偶数次倍音（真空管 / Suitcase amp の温かみ）
+
+// 1段分のサチュレーション（インライン）
+static inline float saturate_asym(float x)
+{
+    if (x >= 0.0f) {
+        // 正側: ソフトクリップ（3次多項式）
+        if (x < 1.5f)
+            return x - 0.148f * x * x * x;  // 緩やかに飽和
+        else
+            return 1.17f;
+    } else {
+        // 負側: tanh でソフトに（非対称 = 偶数次倍音）
+        return tanhf(x * 0.7f) * 1.43f;
+    }
+}
+
 void FxChain::process_preamp(float* buf, int frames)
 {
     const float d = preamp_.drive;
-    const float inv_d = 1.0f / d;
-    // tone: LPF 係数（drive が上がるとデフォルトで暗くなる = アンプの特性）
-    const float lpf_k = 0.2f + preamp_.tone * 0.6f;  // 0.2〜0.8
+    // Stage 1 ゲイン（プリ段: drive の 60%）、Stage 2（パワー段: drive の 40%）
+    const float d1 = 1.0f + (d - 1.0f) * 0.6f;
+    const float d2 = 1.0f + (d - 1.0f) * 0.4f;
+    // tone: LPF 係数（drive が上がるとデフォルトで暗くなる）
+    const float lpf_k = 0.2f + preamp_.tone * 0.6f;
 
     for (int i = 0; i < frames; ++i) {
         for (int ch = 0; ch < 2; ++ch) {
-            float x = buf[i * 2 + ch] * d;
+            float x = buf[i * 2 + ch];
 
-            // 非対称クリッピング: 正側はハード、負側はソフト
-            float y;
-            if (x >= 0.0f) {
-                // 正側: ハードクリップ寄り（3次多項式）
-                if (x < 1.0f)
-                    y = x - 0.333f * x * x * x;
-                else
-                    y = 0.667f;
-            } else {
-                // 負側: tanhf でソフトに（非対称 = 偶数次倍音）
-                y = tanhf(x * 0.8f) * 1.25f;
+            // ── 2x アップサンプル（ゼロ挿入 + 補間） ──
+            float& up_prev = (ch == 0) ? preamp_.up_prev_l : preamp_.up_prev_r;
+            float s0 = (x + up_prev) * 0.5f;  // 補間サンプル
+            float s1 = x;                       // 元サンプル
+            up_prev = x;
+
+            // ── 2段カスケードサチュレーション（2x レートで処理） ──
+            float out = 0.0f;
+            for (int os = 0; os < 2; ++os) {
+                float in = (os == 0) ? s0 : s1;
+
+                // Stage 1: プリアンプ段
+                float y = saturate_asym(in * d1) / d1;
+
+                // Stage 2: パワーアンプ段
+                y = saturate_asym(y * d2) / d2;
+
+                out += y;
             }
+            // ── 2x ダウンサンプル（平均） ──
+            out *= 0.5f;
 
             // ゲイン補正
-            y *= inv_d;
+            out *= (d > 2.0f) ? (d * 0.3f + 0.4f) : 1.0f;
 
             // ポストドライブ トーンフィルタ（1次 LPF）
             float& lpf = (ch == 0) ? preamp_.lpf_l : preamp_.lpf_r;
-            lpf += lpf_k * (y - lpf);
+            lpf += lpf_k * (out - lpf);
             buf[i * 2 + ch] = lpf;
         }
     }
+}
+
+// ─── キャビネットシミュレーション（Suitcase スピーカー風） ────────
+// Drive が ON のときだけ呼ばれる。200Hz HPF + 5kHz LPF で
+// ダイレクト音の硬さを除去し「アンプから鳴ってる」感を出す
+void FxChain::process_cabinet(float* buf, int frames)
+{
+    process_biquad(cab_lo_, buf, frames);
+    process_biquad(cab_hi_, buf, frames);
 }
 
 // ─── EQ バイクアッド (Direct Form II Transposed) ──────────────
@@ -219,8 +303,24 @@ void FxChain::process_chorus(float* buf, int frames)
     }
 }
 
+// ─── Space エフェクト ディスパッチ ──────────────────────────
+void FxChain::process_space(float* buf, int frames)
+{
+    switch (space_mode_) {
+    case SpaceMode::TAPE_ECHO:
+        if (delay_.delay_samples > 1.0f) process_tape_echo(buf, frames);
+        break;
+    case SpaceMode::ROOM:
+        process_room(buf, frames);
+        break;
+    case SpaceMode::PLATE:
+        process_plate(buf, frames);
+        break;
+    }
+}
+
 // ─── テープエコー（サチュレーション + ウォーム LPF + Wet/Dry） ──
-void FxChain::process_delay(float* buf, int frames)
+void FxChain::process_tape_echo(float* buf, int frames)
 {
     // テープ風パラメータ
     const float lpf_k = 0.15f;  // ウォームな LPF（≈1.5kHz カットオフ — テープヘッドの高域ロス）
@@ -253,9 +353,143 @@ void FxChain::process_delay(float* buf, int frames)
         delay_.buf_r[delay_.write] = dry_r + fb_r * delay_.feedback;
 
         // 出力: dry + wet（テープエコーらしく wet で混ぜる）
-        buf[i * 2 + 0] = dry_l + tap_l * delay_.wet;
-        buf[i * 2 + 1] = dry_r + tap_r * delay_.wet;
+        buf[i * 2 + 0] = dry_l + tap_l * space_wet_;
+        buf[i * 2 + 1] = dry_r + tap_r * space_wet_;
 
         delay_.write = (delay_.write + 1) & (DELAY_BUF - 1);
+    }
+}
+
+// ─── Room Reverb (Schroeder: 4 comb + 2 allpass) ──────────────
+void FxChain::setup_room(float size, float decay)
+{
+    // コムフィルタ遅延（素数ベース、size でスケール）
+    static constexpr int base_comb[] = {1557, 1617, 1491, 1422, 1277, 1356, 1188, 1116};
+    static constexpr int base_ap[]   = {225, 556, 441, 341};
+    float scale = 0.5f + size * 1.0f;  // 0.5〜1.5x
+
+    for (int i = 0; i < 4; ++i) {
+        comb_l_[i].delay = std::min(static_cast<int>(base_comb[i] * scale), COMB_BUF - 1);
+        comb_r_[i].delay = std::min(static_cast<int>(base_comb[i + 4] * scale), COMB_BUF - 1);
+        comb_l_[i].feedback = decay;
+        comb_r_[i].feedback = decay;
+    }
+    for (int i = 0; i < 2; ++i) {
+        ap_l_[i].delay = std::min(static_cast<int>(base_ap[i] * scale), AP_BUF - 1);
+        ap_r_[i].delay = std::min(static_cast<int>(base_ap[i + 2] * scale), AP_BUF - 1);
+        ap_l_[i].feedback = 0.5f;
+        ap_r_[i].feedback = 0.5f;
+    }
+}
+
+void FxChain::process_room(float* buf, int frames)
+{
+    const float lpf_k = 0.3f;  // 高域減衰
+
+    for (int i = 0; i < frames; ++i) {
+        float dry_l = buf[i * 2 + 0];
+        float dry_r = buf[i * 2 + 1];
+
+        // 4 並列コムフィルタ（LBCF: Lowpass-feedback comb filter）
+        float sum_l = 0.0f, sum_r = 0.0f;
+        for (int c = 0; c < 4; ++c) {
+            // Left
+            {
+                auto& cf = comb_l_[c];
+                int rd = (cf.write - cf.delay) & (COMB_BUF - 1);
+                float tap = cf.buf[rd];
+                cf.lpf += lpf_k * (tap - cf.lpf);
+                cf.buf[cf.write] = dry_l + cf.lpf * cf.feedback;
+                cf.write = (cf.write + 1) & (COMB_BUF - 1);
+                sum_l += tap;
+            }
+            // Right
+            {
+                auto& cf = comb_r_[c];
+                int rd = (cf.write - cf.delay) & (COMB_BUF - 1);
+                float tap = cf.buf[rd];
+                cf.lpf += lpf_k * (tap - cf.lpf);
+                cf.buf[cf.write] = dry_r + cf.lpf * cf.feedback;
+                cf.write = (cf.write + 1) & (COMB_BUF - 1);
+                sum_r += tap;
+            }
+        }
+        sum_l *= 0.25f;
+        sum_r *= 0.25f;
+
+        // 2 直列オールパスフィルタ
+        for (int a = 0; a < 2; ++a) {
+            {
+                auto& ap = ap_l_[a];
+                int rd = (ap.write - ap.delay) & (AP_BUF - 1);
+                float tap = ap.buf[rd];
+                float in = sum_l + tap * ap.feedback;
+                ap.buf[ap.write] = in;
+                ap.write = (ap.write + 1) & (AP_BUF - 1);
+                sum_l = tap - in * ap.feedback;
+            }
+            {
+                auto& ap = ap_r_[a];
+                int rd = (ap.write - ap.delay) & (AP_BUF - 1);
+                float tap = ap.buf[rd];
+                float in = sum_r + tap * ap.feedback;
+                ap.buf[ap.write] = in;
+                ap.write = (ap.write + 1) & (AP_BUF - 1);
+                sum_r = tap - in * ap.feedback;
+            }
+        }
+
+        buf[i * 2 + 0] = dry_l + sum_l * space_wet_;
+        buf[i * 2 + 1] = dry_r + sum_r * space_wet_;
+    }
+}
+
+// ─── Plate Reverb (6 allpass chain — 高密度反射) ──────────────
+void FxChain::setup_plate(float decay)
+{
+    // 素数ベースの遅延で密度の高い反射パターン
+    static constexpr int base_delays_l[] = {113, 337, 677, 1049, 1559, 2039};
+    static constexpr int base_delays_r[] = {139, 379, 719, 1103, 1613, 2111};
+
+    for (int i = 0; i < 6; ++i) {
+        plate_l_[i].delay = std::min(base_delays_l[i], PLATE_AP_BUF - 1);
+        plate_r_[i].delay = std::min(base_delays_r[i], PLATE_AP_BUF - 1);
+        // 後段ほど feedback を下げてメタリック感を抑える
+        float fb = decay * (1.0f - 0.05f * i);
+        plate_l_[i].feedback = fb;
+        plate_r_[i].feedback = fb;
+    }
+}
+
+void FxChain::process_plate(float* buf, int frames)
+{
+    for (int i = 0; i < frames; ++i) {
+        float sig_l = buf[i * 2 + 0];
+        float sig_r = buf[i * 2 + 1];
+
+        // 6 段オールパスチェーン
+        for (int a = 0; a < 6; ++a) {
+            {
+                auto& ap = plate_l_[a];
+                int rd = (ap.write - ap.delay) & (PLATE_AP_BUF - 1);
+                float tap = ap.buf[rd];
+                float in = sig_l + tap * ap.feedback;
+                ap.buf[ap.write] = in;
+                ap.write = (ap.write + 1) & (PLATE_AP_BUF - 1);
+                sig_l = tap - in * ap.feedback;
+            }
+            {
+                auto& ap = plate_r_[a];
+                int rd = (ap.write - ap.delay) & (PLATE_AP_BUF - 1);
+                float tap = ap.buf[rd];
+                float in = sig_r + tap * ap.feedback;
+                ap.buf[ap.write] = in;
+                ap.write = (ap.write + 1) & (PLATE_AP_BUF - 1);
+                sig_r = tap - in * ap.feedback;
+            }
+        }
+
+        buf[i * 2 + 0] = buf[i * 2 + 0] * (1.0f - space_wet_) + sig_l * space_wet_;
+        buf[i * 2 + 1] = buf[i * 2 + 1] * (1.0f - space_wet_) + sig_r * space_wet_;
     }
 }
