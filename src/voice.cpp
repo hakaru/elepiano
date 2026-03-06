@@ -13,7 +13,11 @@ void Voice::note_on(const SampleData* sd, int note, int vel, int sample_rate)
     is_release_voice = false;
     sustained        = false;
     // double 精度で計算してから float に落とす
-    pitch_ratio  = static_cast<float>(std::pow(2.0, (note - sd->midi_note) / 12.0));
+    // サンプルレート比を掛けてピッチを補正（例: 44100Hz サンプル → 48000Hz 出力）
+    double sr_ratio = (sd->sample_rate > 0 && sample_rate > 0)
+                      ? static_cast<double>(sd->sample_rate) / sample_rate
+                      : 1.0;
+    pitch_ratio  = static_cast<float>(std::pow(2.0, (note - sd->midi_note) / 12.0) * sr_ratio);
     position     = 0.0;
     gain         = vel / kMaxVelocity;
     release_gain = 1.0f;

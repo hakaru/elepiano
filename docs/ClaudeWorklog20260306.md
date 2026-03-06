@@ -147,3 +147,39 @@
 決定事項: 6件全て実装する
 次のTODO: 実装→ビルド確認
 ---
+
+---
+2026-03-06 15:59
+作業項目: Pi5テスト・PiSound導入・壊れたサンプル削除
+追加機能の説明:
+  - MIDI自動接続 (subscribe_all_hw) 追加 — aconnect不要に
+  - FLACログにファイル名表示追加
+  - PiSound HAT セットアップ (dtoverlay=pisound-pi5, dtparam=spi=on, Blokas APT)
+  - CRC-16 NG の壊れたFLAC 37ファイル削除、samples.json更新 (1022→985)
+決定事項:
+  - PiSound認識成功 (hw:2,0, FW 1.03, HW 1.2, Serial PS-3WPC1X3)
+  - PiSoundネイティブレート 48000Hz で動作
+  - 音出し成功確認
+次のTODO: 音質・レイテンシ評価、period_size最適化
+---
+
+---
+2026-03-06 16:06
+作業項目: レイテンシさらなる改善 — 現状分析と対策検討
+追加機能の説明: なし（調査）
+決定事項:
+  - 現行: PREEMPT カーネル 6.12.47, CPUガバナー=ondemand(1.6GHz)
+  - RT カーネル linux-image-rt-arm64 6.12.73-1 が APT で利用可能
+  - 改善策を優先度順に提案
+次のTODO: ユーザー判断で RT カーネル導入 or チューニング実施
+---
+
+---
+2026-03-06 16:13
+作業項目: レイテンシ改善完了・次のステップ提案
+追加機能の説明: L1(CPUガバナー), L2(threadirqs), L5(cyclictest), L6(period=32) 完了
+決定事項:
+  - period=32/periods=2 @ 48kHz = 1.3ms で安定動作、underrun ゼロ
+  - cyclictest Max=5μs — RT カーネルは当面不要
+次のTODO: 次の改善項目をユーザーと選定
+---
