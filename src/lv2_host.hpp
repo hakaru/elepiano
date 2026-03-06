@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <string>
 #include <vector>
+#include <memory>
 
 class Lv2Host {
 public:
@@ -17,7 +18,7 @@ public:
 
 private:
     struct Impl;
-    Impl* p_;
+    std::unique_ptr<Impl> p_;
 };
 
 #endif

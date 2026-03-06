@@ -83,13 +83,14 @@ struct Lv2Host::Impl {
 
         const uint32_t num_ports = lilv_plugin_get_num_ports(plugin);
         for (uint32_t i = 0; i < num_ports; ++i) {
-            if (lilv_plugin_has_port_with_class(plugin, i, n_audio_port, n_input_port)) {
+            const LilvPort* port = lilv_plugin_get_port_by_index(plugin, i);
+            if (lilv_port_is_a(plugin, port, n_audio_port) && lilv_port_is_a(plugin, port, n_input_port)) {
                 if (in_l == UINT32_MAX) in_l = i;
                 else if (in_r == UINT32_MAX) in_r = i;
-            } else if (lilv_plugin_has_port_with_class(plugin, i, n_audio_port, n_output_port)) {
+            } else if (lilv_port_is_a(plugin, port, n_audio_port) && lilv_port_is_a(plugin, port, n_output_port)) {
                 if (out_l == UINT32_MAX) out_l = i;
                 else if (out_r == UINT32_MAX) out_r = i;
-            } else if (lilv_plugin_has_port_with_class(plugin, i, n_control_port)) {
+            } else if (lilv_port_is_a(plugin, port, n_control_port)) {
                 control_ports.push_back(i);
             }
         }
@@ -126,6 +127,10 @@ struct Lv2Host::Impl {
         return true;
     }
 
+    ~Impl() {
+        shutdown();
+    }
+
     void shutdown() {
         if (instance) {
             lilv_instance_deactivate(instance);
@@ -144,17 +149,12 @@ struct Lv2Host::Impl {
     }
 };
 
-Lv2Host::Lv2Host(int sample_rate, int max_block_frames) : p_(new Impl()) {
+Lv2Host::Lv2Host(int sample_rate, int max_block_frames) : p_(std::make_unique<Impl>()) {
     p_->sample_rate = sample_rate;
     p_->max_block = std::max(64, max_block_frames);
 }
 
-Lv2Host::~Lv2Host() {
-    if (p_) {
-        p_->shutdown();
-        delete p_;
-    }
-}
+Lv2Host::~Lv2Host() = default;
 
 bool Lv2Host::initialize_from_env() {
     return p_ && p_->init_from_env();

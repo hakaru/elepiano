@@ -8,18 +8,26 @@
 #include <climits>
 #include <cmath>
 #include <cstdio>
+#include <cstdlib>
 #include <thread>
 #include <atomic>
 #include <chrono>
 
-static constexpr size_t MAX_SAMPLE_FRAMES = 441000;  // 10秒 @ 44100Hz
+static size_t get_max_sample_frames() {
+    const char* env = std::getenv("ELEPIANO_MAX_SAMPLE_FRAMES");
+    if (env && *env) {
+        long val = std::atol(env);
+        if (val >= 44100 && val <= 2646000) return static_cast<size_t>(val);
+    }
+    return 882000;  // default: 20秒 @ 44100Hz
+}
 static constexpr size_t FADE_OUT_FRAMES   = 4410;
 static constexpr size_t MAX_JSON_SIZE     = 10 * 1024 * 1024;
 static constexpr size_t MAX_SAMPLE_COUNT  = 10000;
 
 // キャッシュファイルのマジックとバージョン
 static constexpr uint32_t CACHE_MAGIC   = 0x50434D43; // "PCMC"
-static constexpr uint32_t CACHE_VERSION = 5;
+static constexpr uint32_t CACHE_VERSION = 9;  // v9: int16 in-memory PCM (halved RAM usage)
 
 using json = nlohmann::json;
 namespace fs = std::filesystem;
@@ -29,7 +37,7 @@ static bool process_sample(SampleData& sd)
 {
     DecodedAudio audio;
     try {
-        audio = decode_flac_file(sd.file_path, MAX_SAMPLE_FRAMES);
+        audio = decode_flac_file(sd.file_path, get_max_sample_frames());
     } catch (const std::exception& e) {
         fprintf(stderr, "[SampleDB] SKIP %s: %s\n", sd.file_path.c_str(), e.what());
         return false;
@@ -100,17 +108,24 @@ static bool process_sample(SampleData& sd)
         }
     }
 
-    sd.pcm         = std::move(audio.pcm);
+    // float → int16 変換してメモリ節約
+    sd.pcm.resize(audio.pcm.size());
+    for (size_t k = 0; k < audio.pcm.size(); ++k) {
+        float v = audio.pcm[k] * 32767.0f;
+        if (v > 32767.0f) v = 32767.0f;
+        if (v < -32768.0f) v = -32768.0f;
+        sd.pcm[k] = static_cast<int16_t>(v);
+    }
     sd.num_channels = audio.num_channels;
     sd.sample_rate  = audio.sample_rate;
     return true;
 }
 
 // ============================================================
-// PCM キャッシュ: デコード済み PCM をバイナリで保存/読込
-// フォーマット:
+// PCM キャッシュ: デコード済み PCM を int16 バイナリで保存/読込
+// フォーマット (v6):
 //   [magic:4][version:4][count:4][sample_rate:4]
-//   per sample: [midi_note:4][vel_min:4][vel_max:4][vel_idx:4][rr:4][sr:4][ch:4][pcm_len:4][pcm:pcm_len*4]
+//   per sample: [midi_note:4][vel_min:4][vel_max:4][vel_idx:4][rr:4][sr:4][ch:4][pcm_len:4][pcm:pcm_len*2 (int16)]
 // ============================================================
 
 static std::string cache_path_for(const std::string& json_path)
@@ -149,10 +164,11 @@ static bool load_cache(const std::string& path, std::vector<SampleData>& out, in
         sd.num_channels = vals[6];
         uint32_t pcm_len = static_cast<uint32_t>(vals[7]);
 
-        if (pcm_len > MAX_SAMPLE_FRAMES * 2) return false;
+        if (pcm_len > get_max_sample_frames() * 2) return false;
 
+        // int16 のまま直接読み込み（メモリ内も int16 で保持）
         sd.pcm.resize(pcm_len);
-        f.read(reinterpret_cast<char*>(sd.pcm.data()), pcm_len * sizeof(float));
+        f.read(reinterpret_cast<char*>(sd.pcm.data()), pcm_len * sizeof(int16_t));
         if (!f) return false;
 
         out.push_back(std::move(sd));
@@ -186,7 +202,8 @@ static void save_cache(const std::string& path, const std::vector<SampleData>& s
             static_cast<int32_t>(sd.pcm.size())
         };
         f.write(reinterpret_cast<const char*>(vals), sizeof(vals));
-        f.write(reinterpret_cast<const char*>(sd.pcm.data()), sd.pcm.size() * sizeof(float));
+        // PCM は既に int16 なので直接書き込み
+        f.write(reinterpret_cast<const char*>(sd.pcm.data()), sd.pcm.size() * sizeof(int16_t));
     }
 
     f.close();
@@ -281,10 +298,14 @@ SampleDB::SampleDB(const std::string& json_path)
 
         // Phase 2: 並列 FLAC デコード
         const size_t n = tasks.size();
-        std::vector<bool> ok(n, false);
+        std::vector<uint8_t> ok(n, 0);
 
         unsigned num_threads = std::thread::hardware_concurrency();
         if (num_threads == 0) num_threads = 4;
+        if (const char* env = std::getenv("ELEPIANO_DECODE_THREADS")) {
+            int val = std::atoi(env);
+            if (val >= 1 && val <= 16) num_threads = static_cast<unsigned>(val);
+        }
 
         std::atomic<size_t> next_idx{0};
         auto worker = [&]() {
@@ -329,30 +350,28 @@ const SampleData* SampleDB::find(int midi_note, int velocity)
 {
     if (note_index_.empty()) return nullptr;
 
+    // 最近傍ノートを1つだけ選ぶ（等距離なら低い方を優先）
     auto it = note_index_.lower_bound(midi_note);
+    decltype(it) best_it = note_index_.end();
 
-    int best_dist = INT_MAX;
-    if (it != note_index_.end())
-        best_dist = std::min(best_dist, it->first - midi_note);
-    if (it != note_index_.begin()) {
+    if (it != note_index_.end() && it != note_index_.begin()) {
         auto pit = std::prev(it);
-        best_dist = std::min(best_dist, midi_note - pit->first);
+        int dist_hi = it->first - midi_note;
+        int dist_lo = midi_note - pit->first;
+        best_it = (dist_lo <= dist_hi) ? pit : it;
+    } else if (it != note_index_.end()) {
+        best_it = it;
+    } else {
+        best_it = std::prev(it);
     }
 
-    candidates_.clear();
-    if (it != note_index_.end() && it->first - midi_note == best_dist)
-        for (size_t idx : it->second) candidates_.push_back(idx);
-    if (it != note_index_.begin()) {
-        auto pit = std::prev(it);
-        if (midi_note - pit->first == best_dist)
-            for (size_t idx : pit->second) candidates_.push_back(idx);
-    }
+    if (best_it == note_index_.end()) return nullptr;
 
-    if (candidates_.empty()) return nullptr;
-
-    size_t chosen = candidates_[0];
+    // 選ばれたノートの候補からベロシティマッチ
+    const auto& indices = best_it->second;
+    size_t chosen = indices[0];
     int best_vel_dist = INT_MAX;
-    for (size_t idx : candidates_) {
+    for (size_t idx : indices) {
         const auto& s = samples_[idx];
         if (velocity >= s.velocity_min && velocity <= s.velocity_max) {
             chosen = idx;
