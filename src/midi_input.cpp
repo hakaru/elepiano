@@ -144,6 +144,12 @@ void MidiInput::run()
             me.velocity = 0;
             break;
         }
+        case SND_SEQ_EVENT_PGMCHANGE: {
+            me.type    = MidiEvent::Type::PROGRAM_CHANGE;
+            me.channel = ev->data.control.channel & 0x0F;
+            me.note    = ev->data.control.value & 0x7F;  // program number 0-127
+            break;
+        }
         case SND_SEQ_EVENT_CONTROLLER: {
             const int param = ev->data.control.param;
             const int value = ev->data.control.value;

@@ -12,6 +12,7 @@
 #include <atomic>
 #include <memory>
 #include <string>
+#include <vector>
 #include <pthread.h>
 
 static std::atomic<bool> g_quit{false};
@@ -91,6 +92,10 @@ static void run_engine(AudioOutput& audio, MidiInput& midi)
                 fprintf(stderr, "[MIDI] CC       ch=%d cc=%d val=%d\n",
                         ev->channel, ev->note, ev->velocity);
                 break;
+            case MidiEvent::Type::PROGRAM_CHANGE:
+                fprintf(stderr, "[MIDI] PG CHG   ch=%d pg=%d\n",
+                        ev->channel, ev->note + 1);
+                break;
             default: break;
             }
         }
@@ -148,36 +153,53 @@ static int run_organ(const char* alsa_device)
     return 0;
 }
 
+// ─── 音色定義 ───────────────────────────────────────────────
+struct ProgramDef {
+    const char* name;
+    const char* attack_json;
+    const char* release_json;  // nullptr = release なし
+};
+
 // ─── ピアノモード ────────────────────────────────────────────
-static int run_piano(const char* json_path,
-                     const char* release_json_path,
+static int run_piano(const std::vector<ProgramDef>& programs,
                      const char* alsa_device)
 {
     fprintf(stderr, "elepiano MIDI synth\n");
-    fprintf(stderr, "  attack samples:  %s\n", json_path);
-    if (release_json_path)
-        fprintf(stderr, "  release samples: %s\n", release_json_path);
-    fprintf(stderr, "  device:          %s\n", alsa_device);
+    for (size_t i = 0; i < programs.size(); ++i) {
+        fprintf(stderr, "  PG%zu: %s\n", i + 1, programs[i].name);
+    }
+    fprintf(stderr, "  device: %s\n", alsa_device);
 
-    SampleDB db(json_path);
+    // 全音色のサンプルをロード
+    std::vector<std::unique_ptr<SampleDB>> attack_dbs;
+    std::vector<std::unique_ptr<SampleDB>> release_dbs;
 
-    std::unique_ptr<SampleDB> release_db;
-    if (release_json_path) {
-        release_db = std::make_unique<SampleDB>(release_json_path);
+    for (const auto& pg : programs) {
+        attack_dbs.push_back(std::make_unique<SampleDB>(pg.attack_json));
+        if (pg.release_json)
+            release_dbs.push_back(std::make_unique<SampleDB>(pg.release_json));
+        else
+            release_dbs.push_back(nullptr);
     }
 
     AudioOutput::Config acfg;
     acfg.device        = alsa_device;
-    acfg.sample_rate   = db.sample_rate();
+    acfg.sample_rate   = attack_dbs[0]->sample_rate();
     acfg.channels      = 2;
     acfg.period_size   = g_period_size;
     acfg.periods       = g_periods;
     acfg.wav_dump_path = g_wav_dump_path;
 
     AudioOutput audio(acfg);
-    // ALSA が実際に確定したサンプルレートを使う（44100要求 → 48000等になりうる）
     const int actual_rate = audio.sample_rate();
-    SynthEngine synth(db, actual_rate, release_db.get());
+    SynthEngine synth(actual_rate);
+
+    for (size_t i = 0; i < programs.size(); ++i) {
+        synth.add_program(static_cast<int>(i),
+                          attack_dbs[i].get(),
+                          release_dbs[i].get());
+    }
+
     FxChain fx(actual_rate);
 
     audio.set_callback([&](float* buf, int frames) {
@@ -243,14 +265,58 @@ int main(int argc, char* argv[])
         return run_organ(alsa_device);
     }
 
-    // [attack_json] [release_json] [alsa_device]
-    const char* json_path         = "data/rhodes-classic/samples.json";
-    const char* release_json_path = nullptr;
-    const char* alsa_device       = "default";
+    // 音色定義: --pg attack_json [release_json] で追加、最後に alsa_device
+    // 互換: 旧形式 attack_json [release_json] alsa_device もサポート
+    std::vector<ProgramDef> programs;
+    const char* alsa_device = "default";
 
-    if (argc > 1) json_path         = argv[1];
-    if (argc > 2 && argv[2][0] != '\0') release_json_path = argv[2];
-    if (argc > 3) alsa_device       = argv[3];
+    int i = 1;
+    while (i < argc) {
+        std::string arg(argv[i]);
+        if (arg == "--pg" && i + 1 < argc) {
+            ProgramDef pg;
+            pg.name = argv[i + 1];
+            pg.attack_json = argv[i + 1];
+            pg.release_json = nullptr;
+            i += 2;
+            // 次の引数が --pg でも alsa デバイスでもなければ release_json
+            if (i < argc && std::string(argv[i]) != "--pg" &&
+                std::string(argv[i]).find("hw:") == std::string::npos &&
+                std::string(argv[i]) != "default") {
+                pg.release_json = argv[i];
+                ++i;
+            }
+            programs.push_back(pg);
+        } else {
+            // 最後の引数は alsa_device
+            // それ以外は旧形式互換
+            if (programs.empty()) {
+                // 旧形式: attack [release] device
+                ProgramDef pg;
+                pg.name = argv[i];
+                pg.attack_json = argv[i];
+                pg.release_json = nullptr;
+                ++i;
+                if (i < argc && std::string(argv[i]).find("hw:") == std::string::npos &&
+                    std::string(argv[i]) != "default") {
+                    pg.release_json = argv[i];
+                    ++i;
+                }
+                programs.push_back(pg);
+                if (i < argc) {
+                    alsa_device = argv[i];
+                    ++i;
+                }
+            } else {
+                alsa_device = argv[i];
+                ++i;
+            }
+        }
+    }
 
-    return run_piano(json_path, release_json_path, alsa_device);
+    if (programs.empty()) {
+        programs.push_back({"Rhodes", "data/rhodes-classic-clean/samples.json", nullptr});
+    }
+
+    return run_piano(programs, alsa_device);
 }

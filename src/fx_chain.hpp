@@ -27,9 +27,11 @@ private:
     } trem_;
     void process_tremolo(float* buf, int frames);
 
-    // ── プリアンプ（tanhf ソフトクリッピング） ──
+    // ── オーバードライブ（非対称クリッピング + トーンフィルタ） ──
     struct {
         float drive = 1.0f;     // 1.0〜8.0
+        float tone  = 0.5f;     // 0.0(dark)〜1.0(bright)
+        float lpf_l = 0.0f, lpf_r = 0.0f;  // ポストドライブ LPF 状態
     } preamp_;
     void process_preamp(float* buf, int frames);
 
@@ -55,14 +57,16 @@ private:
     } chorus_;
     void process_chorus(float* buf, int frames);
 
-    // ── テープディレイ（フィードバック + LPF） ──
+    // ── テープエコー（サチュレーション + ウォーム LPF + Wet/Dry） ──
     static constexpr int DELAY_BUF = 32768;  // 2のべき乗（ビットマスク高速化）
     struct {
         float buf_l[DELAY_BUF]={}, buf_r[DELAY_BUF]={};
         int   write = 0;
         float delay_samples = 0.0f;
-        float feedback = 0.5f;
+        float feedback = 0.4f;
         float lpf_l = 0.0f, lpf_r = 0.0f;  // 1次 IIR 状態
+        float wet = 0.5f;                    // ウェットレベル
+        float wet_target = 0.5f;             // CC80 で設定
     } delay_;
     void process_delay(float* buf, int frames);
 

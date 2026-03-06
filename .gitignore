@@ -5,6 +5,7 @@ cmake-build-*/
 # Audio data (large binary FLAC files - generate with extract_samples.py)
 # samples.json (metadata) は追跡対象
 data/*/audio/
+data/*/.pcm_cache
 
 # Python cache
 tools/__pycache__/

@@ -4,37 +4,47 @@
 #include "midi_input.hpp"
 #include "spsc_queue.hpp"
 #include <array>
+#include <vector>
 #include <cstdint>
 
 class SynthEngine {
 public:
-    static constexpr int MAX_VOICES = 32;  // attack + release が同時に鳴るため余裕を持たせる
+    static constexpr int MAX_VOICES = 32;
+    static constexpr int MAX_PROGRAMS = 16;
 
-    // release_db が nullptr の場合は release サンプルを使用しない
-    SynthEngine(SampleDB& attack_db, int sample_rate = 44100, SampleDB* release_db = nullptr);
+    // 音色ペア（attack + release）
+    struct Program {
+        SampleDB* attack  = nullptr;
+        SampleDB* release = nullptr;
+    };
+
+    SynthEngine(int sample_rate = 44100);
+
+    // 音色を登録（program 0〜15）
+    void add_program(int program, SampleDB* attack, SampleDB* release = nullptr);
 
     // MIDIスレッドから呼ぶ（ロックフリー push）
-    // キューが満杯のイベントは無視される（実用上 64 要素で十分）
     void push_event(const MidiEvent& ev);
 
     // オーディオスレッドから呼ぶ
-    // buf: ステレオ float (frames * 2 要素), frames フレーム分を合算
     void mix(float* buf, int frames);
 
 private:
-    // 以下はオーディオスレッドのみからアクセス（mutex 不要）
     void _note_on(int midi_note, int velocity);
     void _note_off(int midi_note);
     void _cc(int cc_num, int cc_val);
+    void _program_change(int program);
     void _start_release_voice(int midi_note, int velocity);
-    int  oldest_voice_idx() const;  // 非 release voice を優先してスチール
+    int  oldest_voice_idx() const;
 
-    SampleDB& db_;
-    SampleDB* release_db_;           // nullptr = release サンプルなし
+    std::array<Program, MAX_PROGRAMS> programs_;
+    int       current_program_ = 0;
+    SampleDB* db_         = nullptr;       // 現在の attack DB
+    SampleDB* release_db_ = nullptr;       // 現在の release DB
     int       sample_rate_;
-    uint64_t  sample_counter_ = 0;           // mix() 呼び出し時に frames 分インクリメント
-    bool      sustain_held_   = false;       // CC64 サステインペダル状態
+    uint64_t  sample_counter_ = 0;
+    bool      sustain_held_   = false;
 
-    std::array<Voice, MAX_VOICES> voices_;   // オーディオスレッドのみ
-    SpscQueue<MidiEvent, 256>     event_queue_;  // MIDI → オーディオスレッド間
+    std::array<Voice, MAX_VOICES> voices_;
+    SpscQueue<MidiEvent, 256>     event_queue_;
 };

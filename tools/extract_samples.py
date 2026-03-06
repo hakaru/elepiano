@@ -84,6 +84,30 @@ CLR_MCHR03_RE = re.compile(
     re.IGNORECASE
 )
 
+# Rhodes LA Custom attack: "RR01 lacrm 100 102.wav" (vel=100, note=102)
+LACRM_RE = re.compile(
+    r"RR(\d+)\s+lacrm\s+(\d+)\s+(\d+)\.wav$",
+    re.IGNORECASE
+)
+
+# Rhodes LA Custom release: "RR01 lacr 100 109 rel.wav" (vel=100, note=109)
+LACR_REL_RE = re.compile(
+    r"RR(\d+)\s+lacr\s+(\d+)\s+(\d+)\s+rel\.wav$",
+    re.IGNORECASE
+)
+
+# LA Custom C7 Grand attack (Pedal Up): "RR01_SL01LACPPUr09_100-100.wav" (note=100, vel=100)
+LACPPU_RE = re.compile(
+    r"RR(\d+)_SL\d+LACPPUr\d+_(\d+)-(\d+)\.wav$",
+    re.IGNORECASE
+)
+
+# LA Custom C7 Grand release: "RR01 LACP Rel r08_100-100.wav" (note=100, vel=100)
+LACP_REL_RE = re.compile(
+    r"RR(\d+)\s+LACP\s+Rel\s+r\d+_(\d+)-(\d+)\.wav$",
+    re.IGNORECASE
+)
+
 # Release モードの集合（vel_max → vel range 変換が必要なモード）
 _RELEASE_MODES = frozenset({"rhodes-relf", "rhodes-relm", "rhodes-mchrel", "rhodes-mchr03"})
 
@@ -379,6 +403,59 @@ def parse_clr_mchr03_name(name: str) -> SampleMeta | None:
     return _parse_rr_note_velmax(CLR_MCHR03_RE, name)
 
 
+def parse_lacrm_name(name: str) -> SampleMeta | None:
+    """
+    "RR01 lacrm 100 102.wav" → SampleMeta(midi_note=102, velocity_idx=100, round_robin=1)
+    """
+    m = LACRM_RE.search(name)
+    if not m:
+        return None
+    rr   = int(m.group(1))
+    vel  = int(m.group(2))
+    note = int(m.group(3))
+    return SampleMeta(midi_note=note, velocity_idx=vel, round_robin=rr, file_entry=None)
+
+
+def parse_lacr_rel_name(name: str) -> SampleMeta | None:
+    """
+    "RR01 lacr 100 109 rel.wav" → SampleMeta(midi_note=109, velocity_idx=100, round_robin=1)
+    """
+    m = LACR_REL_RE.search(name)
+    if not m:
+        return None
+    rr   = int(m.group(1))
+    vel  = int(m.group(2))
+    note = int(m.group(3))
+    return SampleMeta(midi_note=note, velocity_idx=vel, round_robin=rr, file_entry=None)
+
+
+def parse_lacppu_name(name: str) -> SampleMeta | None:
+    """
+    "RR01_SL01LACPPUr09_100-100.wav" → SampleMeta(midi_note=100, velocity_idx=100, round_robin=1)
+    vel is explicit velocity value (not an index).
+    """
+    m = LACPPU_RE.search(name)
+    if not m:
+        return None
+    rr   = int(m.group(1))
+    note = int(m.group(2))
+    vel  = int(m.group(3))
+    return SampleMeta(midi_note=note, velocity_idx=vel, round_robin=rr, file_entry=None)
+
+
+def parse_lacp_rel_name(name: str) -> SampleMeta | None:
+    """
+    "RR01 LACP Rel r08_100-100.wav" → SampleMeta(midi_note=100, velocity_idx=100, round_robin=1)
+    """
+    m = LACP_REL_RE.search(name)
+    if not m:
+        return None
+    rr   = int(m.group(1))
+    note = int(m.group(2))
+    vel  = int(m.group(3))
+    return SampleMeta(midi_note=note, velocity_idx=vel, round_robin=rr, file_entry=None)
+
+
 def parse_wurl200a_name(name: str) -> SampleMeta | None:
     """
     "NMWurl 60 a 50-64-o.wav" → SampleMeta(midi_note=60, velocity_idx=50,
@@ -510,6 +587,22 @@ def extract(db_path: Path, output_dir: Path, mode: str = "pattern1") -> None:
         parse_fn  = parse_clr_mchr03_name
         encrypted = False
         label     = "Rhodes CLR Mchr03 (Mechanical Attack)"
+    elif mode == "rhodes-la-attack":
+        parse_fn  = parse_lacrm_name
+        encrypted = False
+        label     = "Rhodes LA Custom Attack"
+    elif mode == "rhodes-la-rel":
+        parse_fn  = parse_lacr_rel_name
+        encrypted = False
+        label     = "Rhodes LA Custom Release"
+    elif mode == "c7grand-attack":
+        parse_fn  = parse_lacppu_name
+        encrypted = False
+        label     = "LA Custom C7 Grand Attack (Pedal Up)"
+    elif mode == "c7grand-rel":
+        parse_fn  = parse_lacp_rel_name
+        encrypted = False
+        label     = "LA Custom C7 Grand Release"
     else:
         raise ValueError(f"未知のモード: {mode}")
 
@@ -587,6 +680,10 @@ def extract(db_path: Path, output_dir: Path, mode: str = "pattern1") -> None:
         "rhodes-relm":   "rhodes-classic-relm",
         "rhodes-mchrel": "rhodes-classic-mchrel",
         "rhodes-mchr03": "rhodes-classic-mchr03",
+        "rhodes-la-attack": "rhodes-la-custom",
+        "rhodes-la-rel":    "rhodes-la-custom-rel",
+        "c7grand-attack":   "la-custom-c7-grand",
+        "c7grand-rel":      "la-custom-c7-grand-rel",
     }.get(mode, mode)
     samples_json = {
         "instrument":   instrument_name,

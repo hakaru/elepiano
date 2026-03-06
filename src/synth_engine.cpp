@@ -2,16 +2,26 @@
 #include <cstring>
 #include <climits>
 #include <cstdio>
-#include <cmath>
 
-SynthEngine::SynthEngine(SampleDB& attack_db, int sample_rate, SampleDB* release_db)
-    : db_(attack_db), release_db_(release_db), sample_rate_(sample_rate)
+SynthEngine::SynthEngine(int sample_rate)
+    : sample_rate_(sample_rate)
 {}
+
+void SynthEngine::add_program(int program, SampleDB* attack, SampleDB* release)
+{
+    if (program < 0 || program >= MAX_PROGRAMS) return;
+    programs_[program] = {attack, release};
+    // 最初に登録された音色をデフォルトにする
+    if (!db_) {
+        db_ = attack;
+        release_db_ = release;
+        current_program_ = program;
+    }
+}
 
 void SynthEngine::push_event(const MidiEvent& ev)
 {
     if (!event_queue_.push(ev) && ev.type == MidiEvent::Type::NOTE_OFF) {
-        // NOTE_OFF ドロップはゾンビボイスを引き起こすため警告
         fprintf(stderr, "[SynthEngine] WARNING: queue full, NOTE_OFF dropped (ch=%d note=%d)\n",
                 ev.channel, ev.note);
     }
@@ -21,7 +31,6 @@ void SynthEngine::mix(float* buf, int frames)
 {
     std::memset(buf, 0, frames * 2 * sizeof(float));
 
-    // キューを全消費（オーディオスレッドのみがここに来る）
     while (auto ev = event_queue_.pop()) {
         if (ev->type == MidiEvent::Type::NOTE_ON) {
             _note_on(ev->note, ev->velocity);
@@ -29,6 +38,8 @@ void SynthEngine::mix(float* buf, int frames)
             _note_off(ev->note);
         } else if (ev->type == MidiEvent::Type::CC) {
             _cc(ev->note, ev->velocity);
+        } else if (ev->type == MidiEvent::Type::PROGRAM_CHANGE) {
+            _program_change(ev->note);
         }
     }
 
@@ -39,7 +50,6 @@ void SynthEngine::mix(float* buf, int frames)
     }
 
     // ポリフォニーによるクリッピング防止
-    // 単音はほぼ透過、多声時にソフト圧縮
     const int total = frames * 2;
     for (int i = 0; i < total; ++i) {
         float x = buf[i];
@@ -58,16 +68,15 @@ void SynthEngine::_note_on(int midi_note, int velocity)
         return;
     }
 
-    const SampleData* sd = db_.find(midi_note, velocity);
+    if (!db_) return;
+    const SampleData* sd = db_->find(midi_note, velocity);
     if (!sd) return;
 
-    // IDLE な Voice を探す
     Voice* target = nullptr;
     for (auto& v : voices_) {
         if (v.state == Voice::State::IDLE) { target = &v; break; }
     }
 
-    // IDLE がなければ start_time_samples が最小の（最古の）PLAYING Voice を奪う
     if (!target) {
         int idx = oldest_voice_idx();
         if (idx >= 0) target = &voices_[idx];
@@ -85,7 +94,7 @@ void SynthEngine::_note_off(int midi_note)
         if (v.state == Voice::State::PLAYING && v.target_note == midi_note
                 && !v.is_release_voice) {
             if (sustain_held_) {
-                v.sustained = true;  // ペダルが離されるまでリリースを保留
+                v.sustained = true;
                 continue;
             }
             if (release_db_) {
@@ -101,7 +110,6 @@ void SynthEngine::_cc(int cc_num, int cc_val)
     if (cc_num == 64) {
         bool new_state = (cc_val >= 64);
         if (sustain_held_ && !new_state) {
-            // ペダルリリース: sustained フラグが立っている全ボイスをリリース
             for (auto& v : voices_) {
                 if (v.sustained && v.state == Voice::State::PLAYING && !v.is_release_voice) {
                     if (release_db_) {
@@ -116,18 +124,35 @@ void SynthEngine::_cc(int cc_num, int cc_val)
     }
 }
 
+void SynthEngine::_program_change(int program)
+{
+    if (program < 0 || program >= MAX_PROGRAMS) return;
+    if (!programs_[program].attack) return;  // 未登録の音色は無視
+
+    // 全ボイスを停止（音色切替時のノイズ防止）
+    for (auto& v : voices_) {
+        v.state = Voice::State::IDLE;
+    }
+    sustain_held_ = false;
+
+    current_program_ = program;
+    db_ = programs_[program].attack;
+    release_db_ = programs_[program].release;
+
+    fprintf(stderr, "[SynthEngine] Program Change: %d\n", program + 1);
+}
+
 void SynthEngine::_start_release_voice(int midi_note, int velocity)
 {
+    if (!release_db_) return;
     const SampleData* sd = release_db_->find(midi_note, velocity);
     if (!sd) return;
 
-    // IDLE な Voice を探す
     Voice* target = nullptr;
     for (auto& v : voices_) {
         if (v.state == Voice::State::IDLE) { target = &v; break; }
     }
 
-    // IDLE がなければ最古の非 release voice を奪う
     if (!target) {
         int idx = oldest_voice_idx();
         if (idx >= 0) target = &voices_[idx];
@@ -145,7 +170,6 @@ int SynthEngine::oldest_voice_idx() const
     int oldest = -1;
     uint64_t min_time = UINT64_MAX;
 
-    // 非 release voice を優先スチール
     for (int i = 0; i < MAX_VOICES; ++i) {
         if (voices_[i].state == Voice::State::PLAYING &&
             !voices_[i].is_release_voice &&
@@ -154,7 +178,6 @@ int SynthEngine::oldest_voice_idx() const
             oldest = i;
         }
     }
-    // 非 release がなければ release voice も対象
     if (oldest == -1) {
         for (int i = 0; i < MAX_VOICES; ++i) {
             if (voices_[i].state == Voice::State::PLAYING &&

@@ -16,6 +16,12 @@ FxChain::FxChain(int sample_rate) : sr_(sample_rate)
     // EQ: フラット初期状態
     compute_shelf(eq_lo_, 200.0f, 0.0f, false);
     compute_shelf(eq_hi_, 4000.0f, 0.0f, true);
+
+    // テープエコー: ドット8分 @120BPM = 375ms デフォルト
+    delay_.delay_samples = 0.375f * sr_;
+    delay_.feedback = 0.4f;
+    delay_.wet = 0.5f;
+    delay_.wet_target = 0.5f;
 }
 
 // ─── メイン処理（信号順: トレモロ→プリアンプ→EQ→コーラス→テープディレイ）──
@@ -29,7 +35,7 @@ void FxChain::process(float* buf, int frames)
     if (eq_lo_db_ != 0.0f)          process_biquad(eq_lo_, buf, frames);
     if (eq_hi_db_ != 0.0f)          process_biquad(eq_hi_, buf, frames);
     if (chorus_.wet > 0.001f)        process_chorus(buf, frames);
-    if (delay_.delay_samples > 1.0f) process_delay(buf, frames);
+    if (delay_.delay_samples > 1.0f && delay_.wet > 0.001f) process_delay(buf, frames);
 }
 
 // ─── MIDI CC パラメータ（MIDIスレッドから呼ばれる → キューに push） ──
@@ -44,22 +50,36 @@ void FxChain::apply_param(int cc, int val)
     const float v = val / 127.0f;  // 0.0〜1.0
 
     switch (cc) {
-    case 70: preamp_.drive = 1.0f + v * 7.0f; break;
-    case 71:
-        eq_lo_db_ = (val - 64) * (12.0f / 64.0f);  // -12〜+12 dB
+    // ── Tremolo (CC1-2) ──
+    case 1:  trem_.depth = v * 0.8f; break;              // Depth (モジュレーションホイール)
+    case 2:  trem_.inc = (0.5 + v * 7.5) / sr_; break;   // Rate 0.5〜8 Hz
+
+    // ── Overdrive (CC70-71) ──
+    case 70: preamp_.drive = 1.0f + v * 7.0f; break;     // Drive 1〜8
+    case 71: preamp_.tone = v; break;                     // Tone (0=dark, 1=bright)
+
+    // ── EQ (CC72-73) ──
+    case 72:
+        eq_lo_db_ = (val - 64) * (12.0f / 64.0f);        // Lo EQ -12〜+12 dB
         compute_shelf(eq_lo_, 200.0f, eq_lo_db_, false);
         break;
-    case 72:
-        eq_hi_db_ = (val - 64) * (12.0f / 64.0f);
+    case 73:
+        eq_hi_db_ = (val - 64) * (12.0f / 64.0f);        // Hi EQ -12〜+12 dB
         compute_shelf(eq_hi_, 4000.0f, eq_hi_db_, true);
         break;
-    case 73: trem_.depth = v * 0.8f; break;
-    case 74: trem_.inc = (0.5 + v * 7.5) / sr_; break;  // 0.5〜8 Hz
-    case 75: delay_.delay_samples = v * (DELAY_BUF - 1); break;
-    case 76: delay_.feedback = std::min(v * 0.85f / 1.0f, 0.85f); break;
-    case 77: chorus_.inc = (0.5 + v * 1.5) / sr_; break;  // 0.5〜2 Hz
-    case 78: chorus_.depth_ms = v * 20.0f; break;          // 0〜20 ms
-    case 79: chorus_.wet = v; break;
+
+    // ── Tape Echo (CC75-77) ──
+    case 75:                                               // Delay Time 0〜500ms
+        delay_.delay_samples = v * 0.5f * sr_;
+        delay_.wet = (v > 0.01f) ? delay_.wet_target : 0.0f;
+        break;
+    case 76: delay_.feedback = v * 0.85f; break;          // Feedback 0〜0.85
+    case 77: delay_.wet_target = v; delay_.wet = v; break; // Wet レベル
+
+    // ── Chorus (CC78-80) ──
+    case 78: chorus_.inc = (0.5 + v * 1.5) / sr_; break;  // Rate 0.5〜2 Hz
+    case 79: chorus_.depth_ms = v * 20.0f; break;          // Depth 0〜20 ms
+    case 80: chorus_.wet = v; break;                        // Wet レベル
     }
 }
 
@@ -78,14 +98,42 @@ void FxChain::process_tremolo(float* buf, int frames)
     }
 }
 
-// ─── プリアンプ（tanhf ソフトクリップ） ───────────────────────
+// ─── オーバードライブ（非対称クリッピング + トーンフィルタ） ─────
+// Rhodes Suitcase amp 風: 正側はハードクリップ気味、負側はソフトに潰れる
+// 偶数次倍音が出て「品がない」温かみのある歪み
 void FxChain::process_preamp(float* buf, int frames)
 {
     const float d = preamp_.drive;
-    const float inv_d = 1.0f / d;  // ゲイン補正
-    const int total = frames * 2;
-    for (int i = 0; i < total; ++i)
-        buf[i] = tanhf(buf[i] * d) * inv_d;
+    const float inv_d = 1.0f / d;
+    // tone: LPF 係数（drive が上がるとデフォルトで暗くなる = アンプの特性）
+    const float lpf_k = 0.2f + preamp_.tone * 0.6f;  // 0.2〜0.8
+
+    for (int i = 0; i < frames; ++i) {
+        for (int ch = 0; ch < 2; ++ch) {
+            float x = buf[i * 2 + ch] * d;
+
+            // 非対称クリッピング: 正側はハード、負側はソフト
+            float y;
+            if (x >= 0.0f) {
+                // 正側: ハードクリップ寄り（3次多項式）
+                if (x < 1.0f)
+                    y = x - 0.333f * x * x * x;
+                else
+                    y = 0.667f;
+            } else {
+                // 負側: tanhf でソフトに（非対称 = 偶数次倍音）
+                y = tanhf(x * 0.8f) * 1.25f;
+            }
+
+            // ゲイン補正
+            y *= inv_d;
+
+            // ポストドライブ トーンフィルタ（1次 LPF）
+            float& lpf = (ch == 0) ? preamp_.lpf_l : preamp_.lpf_r;
+            lpf += lpf_k * (y - lpf);
+            buf[i * 2 + ch] = lpf;
+        }
+    }
 }
 
 // ─── EQ バイクアッド (Direct Form II Transposed) ──────────────
@@ -171,10 +219,12 @@ void FxChain::process_chorus(float* buf, int frames)
     }
 }
 
-// ─── テープディレイ（フィードバック + 1次 LPF） ──────────────
+// ─── テープエコー（サチュレーション + ウォーム LPF + Wet/Dry） ──
 void FxChain::process_delay(float* buf, int frames)
 {
-    const float lpf_k = 0.3f;  // テープ風ローパス係数（≈3kHz カットオフ）
+    // テープ風パラメータ
+    const float lpf_k = 0.15f;  // ウォームな LPF（≈1.5kHz カットオフ — テープヘッドの高域ロス）
+    const float sat_drive = 1.5f;  // テープサチュレーション量
 
     for (int i = 0; i < frames; ++i) {
         const float dry_l = buf[i * 2 + 0];
@@ -184,23 +234,27 @@ void FxChain::process_delay(float* buf, int frames)
         float d = delay_.delay_samples;
         int d0 = static_cast<int>(d);
         float frac = d - static_cast<float>(d0);
-        int r0_l = (delay_.write - d0)     & (DELAY_BUF - 1);
-        int r1_l = (delay_.write - d0 - 1) & (DELAY_BUF - 1);
+        int r0 = (delay_.write - d0)     & (DELAY_BUF - 1);
+        int r1 = (delay_.write - d0 - 1) & (DELAY_BUF - 1);
 
-        float tap_l = delay_.buf_l[r0_l] * (1.0f - frac) + delay_.buf_l[r1_l] * frac;
-        float tap_r = delay_.buf_r[r0_l] * (1.0f - frac) + delay_.buf_r[r1_l] * frac;
+        float tap_l = delay_.buf_l[r0] * (1.0f - frac) + delay_.buf_l[r1] * frac;
+        float tap_r = delay_.buf_r[r0] * (1.0f - frac) + delay_.buf_r[r1] * frac;
 
-        // テープ風 LPF（フィードバック信号に適用）
-        delay_.lpf_l = delay_.lpf_l + lpf_k * (tap_l - delay_.lpf_l);
-        delay_.lpf_r = delay_.lpf_r + lpf_k * (tap_r - delay_.lpf_r);
+        // テープ風 LPF（フィードバック経路に適用 — 繰り返すごとに高域が落ちる）
+        delay_.lpf_l += lpf_k * (tap_l - delay_.lpf_l);
+        delay_.lpf_r += lpf_k * (tap_r - delay_.lpf_r);
+
+        // テープサチュレーション（ソフトクリッピング — 繰り返すごとに歪みが増す）
+        float fb_l = tanhf(delay_.lpf_l * sat_drive) / sat_drive;
+        float fb_r = tanhf(delay_.lpf_r * sat_drive) / sat_drive;
 
         // フィードバック書き込み
-        delay_.buf_l[delay_.write] = dry_l + delay_.lpf_l * delay_.feedback;
-        delay_.buf_r[delay_.write] = dry_r + delay_.lpf_r * delay_.feedback;
+        delay_.buf_l[delay_.write] = dry_l + fb_l * delay_.feedback;
+        delay_.buf_r[delay_.write] = dry_r + fb_r * delay_.feedback;
 
-        // 出力: dry + wet
-        buf[i * 2 + 0] = dry_l + tap_l;
-        buf[i * 2 + 1] = dry_r + tap_r;
+        // 出力: dry + wet（テープエコーらしく wet で混ぜる）
+        buf[i * 2 + 0] = dry_l + tap_l * delay_.wet;
+        buf[i * 2 + 1] = dry_r + tap_r * delay_.wet;
 
         delay_.write = (delay_.write + 1) & (DELAY_BUF - 1);
     }

@@ -1,67 +1,26 @@
-# BLE-MIDI iPhone コントロールアプリ計画
+# elepiano TODO
 
-作成日: 2026-03-04
+## レイテンシ改善（優先度順）
 
-## アーキテクチャ
+### すぐできる（リスクなし）
+- [x] L1: CPUガバナーを `performance` に固定（ondemand→常時2.4GHz）✅ crontab永続化済み
+- [x] L2: `threadirqs` カーネルパラメータ追加（割込みスレッド化）✅ 次回再起動で有効
 
-```
-iPhone (SwiftUI + MIDIKit)
-  ↓ BLE-MIDI (Apple MIDI GATT Service)
-Pi5 (bluetoothd + btmidi-server --enable-midi)
-  ↓ ALSA Sequencer 仮想ポート（BlueZ 自動生成）
-elepiano MidiInput（既存 ALSA Sequencer client: 変更不要）
-```
+### 効果大（要再起動・検証）
+- [x] L3: PREEMPT_RT カーネル導入 ✅ linux-image-rpi-v8-rt 6.12.62, cyclictest Max=6μs
+- [ ] L4: CPU隔離 `isolcpus=3 nohz_full=3 rcu_nocbs=3` でオーディオスレッド専用コア
+  - elepiano 側で `taskset -c 3` or `pthread_setaffinity`
 
-## Phase 1: Pi5 BLE-MIDI セットアップ（要物理アクセス）
+### 計測・検証
+- [x] L5: `cyclictest` インストールして改善前後のジッター計測 ✅ Max=5μs, Avg=1μs (PREEMPT+performance)
+- [x] L6: period_size=32 で underrun なく動くか確認（理論 ~1.3ms）✅ 安定動作確認
+- [x] L7: サンプル先頭無音トリミング ✅ 92.9ms→0ms, 体感レイテンシ劇的改善
 
-- [ ] P1-1: BlueZ を --enable-midi 付きでソースビルド
-- [ ] P1-2: bluetoothd を experimental モードで起動
-- [ ] P1-3: btmidi-server をシステムサービス化
-- [ ] P1-4: BLE ペアリングと ALSA ポート自動接続の確認
-- [ ] P1-5: elepiano 起動スクリプトに aconnect 自動接続追加
+---
 
-## Phase 2: iOS アプリ基盤
+## 次のTODO候補
 
-ディレクトリ: /Users/hakaru/DEVELOP/elepiano/iOS/ElepianoControl/
-
-- [ ] P2-1: XcodeGen project.yml 作成
-- [ ] P2-2: Info.plist (NSBluetoothAlwaysUsageDescription)
-- [ ] P2-3: MIDIManager セットアップ (AppState)
-- [ ] P2-4: BLE-MIDI デバイス検索・接続 UI
-
-## Phase 3: iOS アプリ UI
-
-- [ ] P3-1: CC スライダーコンポーネント
-- [ ] P3-2: FxChain コントロールパネル (CC 70-79)
-- [ ] P3-3: オルガン Drawbars パネル (CC 12-20, CC 64)
-- [ ] P3-4: モード切替 (Piano/Organ) タブ
-- [ ] P3-5: MIDI 送信ロジック
-
-## Phase 4: プリセット機能
-
-- [ ] P4-1: PresetStore (Codable + UserDefaults)
-- [ ] P4-2: PresetView (一覧 + 保存/読み込み)
-
-## CC マッピング
-
-### FxChain (ピアノモード)
-| CC | パラメータ | 範囲 |
-|----|-----------|------|
-| 70 | Drive | 1.0〜8.0 |
-| 71 | Lo EQ | -12〜+12 dB |
-| 72 | Hi EQ | -12〜+12 dB |
-| 73 | Tremolo Depth | 0〜0.8 |
-| 74 | Tremolo Rate | 0.5〜8 Hz |
-| 75 | Delay Time | 0〜0.5s |
-| 76 | Delay Feedback | 0〜0.85 |
-| 77 | Chorus Rate | 0.5〜2 Hz |
-| 78 | Chorus Depth | 0〜20 ms |
-| 79 | Chorus Wet | 0〜1.0 |
-
-### オルガンモード
-| CC | パラメータ |
-|----|-----------|
-| 12-20 | Drawbar 0-8 (チャンネルごと) |
-| 64 | Leslie Fast/Slow |
-| 7 | Volume (マニュアルごと) |
-| 1 | V/C モード |
+- [ ] systemd 自動起動サービス化
+- [ ] 他音色追加（Wurlitzer 200A, Vintage Vibe EP）
+- [ ] README.md 作成
+- [ ] CPU隔離 (L4)

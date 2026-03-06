@@ -183,3 +183,290 @@
   - cyclictest Max=5μs — RT カーネルは当面不要
 次のTODO: 次の改善項目をユーザーと選定
 ---
+
+---
+2026-03-06 16:30
+作業項目: ピッチ修正 + リリースサンプル動作確認
+追加機能の説明:
+  - main.cpp: audio.sample_rate() (ALSA実際値48000) をSynthEngine/FxChainに渡すよう修正
+  - voice.cpp: pitch_ratio に sd->sample_rate/output_rate 比を適用
+  - 根本原因: AudioOutput::open_pcm()がcfg_のコピーを更新、呼び出し元acfgは未更新だった
+決定事項:
+  - ピッチ修正確認OK（44100Hzサンプル → 48kHz PiSound出力で正しいピッチ）
+  - attack(985) + release(1759) サンプル同時動作確認OK
+  - period=32/periods=2 @ 48kHz = 1.3ms レイテンシで安定
+次のTODO: systemd自動起動、BLE-MIDIアプリ、他音色
+---
+
+---
+2026-03-06 16:33
+作業項目: PREEMPT_RT カーネル導入計画 — ExitPlanMode
+追加機能の説明: なし（計画のみ）
+決定事項:
+  - linux-image-rpi-v8-rt (6.12.62) を使用
+  - config.txt に kernel=kernel8-rt.img 追加
+  - ロールバックは kernel= 行削除のみ
+次のTODO: ユーザー承認後に実行
+---
+
+---
+2026-03-06 16:34
+作業項目: PREEMPT_RT カーネル導入実行
+追加機能の説明:
+  - linux-image-rpi-v8-rt パッケージインストール
+  - /boot/firmware/config.txt に kernel=kernel8-rt.img 追加
+  - 再起動後 PiSound認識・cyclictest・elepiano動作確認
+決定事項: 計画通り実行開始
+次のTODO: Step1 apt install → Step2 config.txt編集 → Step3 reboot → 確認
+---
+
+---
+2026-03-06 16:49
+作業項目: PREEMPT_RT カーネル導入完了
+追加機能の説明:
+  - linux-image-rpi-v8-rt 6.12.62 インストール成功
+  - config.txt に kernel=kernel8_rt.img 追加（初回 kernel8-rt.img でタイポ→修正）
+  - PREEMPT_RT カーネル起動確認
+決定事項:
+  - uname: 6.12.62+rpt-rpi-v8-rt / PREEMPT_RT 確認OK
+  - PiSound hw:2,0 認識OK（FW 1.03, HW 1.2）
+  - cyclictest 500K回: Max=6μs, Avg=1μs（PREEMPT時 Max=5μs とほぼ同等）
+  - elepiano 起動OK（period=32/periods=2 @ 48kHz, attack+release サンプル）
+  - ロールバック: config.txt の kernel= 行削除→reboot で元のrpi-2712カーネルに戻せる
+次のTODO: 演奏テスト（underrunなし・ピッチ正常を確認）
+---
+
+---
+2026-03-06 16:50
+作業項目: USB MIDI vs PiSound MIDI のレイテンシ比較についての質問回答
+追加機能の説明: なし（情報提供）
+決定事項: USB MIDIとPiSound MIDIの仕組みの違いを説明
+次のTODO: なし
+---
+
+---
+2026-03-06 16:52
+作業項目: USB MIDI接続に切り替え
+追加機能の説明: なし
+決定事項:
+  - PiSound MIDI (24:0→128:0) を切断
+  - Keystage USB MIDI (28:0→128:0) に接続
+  - Keystage ポート0 (CTRL) を使用
+次のTODO: 弾いて比較テスト
+---
+
+---
+2026-03-06 16:53
+作業項目: サンプル先頭無音区間の調査・体感レイテンシ原因特定
+追加機能の説明: なし（調査タスク）
+決定事項:
+  - 全attackサンプルの先頭に4097サンプル(92.9ms)の完全無音区間が存在
+  - FLACブロックサイズ4096+1サンプルがゼロパディング — 元SpCAデータ由来
+  - voice.cpp は position=0.0 から再生開始（オフセットなし）
+  - synth_engine.cpp の MIDI→Voice割り当ては即座（遅延なし）
+  - ALSAバッファ1.33msは問題なし — 92.9msの無音が体感レイテンシの主因
+  - releaseサンプルは0〜29ms程度（ばらつきあり）
+改善案:
+  - sample_db.cpp のロード時に先頭無音をトリミング（最も確実）
+  - または voice.cpp の note_on で start_offset を設定
+次のTODO: 先頭無音トリミング実装
+---
+
+---
+2026-03-06 16:53
+作業項目: 先頭無音トリミング実装・ビルド・起動
+追加機能の説明:
+  - sample_db.cpp: PCMロード後に先頭の連続ゼロサンプル(|v|<1e-6f)を除去
+  - 92.9ms の無音区間を除去 → 理論レイテンシ 1.33ms のみに
+決定事項:
+  - ビルド成功、elepiano起動OK
+  - USB MIDI + PiSound MIDI 両方自動接続
+次のTODO: 弾いてレイテンシ改善を体感確認
+---
+
+---
+2026-03-06 17:00
+作業項目: 音の変化の原因調査
+追加機能の説明: なし（調査）
+決定事項:
+  - FLACファイル自体は無変更（先頭4097サンプル無音はそのまま）
+  - トリミングはsample_db.cppのロード時のみ
+  - 最初の非ゼロサンプル[4097]が即座に0.01レベル — 音の立ち上がりは切れていない
+  - releaseサンプルは先頭無音なし（onset=0）— トリミングの影響なし
+  - 音の変化は93ms遅延がなくなったことによる知覚変化の可能性が高い
+次のTODO: ユーザーが弾いて確認
+---
+
+---
+2026-03-06 17:03
+作業項目: 次のTODO確認
+追加機能の説明: なし
+決定事項: todo.md レビュー、次の作業候補を提示
+次のTODO: ユーザー選択待ち
+---
+
+---
+2026-03-06 17:05
+作業項目: systemd 自動起動サービス作成
+追加機能の説明:
+  - elepiano.service ユニットファイル作成
+  - Pi電源ON → 自動で elepiano 起動 → MIDI接続 → 即演奏可能
+決定事項:
+  - /etc/systemd/system/elepiano.service 作成・enable済み
+  - active (running) 確認OK (PID 2634)
+  - SCHED_FIFO prio=80, Nice=-20, RLIMIT_RTPRIO=99, MEMLOCK=infinity
+  - After=sound.target, Restart=on-failure
+  - PiSound MIDI 自動接続OK (subscribe_all_hw)
+次のTODO: reboot して自動起動を確認、弾いてテスト
+---
+
+---
+2026-03-06 17:07
+作業項目: Pi5 起動時間短縮
+追加機能の説明:
+  - 不要サービス無効化で起動時間を13.6s→大幅短縮
+  - sound.target @3s なので elepiano を3-4秒で起動可能に
+決定事項:
+  - 現状: kernel 1.4s + userspace 12.2s = 13.6s
+  - ボトルネック: NM-wait-online(6s), NM(2.8s), cloud-init(1.4s)
+  - 無効化対象: NM-wait-online, cloud-init, ModemManager, cups-browsed, colord
+次のTODO: 不要サービス無効化 → reboot → 確認
+---
+
+---
+2026-03-06 17:07
+作業項目: Pi5 起動時間短縮 + systemd自動起動 完了
+追加機能の説明:
+  - 無効化: NM-wait-online, cloud-init(3件), ModemManager, cups(4件), colord
+  - systemd-rfkill.service/socket を mask（ハング防止）
+決定事項:
+  - 起動時間: 13.6s → 10.7s（kernel 1.6s + userspace 9.1s）
+  - elepiano 起動開始: @2.3s（sound.target直後）
+  - サンプルロード完了: 起動後 ~52秒（985 attack + 1759 release FLAC）
+  - PiSound MIDI 自動接続OK
+  - 電源ON → 約55秒で演奏可能（ボトルネックはFLACロード）
+次のTODO: FLACロード高速化（並列化 or キャッシュ）を検討
+---
+
+---
+2026-03-06 17:11
+作業項目: サンプルロード並列化実装
+追加機能の説明:
+  - SampleDB コンストラクタで std::thread を使い4コア並列FLACデコード
+  - JSON解析→タスクリスト作成→並列デコード→結果マージ
+  - 52秒→~13秒を期待
+決定事項:
+  - 並列FLACデコード実装完了（std::thread + atomic カウンタ）
+  - PCMキャッシュ実装完了（.pcm_cache バイナリファイル、samples.jsonより新しければ使用）
+  - コールドブート: 52秒→17秒（3倍高速化）
+  - ウォームキャッシュ: 1秒（956ms + 31ms）
+  - キャッシュサイズ: attack 1.4GB + release 52MB
+  - 電源ON→演奏可能: 55秒→約18秒
+次のTODO: コミット
+---
+
+---
+2026-03-06 17:21
+作業項目: FxChain CCコントロール確認
+追加機能の説明: なし（確認のみ）
+決定事項:
+  - FxChain CCコントロールは既に実装済み
+  - main.cpp:191-192 で全CC → fx.set_param() に転送
+  - fx_chain.cpp:42-63 の apply_param() で CC70-79 を処理
+  - SpscQueue経由のロックフリー設計（MIDIスレッド→オーディオスレッド）
+次のTODO: Keystage側のCCマッピング確認 or 追加CC対応
+---
+
+---
+2026-03-06 17:27
+作業項目: FxChain改善 — CC1トレモロ + テープエコー化
+追加機能の説明:
+  - CC1 (モジュレーションホイール) → Tremolo Depth に割り当て
+  - Delay をテープエコー風に改良（ドットエイス対応、ウォームなLPF、Wet/Dry分離）
+決定事項:
+  - CC1 → Tremolo Depth (0〜0.8) 実装完了
+  - テープエコー改良:
+    - LPF カットオフ 0.3→0.15（≈1.5kHz、テープヘッドの高域ロス）
+    - tanhf サチュレーション追加（繰り返すごとに歪みが増す）
+    - Wet/Dry 分離（CC80 で Wet レベル調整可能）
+    - デフォルト: 375ms (ドット8分@120BPM), feedback=0.4, wet=0.5
+  - CC75: ディレイタイム 50〜500ms
+  - CC76: フィードバック 0〜0.85
+  - CC80: ディレイ Wet レベル
+  - ビルド・起動OK
+次のTODO: 弾いてテスト
+---
+
+---
+2026-03-06 17:35
+作業項目: プリアンプをオーバードライブ風に改良
+追加機能の説明:
+  - tanhf ソフトクリップ → 非対称クリッピング + 偶数次倍音 + トーンフィルタ
+  - Rhodes オーバードライブ（Suitcase amp風）の品のない歪み
+決定事項:
+  - 非対称クリッピング実装: 正側=3次多項式ハードクリップ、負側=tanhfソフト
+  - 偶数次倍音が出る（真空管アンプ/Suitcase amp風）
+  - ポストドライブ トーンフィルタ（1次LPF）追加
+  - CC81: OD Tone (0=dark, 1=bright) 追加
+  - drive上げると自然に暗くなる（アンプの特性を再現）
+  - ビルド・起動OK
+次のTODO: 弾いてテスト
+---
+
+---
+2026-03-06 17:38
+作業項目: CC番号を機能グループごとに整列
+追加機能の説明: CC マッピングを機能別に連番化
+決定事項:
+  - Tremolo: CC1(Depth), CC2(Rate)
+  - Overdrive: CC70(Drive), CC71(Tone)
+  - EQ: CC72(Lo), CC73(Hi)
+  - Tape Echo: CC75(Time), CC76(Feedback), CC77(Wet)
+  - Chorus: CC78(Rate), CC79(Depth), CC80(Wet)
+  - ビルド・起動OK
+次のTODO: 弾いてテスト
+---
+
+---
+2026-03-06 17:41
+作業項目: Program Change 音色切替 (PG1=Rhodes, PG2=Wurlitzer, PG3=Vintage Vibe)
+追加機能の説明:
+  - MIDI Program Change で3音色を切替可能にする
+  - Wurlitzer/Vintage Vibe のFLACをPiに転送
+  - SynthEngine に複数 SampleDB 対応を追加
+決定事項: 実装開始
+次のTODO: FLAC転送→コード実装→ビルド→テスト
+---
+
+---
+2026-03-06 17:43
+作業項目: 外部ディスク Media のFLACファイル調査
+追加機能の説明: なし（調査）
+決定事項:
+  - /Volumes/Media マウント済み、Keyscape .db ファイル51個確認
+  - ローカル data/ には11音色分の抽出済みFLACあり
+  - Keyscape Library に未抽出の音色多数（Clavinet, Pianet, CP-70B, Toy Piano等）
+次のTODO: 必要な音色を選んで extract_samples.py で抽出
+---
+
+---
+2026-03-06 17:50
+作業項目: Rhodes LA Custom + LA Custom C7 Grand サンプル抽出
+追加機能の説明:
+  - extract_samples.py に4モード追加: rhodes-la-attack, rhodes-la-rel, c7grand-attack, c7grand-rel
+  - 新規パーサー: parse_lacrm_name, parse_lacr_rel_name, parse_lacppu_name, parse_lacp_rel_name
+決定事項:
+  - Rhodes LA Custom: attack 2819 FLAC (2.0GB, mono), release 1408 FLAC (47MB)
+  - LA Custom C7 Grand: attack 1970 FLAC (5.4GB, stereo!), release 1760 FLAC (661MB)
+  - 全て非暗号化（SpCA→fLaC置換のみ）
+  - 44100Hz/24bit、C7 Grand はステレオ
+次のTODO: Piへ転送、Program Change で音色切替に組み込み
+---
+
+---
+2026-03-06 18:00
+作業項目: コードレビュー + コミット + プッシュ
+追加機能の説明: 本日の全変更をまとめてコミット
+決定事項: レビュー後コミット
+次のTODO: コミット実行
+---

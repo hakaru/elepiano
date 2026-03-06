@@ -8,180 +8,337 @@
 #include <climits>
 #include <cmath>
 #include <cstdio>
+#include <thread>
+#include <atomic>
+#include <chrono>
 
-// Pi5 (8GB RAM) で全サンプルをメモリに収めるため、最大長を制限する
-// 10秒 @ 44100Hz = 441000 サンプル → 1615 ファイル × 441000 × 4B ≈ 2.7GB
 static constexpr size_t MAX_SAMPLE_FRAMES = 441000;
-static constexpr size_t FADE_OUT_FRAMES   = 4410;  // 100ms フェードアウト
-static constexpr size_t MAX_JSON_SIZE     = 10 * 1024 * 1024;  // 10MB
+static constexpr size_t FADE_OUT_FRAMES   = 4410;
+static constexpr size_t MAX_JSON_SIZE     = 10 * 1024 * 1024;
 static constexpr size_t MAX_SAMPLE_COUNT  = 10000;
+
+// キャッシュファイルのマジックとバージョン
+static constexpr uint32_t CACHE_MAGIC   = 0x50434D43; // "PCMC"
+static constexpr uint32_t CACHE_VERSION = 2;
 
 using json = nlohmann::json;
 namespace fs = std::filesystem;
+
+// 1サンプルの FLAC デコード + 後処理（スレッドセーフ）
+static bool process_sample(SampleData& sd)
+{
+    DecodedAudio audio;
+    try {
+        audio = decode_flac_file(sd.file_path, MAX_SAMPLE_FRAMES);
+    } catch (const std::exception& e) {
+        fprintf(stderr, "[SampleDB] SKIP %s: %s\n", sd.file_path.c_str(), e.what());
+        return false;
+    }
+
+    if (audio.pcm.empty() || audio.pcm.size() < 44) {
+        fprintf(stderr, "[SampleDB] SKIP %s: デコード結果が短い (%zu)\n",
+                sd.file_path.c_str(), audio.pcm.size());
+        return false;
+    }
+
+    {
+        bool has_abnormal = false;
+        for (float v : audio.pcm) {
+            if (v < -2.0f || v > 2.0f) { has_abnormal = true; break; }
+        }
+        if (has_abnormal) {
+            fprintf(stderr, "[SampleDB] SKIP %s: 異常な PCM 値\n", sd.file_path.c_str());
+            return false;
+        }
+    }
+
+    {
+        float first = audio.pcm[0];
+        bool all_same = true;
+        for (float v : audio.pcm) {
+            if (std::fabs(v - first) > 1e-6f) { all_same = false; break; }
+        }
+        if (all_same) {
+            fprintf(stderr, "[SampleDB] SKIP %s: 全サンプルが同一値\n", sd.file_path.c_str());
+            return false;
+        }
+    }
+
+    // ステレオ → モノ
+    if (audio.num_channels >= 2) {
+        size_t ch = static_cast<size_t>(audio.num_channels);
+        size_t total_frames = audio.pcm.size() / ch;
+        std::vector<float> mono(total_frames);
+        for (size_t f = 0; f < total_frames; ++f) {
+            float sum = 0.0f;
+            for (size_t c = 0; c < ch; ++c)
+                sum += audio.pcm[f * ch + c];
+            mono[f] = sum / static_cast<float>(ch);
+        }
+        audio.pcm = std::move(mono);
+        audio.num_channels = 1;
+    }
+
+    // フェードアウト
+    if (audio.pcm.size() >= FADE_OUT_FRAMES) {
+        size_t fade_start = audio.pcm.size() - FADE_OUT_FRAMES;
+        for (size_t i = 0; i < FADE_OUT_FRAMES; ++i) {
+            float fade = 1.0f - static_cast<float>(i) / FADE_OUT_FRAMES;
+            audio.pcm[fade_start + i] *= fade;
+        }
+    }
+
+    // 先頭無音トリミング
+    {
+        size_t onset = 0;
+        for (size_t i = 0; i < audio.pcm.size(); ++i) {
+            if (std::fabs(audio.pcm[i]) > 1e-6f) { onset = i; break; }
+        }
+        if (onset > 0) {
+            audio.pcm.erase(audio.pcm.begin(),
+                            audio.pcm.begin() + static_cast<ptrdiff_t>(onset));
+        }
+    }
+
+    sd.pcm         = std::move(audio.pcm);
+    sd.num_channels = audio.num_channels;
+    sd.sample_rate  = audio.sample_rate;
+    return true;
+}
+
+// ============================================================
+// PCM キャッシュ: デコード済み PCM をバイナリで保存/読込
+// フォーマット:
+//   [magic:4][version:4][count:4][sample_rate:4]
+//   per sample: [midi_note:4][vel_min:4][vel_max:4][vel_idx:4][rr:4][sr:4][ch:4][pcm_len:4][pcm:pcm_len*4]
+// ============================================================
+
+static std::string cache_path_for(const std::string& json_path)
+{
+    return fs::path(json_path).parent_path() / ".pcm_cache";
+}
+
+static bool load_cache(const std::string& path, std::vector<SampleData>& out, int& sample_rate)
+{
+    std::ifstream f(path, std::ios::binary);
+    if (!f) return false;
+
+    uint32_t magic, version, count, sr;
+    f.read(reinterpret_cast<char*>(&magic), 4);
+    f.read(reinterpret_cast<char*>(&version), 4);
+    f.read(reinterpret_cast<char*>(&count), 4);
+    f.read(reinterpret_cast<char*>(&sr), 4);
+    if (!f || magic != CACHE_MAGIC || version != CACHE_VERSION || count > MAX_SAMPLE_COUNT)
+        return false;
+
+    sample_rate = static_cast<int>(sr);
+    out.reserve(count);
+
+    for (uint32_t i = 0; i < count; ++i) {
+        SampleData sd;
+        int32_t vals[8];
+        f.read(reinterpret_cast<char*>(vals), sizeof(vals));
+        if (!f) return false;
+
+        sd.midi_note    = vals[0];
+        sd.velocity_min = vals[1];
+        sd.velocity_max = vals[2];
+        sd.velocity_idx = vals[3];
+        sd.round_robin  = vals[4];
+        sd.sample_rate  = vals[5];
+        sd.num_channels = vals[6];
+        uint32_t pcm_len = static_cast<uint32_t>(vals[7]);
+
+        if (pcm_len > MAX_SAMPLE_FRAMES * 2) return false;
+
+        sd.pcm.resize(pcm_len);
+        f.read(reinterpret_cast<char*>(sd.pcm.data()), pcm_len * sizeof(float));
+        if (!f) return false;
+
+        out.push_back(std::move(sd));
+    }
+
+    return true;
+}
+
+static void save_cache(const std::string& path, const std::vector<SampleData>& samples, int sample_rate)
+{
+    std::string tmp = path + ".tmp";
+    std::ofstream f(tmp, std::ios::binary);
+    if (!f) {
+        fprintf(stderr, "[SampleDB] キャッシュ書き込み失敗: %s\n", path.c_str());
+        return;
+    }
+
+    uint32_t magic   = CACHE_MAGIC;
+    uint32_t version = CACHE_VERSION;
+    uint32_t count   = static_cast<uint32_t>(samples.size());
+    uint32_t sr      = static_cast<uint32_t>(sample_rate);
+    f.write(reinterpret_cast<const char*>(&magic), 4);
+    f.write(reinterpret_cast<const char*>(&version), 4);
+    f.write(reinterpret_cast<const char*>(&count), 4);
+    f.write(reinterpret_cast<const char*>(&sr), 4);
+
+    for (const auto& sd : samples) {
+        int32_t vals[8] = {
+            sd.midi_note, sd.velocity_min, sd.velocity_max, sd.velocity_idx,
+            sd.round_robin, sd.sample_rate, sd.num_channels,
+            static_cast<int32_t>(sd.pcm.size())
+        };
+        f.write(reinterpret_cast<const char*>(vals), sizeof(vals));
+        f.write(reinterpret_cast<const char*>(sd.pcm.data()), sd.pcm.size() * sizeof(float));
+    }
+
+    f.close();
+    if (f) {
+        fs::rename(tmp, path);
+        fprintf(stderr, "[SampleDB] キャッシュ保存: %s (%u サンプル)\n", path.c_str(), count);
+    } else {
+        fs::remove(tmp);
+    }
+}
 
 // ============================================================
 // SampleDB 実装
 // ============================================================
 SampleDB::SampleDB(const std::string& json_path)
 {
-    std::ifstream f(json_path);
-    if (!f) throw std::runtime_error("samples.json が開けません: " + json_path);
+    auto t0 = std::chrono::steady_clock::now();
 
-    {
-        auto file_size = fs::file_size(json_path);
-        if (file_size > MAX_JSON_SIZE)
-            throw std::runtime_error("samples.json が大きすぎます: " + std::to_string(file_size) + " bytes");
-    }
+    std::string cache = cache_path_for(json_path);
 
-    json j;
-    try {
-        f >> j;
-    } catch (const std::exception& e) {
-        throw std::runtime_error(std::string("JSON パースエラー: ") + e.what());
-    }
-
-    sample_rate_ = j.value("sample_rate", 44100);
-    const fs::path base_dir = fs::path(json_path).parent_path();
-
-    if (!j.contains("samples") || !j["samples"].is_array()) {
-        throw std::runtime_error("samples.json: 'samples' 配列が見つかりません");
-    }
-
-    if (j["samples"].size() > MAX_SAMPLE_COUNT)
-        throw std::runtime_error("samples[] が多すぎます: " + std::to_string(j["samples"].size()) + " 件");
-
-    for (auto& item : j["samples"]) {
-        // 必須フィールドの型チェック
-        if (!item.contains("midi_note") || !item["midi_note"].is_number_integer())
-            throw std::runtime_error("samples[]: 'midi_note' は整数が必須");
-        if (!item.contains("file") || !item["file"].is_string())
-            throw std::runtime_error("samples[]: 'file' は文字列が必須");
-
-        SampleData sd;
-        sd.midi_note    = item["midi_note"].get<int>();
-        sd.velocity_min = item.value("velocity_min", 0);
-        sd.velocity_max = item.value("velocity_max", 127);
-        sd.velocity_idx = item.value("velocity_idx", 0);
-        sd.round_robin  = item.value("round_robin", 1);
-
-        // パストラバーサル防止: relative() が ".." 始まりまたは絶対パスなら拒否
-        fs::path file_path = base_dir / item["file"].get<std::string>();
-        {
-            auto cf = fs::weakly_canonical(file_path);
-            auto cb = fs::weakly_canonical(base_dir);
-            auto rel = fs::relative(cf, cb);
-            if (rel.empty() || *rel.begin() == "..")
-                throw std::runtime_error("パストラバーサルを検出: " + cf.string());
+    // キャッシュが samples.json より新しければ使う
+    bool use_cache = false;
+    if (fs::exists(cache) && fs::exists(json_path)) {
+        auto cache_time = fs::last_write_time(cache);
+        auto json_time  = fs::last_write_time(json_path);
+        if (cache_time >= json_time) {
+            use_cache = load_cache(cache, samples_, sample_rate_);
+            if (use_cache) {
+                auto t1 = std::chrono::steady_clock::now();
+                auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0).count();
+                fprintf(stderr, "[SampleDB] キャッシュから %zu サンプル読み込み完了 (%lldms)\n",
+                        samples_.size(), static_cast<long long>(ms));
+            }
         }
-        sd.file_path   = file_path.string();
-        sd.sample_rate = sample_rate_;
+    }
 
-        DecodedAudio audio;
+    if (!use_cache) {
+        // FLAC デコードパス
+        std::ifstream f(json_path);
+        if (!f) throw std::runtime_error("samples.json が開けません: " + json_path);
+
+        {
+            auto file_size = fs::file_size(json_path);
+            if (file_size > MAX_JSON_SIZE)
+                throw std::runtime_error("samples.json が大きすぎます: " + std::to_string(file_size) + " bytes");
+        }
+
+        json j;
         try {
-            audio = decode_flac_file(sd.file_path, MAX_SAMPLE_FRAMES);
+            f >> j;
         } catch (const std::exception& e) {
-            fprintf(stderr, "[SampleDB] SKIP %s: %s\n", sd.file_path.c_str(), e.what());
-            continue;
+            throw std::runtime_error(std::string("JSON パースエラー: ") + e.what());
         }
 
-        // ── 健全性チェック ──────────────────────────────────────────
-        // (1) 極端に短いデコード結果: totalPCMFrameCount が十分大きいのに
-        //     デコード結果がごく短い場合は壊れたファイルとみなす
-        //     (decode_flac_file 内で取得できないため、ここでは 44 フレーム未満を閾値とする)
-        if (audio.pcm.empty()) {
-            fprintf(stderr, "[SampleDB] SKIP %s: デコード結果が空\n", sd.file_path.c_str());
-            continue;
-        }
-        if (audio.pcm.size() < 44) {
-            fprintf(stderr, "[SampleDB] SKIP %s: デコード結果が極端に短い (%zu サンプル)\n",
-                    sd.file_path.c_str(), audio.pcm.size());
-            continue;
-        }
+        sample_rate_ = j.value("sample_rate", 44100);
+        const fs::path base_dir = fs::path(json_path).parent_path();
 
-        // (2) 異常値検出: drflac_read_pcm_frames_f32 は -1.0〜+1.0 に正規化するはずなので
-        //     大幅に超える値（例: ±2.0 超）はデコード異常とみなす
-        {
-            bool has_abnormal = false;
-            for (float v : audio.pcm) {
-                if (v < -2.0f || v > 2.0f) { has_abnormal = true; break; }
+        if (!j.contains("samples") || !j["samples"].is_array())
+            throw std::runtime_error("samples.json: 'samples' 配列が見つかりません");
+        if (j["samples"].size() > MAX_SAMPLE_COUNT)
+            throw std::runtime_error("samples[] が多すぎます: " + std::to_string(j["samples"].size()) + " 件");
+
+        // Phase 1: メタデータパース
+        std::vector<SampleData> tasks;
+        tasks.reserve(j["samples"].size());
+
+        for (auto& item : j["samples"]) {
+            if (!item.contains("midi_note") || !item["midi_note"].is_number_integer())
+                throw std::runtime_error("samples[]: 'midi_note' は整数が必須");
+            if (!item.contains("file") || !item["file"].is_string())
+                throw std::runtime_error("samples[]: 'file' は文字列が必須");
+
+            SampleData sd;
+            sd.midi_note    = item["midi_note"].get<int>();
+            sd.velocity_min = item.value("velocity_min", 0);
+            sd.velocity_max = item.value("velocity_max", 127);
+            sd.velocity_idx = item.value("velocity_idx", 0);
+            sd.round_robin  = item.value("round_robin", 1);
+
+            fs::path file_path = base_dir / item["file"].get<std::string>();
+            {
+                auto cf = fs::weakly_canonical(file_path);
+                auto cb = fs::weakly_canonical(base_dir);
+                auto rel = fs::relative(cf, cb);
+                if (rel.empty() || *rel.begin() == "..")
+                    throw std::runtime_error("パストラバーサルを検出: " + cf.string());
             }
-            if (has_abnormal) {
-                fprintf(stderr, "[SampleDB] SKIP %s: 異常な PCM 値を検出\n", sd.file_path.c_str());
-                continue;
-            }
+            sd.file_path   = file_path.string();
+            sd.sample_rate = sample_rate_;
+            tasks.push_back(std::move(sd));
         }
 
-        // (3) 無音/DC オフセット検出: 全サンプルが同じ値（またはほぼ同じ）なら壊れている
-        {
-            float first = audio.pcm[0];
-            bool all_same = true;
-            for (float v : audio.pcm) {
-                if (std::fabs(v - first) > 1e-6f) { all_same = false; break; }
-            }
-            if (all_same) {
-                fprintf(stderr, "[SampleDB] SKIP %s: 全サンプルが同一値 (%.6f)\n",
-                        sd.file_path.c_str(), static_cast<double>(first));
-                continue;
-            }
-        }
-        // ─────────────────────────────────────────────────────────────
+        // Phase 2: 並列 FLAC デコード
+        const size_t n = tasks.size();
+        std::vector<bool> ok(n, false);
 
-        // ステレオ → モノ ダウンミックス（Voice はモノ前提）
-        if (audio.num_channels >= 2) {
-            size_t ch = static_cast<size_t>(audio.num_channels);
-            size_t total_frames = audio.pcm.size() / ch;
-            std::vector<float> mono(total_frames);
-            for (size_t f = 0; f < total_frames; ++f) {
-                float sum = 0.0f;
-                for (size_t c = 0; c < ch; ++c)
-                    sum += audio.pcm[f * ch + c];
-                mono[f] = sum / static_cast<float>(ch);
-            }
-            audio.pcm = std::move(mono);
-            audio.num_channels = 1;
-        }
+        unsigned num_threads = std::thread::hardware_concurrency();
+        if (num_threads == 0) num_threads = 4;
 
-        // フェードアウト（クリック防止）
-        if (audio.pcm.size() >= FADE_OUT_FRAMES) {
-            size_t fade_start = audio.pcm.size() - FADE_OUT_FRAMES;
-            for (size_t i = 0; i < FADE_OUT_FRAMES; ++i) {
-                float fade = 1.0f - static_cast<float>(i) / FADE_OUT_FRAMES;
-                audio.pcm[fade_start + i] *= fade;
+        std::atomic<size_t> next_idx{0};
+        auto worker = [&]() {
+            for (;;) {
+                size_t i = next_idx.fetch_add(1, std::memory_order_relaxed);
+                if (i >= n) break;
+                ok[i] = process_sample(tasks[i]);
             }
+        };
+
+        std::vector<std::thread> threads;
+        threads.reserve(num_threads);
+        for (unsigned t = 0; t < num_threads; ++t)
+            threads.emplace_back(worker);
+        for (auto& t : threads)
+            t.join();
+
+        // Phase 3: 収集
+        samples_.reserve(n);
+        for (size_t i = 0; i < n; ++i) {
+            if (ok[i])
+                samples_.push_back(std::move(tasks[i]));
         }
 
-        sd.pcm         = std::move(audio.pcm);
-        sd.num_channels = audio.num_channels;
-        sd.sample_rate  = audio.sample_rate;
+        auto t1 = std::chrono::steady_clock::now();
+        auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(t1 - t0).count();
+        fprintf(stderr, "[SampleDB] %zu サンプル読み込み完了 (%lldms)\n",
+                samples_.size(), static_cast<long long>(ms));
 
-        samples_.push_back(std::move(sd));
+        // キャッシュ保存
+        save_cache(cache, samples_, sample_rate_);
     }
 
-    // ノートインデックス構築 O(n)
+    // ノートインデックス構築
     for (size_t i = 0; i < samples_.size(); ++i) {
         note_index_[samples_[i].midi_note].push_back(i);
     }
-
     candidates_.reserve(16);
-    fprintf(stderr, "[SampleDB] %zu サンプル読み込み完了\n", samples_.size());
 }
 
 const SampleData* SampleDB::find(int midi_note, int velocity)
 {
     if (note_index_.empty()) return nullptr;
 
-    // O(log n): lower_bound で最近傍ノートを特定
     auto it = note_index_.lower_bound(midi_note);
 
     int best_dist = INT_MAX;
     if (it != note_index_.end())
-        best_dist = std::min(best_dist, it->first - midi_note);  // >= 0
+        best_dist = std::min(best_dist, it->first - midi_note);
     if (it != note_index_.begin()) {
         auto pit = std::prev(it);
-        best_dist = std::min(best_dist, midi_note - pit->first); // > 0
+        best_dist = std::min(best_dist, midi_note - pit->first);
     }
 
-    // 最近傍ノートのサンプルを candidates_ に収集
     candidates_.clear();
     if (it != note_index_.end() && it->first - midi_note == best_dist)
         for (size_t idx : it->second) candidates_.push_back(idx);
@@ -193,7 +350,6 @@ const SampleData* SampleDB::find(int midi_note, int velocity)
 
     if (candidates_.empty()) return nullptr;
 
-    // velocity マッチング: 範囲内を優先、なければ最近傍距離
     size_t chosen = candidates_[0];
     int best_vel_dist = INT_MAX;
     for (size_t idx : candidates_) {
