@@ -66,10 +66,10 @@ private:
     void process_chorus(float* buf, int frames);
 
     // ── Space エフェクト（Tape Echo / Room Reverb / Plate Reverb 切替） ──
-    enum class SpaceMode { TAPE_ECHO, ROOM, PLATE };
-    SpaceMode space_mode_ = SpaceMode::TAPE_ECHO;
-    float space_wet_ = 0.5f;
-    float space_wet_target_ = 0.5f;
+    enum class SpaceMode { OFF, TAPE_ECHO, ROOM, PLATE };
+    SpaceMode space_mode_ = SpaceMode::OFF;
+    float space_wet_ = 0.0f;
+    float space_wet_target_ = 0.0f;
     void process_space(float* buf, int frames);
 
     // テープエコー

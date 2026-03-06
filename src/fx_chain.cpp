@@ -18,8 +18,8 @@ FxChain::FxChain(int sample_rate) : sr_(sample_rate)
     compute_shelf(eq_lo_, 150.0f, 0.0f, false);
     compute_shelf(eq_hi_, 3000.0f, 0.0f, true);
 
-    // キャビネットシム: Suitcase スピーカー風 (HPF 200Hz + LPF 5kHz)
-    compute_shelf(cab_lo_, 200.0f, -24.0f, false);  // 200Hz 以下をカット
+    // キャビネットシム: Suitcase スピーカー風 (HPF 80Hz + LPF 5kHz)
+    compute_shelf(cab_lo_, 80.0f, -12.0f, false);    // 80Hz 以下を緩やかにカット
     compute_shelf(cab_hi_, 5000.0f, -18.0f, true);   // 5kHz 以上をカット
 
     // テープエコー: ドット8分 @120BPM = 375ms デフォルト
@@ -86,14 +86,14 @@ void FxChain::apply_param(int cc, int val)
     // ── Space エフェクト (CC75-78) ──
     case 75: {                                             // Space モード切替
         SpaceMode new_mode;
-        if (val < 43)       new_mode = SpaceMode::TAPE_ECHO;
-        else if (val < 85)  new_mode = SpaceMode::ROOM;
+        if (val < 32)       new_mode = SpaceMode::OFF;
+        else if (val < 64)  new_mode = SpaceMode::TAPE_ECHO;
+        else if (val < 96)  new_mode = SpaceMode::ROOM;
         else                new_mode = SpaceMode::PLATE;
         if (new_mode != space_mode_) {
             space_mode_ = new_mode;
-            fprintf(stderr, "[FxChain] Space: %s\n",
-                    new_mode == SpaceMode::TAPE_ECHO ? "Tape Echo" :
-                    new_mode == SpaceMode::ROOM ? "Room Reverb" : "Plate Reverb");
+            const char* names[] = {"Off", "Tape Echo", "Room Reverb", "Plate Reverb"};
+            fprintf(stderr, "[FxChain] Space: %s\n", names[static_cast<int>(new_mode)]);
         }
         break;
     }
@@ -174,14 +174,21 @@ void FxChain::process_preamp(float* buf, int frames)
     // tone: LPF 係数（drive が上がるとデフォルトで暗くなる）
     const float lpf_k = 0.2f + preamp_.tone * 0.6f;
 
+    // 自動ゲイン補正: 基準レベル(0.3)を2段サチュレーションに通して
+    // 出力がどれだけ変わるかを計算し、その逆数で補正
+    const float ref = 0.3f;
+    float ref_out = saturate_asym(ref * d1);
+    ref_out = saturate_asym(ref_out * d2);
+    const float compensation = ref / (ref_out + 1e-6f);
+
     for (int i = 0; i < frames; ++i) {
         for (int ch = 0; ch < 2; ++ch) {
             float x = buf[i * 2 + ch];
 
             // ── 2x アップサンプル（ゼロ挿入 + 補間） ──
             float& up_prev = (ch == 0) ? preamp_.up_prev_l : preamp_.up_prev_r;
-            float s0 = (x + up_prev) * 0.5f;  // 補間サンプル
-            float s1 = x;                       // 元サンプル
+            float s0 = (x + up_prev) * 0.5f;
+            float s1 = x;
             up_prev = x;
 
             // ── 2段カスケードサチュレーション（2x レートで処理） ──
@@ -190,18 +197,15 @@ void FxChain::process_preamp(float* buf, int frames)
                 float in = (os == 0) ? s0 : s1;
 
                 // Stage 1: プリアンプ段
-                float y = saturate_asym(in * d1) / d1;
+                float y = saturate_asym(in * d1);
 
                 // Stage 2: パワーアンプ段
-                y = saturate_asym(y * d2) / d2;
+                y = saturate_asym(y * d2);
 
                 out += y;
             }
-            // ── 2x ダウンサンプル（平均） ──
-            out *= 0.5f;
-
-            // ゲイン補正
-            out *= (d > 2.0f) ? (d * 0.3f + 0.4f) : 1.0f;
+            // ── 2x ダウンサンプル（平均） + ゲイン補正 ──
+            out *= 0.5f * compensation;
 
             // ポストドライブ トーンフィルタ（1次 LPF）
             float& lpf = (ch == 0) ? preamp_.lpf_l : preamp_.lpf_r;
@@ -307,6 +311,8 @@ void FxChain::process_chorus(float* buf, int frames)
 void FxChain::process_space(float* buf, int frames)
 {
     switch (space_mode_) {
+    case SpaceMode::OFF:
+        break;
     case SpaceMode::TAPE_ECHO:
         if (delay_.delay_samples > 1.0f) process_tape_echo(buf, frames);
         break;

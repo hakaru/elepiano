@@ -2,6 +2,141 @@
 #include <cstring>
 #include <climits>
 #include <cstdio>
+#include <cmath>
+
+// ── PedalClick 実装（機械的クリック — Pedal Up 用） ──
+
+void PedalClick::trigger(int sr)
+{
+    float atk_s = attack_ms * 0.001f;
+    float rel_s = release_ms * 0.001f;
+    attack_rate  = (atk_s > 0.0005f) ? 1.0f / (atk_s * sr) : 0.0f;
+    release_rate = 1.0f / (rel_s * sr);
+    phase = (attack_rate > 0.0f) ? Phase::ATTACK : Phase::RELEASE;
+    env   = (attack_rate > 0.0f) ? 0.0f : 1.0f;
+    // LPF ~1200Hz, HPF ~400Hz → 帯域 400-1200Hz（高域クリック）
+    lp_coeff = 1.0f - std::exp(-2.0f * 3.14159f * 1200.0f / sr);
+    hp_coeff = 1.0f - 1.0f / (sr / (2.0f * 3.14159f * 400.0f) + 1.0f);
+    lpf_state = 0.0f;
+    hpf_state = 0.0f;
+    hpf_prev  = 0.0f;
+}
+
+void PedalClick::mix(float* buf, int frames)
+{
+    if (phase == Phase::IDLE) return;
+    for (int i = 0; i < frames; ++i) {
+        if (phase == Phase::ATTACK) {
+            env += attack_rate;
+            if (env >= 1.0f) { env = 1.0f; phase = Phase::RELEASE; }
+        } else {
+            env -= release_rate;
+            if (env <= 0.0f) { phase = Phase::IDLE; return; }
+        }
+
+        float noise = next_noise();
+        lpf_state += lp_coeff * (noise - lpf_state);
+        float hp_out = hp_coeff * (hpf_state + lpf_state - hpf_prev);
+        hpf_prev  = lpf_state;
+        hpf_state = hp_out;
+
+        float out = hp_out * env * volume;
+        buf[i * 2 + 0] += out;
+        buf[i * 2 + 1] += out;
+    }
+}
+
+// ── PedalResonance 実装（弦共鳴 — Pedal Down 用） ──
+// 現在発音中のノートの周波数 + 倍音で共鳴
+
+void PedalResonance::trigger_down(int sr, const int* active_notes, int num_notes)
+{
+    float atk_s = attack_ms * 0.001f;
+    float rel_s = release_ms * 0.001f;
+    attack_rate  = (atk_s > 0.001f) ? 1.0f / (atk_s * sr) : 0.0f;
+    release_rate = 1.0f / (rel_s * sr);
+    phase = (attack_rate > 0.0f) ? Phase::ATTACK : Phase::SUSTAIN;
+    env   = (attack_rate > 0.0f) ? 0.0f : 1.0f;
+
+    num_partials = 0;
+
+    if (num_notes == 0) {
+        // ノートなし → 軽い環境共鳴（低域3本だけ）
+        static const float ambient[] = { 55.0f, 110.0f, 82.4f };
+        for (int i = 0; i < 3 && num_partials < MAX_PARTIALS; ++i) {
+            incs[num_partials]   = static_cast<double>(ambient[i]) / sr;
+            amps[num_partials]   = 0.3f;
+            phases[num_partials] = i * 0.31;
+            num_partials++;
+        }
+    } else {
+        // 各ノートの基音 + オクターブ上 + 5度上で共鳴
+        for (int n = 0; n < num_notes && num_partials < MAX_PARTIALS; ++n) {
+            float base_freq = 440.0f * std::pow(2.0f, (active_notes[n] - 69) / 12.0f);
+            float vel_scale = 1.0f;  // 全ノート均等（既にvelocityで鳴ってる）
+
+            // 基音（1倍音）
+            if (num_partials < MAX_PARTIALS) {
+                incs[num_partials]   = static_cast<double>(base_freq) / sr;
+                amps[num_partials]   = 0.6f * vel_scale;
+                phases[num_partials] = n * 0.23;
+                num_partials++;
+            }
+            // オクターブ上（2倍音）
+            if (num_partials < MAX_PARTIALS) {
+                incs[num_partials]   = static_cast<double>(base_freq * 2.0f) / sr;
+                amps[num_partials]   = 0.25f * vel_scale;
+                phases[num_partials] = n * 0.23 + 0.37;
+                num_partials++;
+            }
+            // 5度上（3倍音 ≈ 完全5度+オクターブ）
+            if (num_partials < MAX_PARTIALS) {
+                incs[num_partials]   = static_cast<double>(base_freq * 3.0f) / sr;
+                amps[num_partials]   = 0.12f * vel_scale;
+                phases[num_partials] = n * 0.23 + 0.61;
+                num_partials++;
+            }
+        }
+    }
+}
+
+void PedalResonance::trigger_up()
+{
+    if (phase != Phase::IDLE) {
+        phase = Phase::RELEASE;
+    }
+}
+
+void PedalResonance::mix(float* buf, int frames)
+{
+    if (phase == Phase::IDLE || num_partials == 0) return;
+
+    for (int i = 0; i < frames; ++i) {
+        if (phase == Phase::ATTACK) {
+            env += attack_rate;
+            if (env >= 1.0f) { env = 1.0f; phase = Phase::SUSTAIN; }
+        } else if (phase == Phase::RELEASE) {
+            env -= release_rate;
+            if (env <= 0.0f) { phase = Phase::IDLE; return; }
+        }
+
+        float sum = 0.0f;
+        for (int p = 0; p < num_partials; ++p) {
+            double ph = phases[p] - static_cast<int>(phases[p]);
+            double x = ph * 2.0 - 1.0;
+            double ax = (x < 0) ? -x : x;
+            double s = 4.0 * x * (1.0 - ax);
+            sum += static_cast<float>(s) * amps[p];
+            phases[p] += incs[p];
+        }
+
+        float out = sum * env * volume * 0.12f;
+        buf[i * 2 + 0] += out;
+        buf[i * 2 + 1] += out;
+    }
+}
+
+// ── SynthEngine 実装 ──
 
 SynthEngine::SynthEngine(int sample_rate)
     : sample_rate_(sample_rate)
@@ -50,10 +185,15 @@ void SynthEngine::mix(float* buf, int frames)
         }
     }
 
-    // ポリフォニーによるクリッピング防止
+    // ペダル音（弦共鳴 + クリック）
+    pedal_resonance_.mix(buf, frames);
+    pedal_click_.mix(buf, frames);
+
+    // マスターゲイン (CC7 × CC11) + クリッピング防止
+    const float master = volume_ * expression_;
     const int total = frames * 2;
     for (int i = 0; i < total; ++i) {
-        float x = buf[i];
+        float x = buf[i] * master;
         if (x > 1.0f)       buf[i] = 1.0f;
         else if (x < -1.0f) buf[i] = -1.0f;
         else                 buf[i] = x * (1.5f - 0.5f * x * x);
@@ -108,14 +248,72 @@ void SynthEngine::_note_off(int midi_note)
 
 void SynthEngine::_cc(int cc_num, int cc_val)
 {
+    // CC7: Volume
+    if (cc_num == 7) {
+        volume_ = cc_val / 127.0f;
+        return;
+    }
+    // CC11: Expression
+    if (cc_num == 11) {
+        expression_ = cc_val / 127.0f;
+        return;
+    }
     // CC74: リリースタイム調整 (0=0ms, 127=200ms, default=50ms)
     if (cc_num == 74) {
         release_time_s_ = (cc_val / 127.0f) * 0.200f;
         return;
     }
 
+    // ── ペダル共鳴 (CC82-84) ──
+    if (cc_num == 82) {  // 共鳴音量 (0=off, 127=max)
+        resonance_vol_ = cc_val / 127.0f * 0.30f;
+        return;
+    }
+    if (cc_num == 83) {  // 共鳴アタック (0=即, 127=200ms)
+        pedal_resonance_.attack_ms = (cc_val / 127.0f) * 200.0f;
+        return;
+    }
+    if (cc_num == 84) {  // 共鳴リリース (0=100ms, 127=800ms)
+        pedal_resonance_.release_ms = 100.0f + (cc_val / 127.0f) * 700.0f;
+        return;
+    }
+    // ── ペダルクリック (CC85-87) ──
+    if (cc_num == 85) {  // クリック音量 (0=off, 127=max)
+        click_vol_ = cc_val / 127.0f * 0.30f;
+        return;
+    }
+    if (cc_num == 86) {  // クリックアタック (0=即, 127=30ms)
+        pedal_click_.attack_ms = (cc_val / 127.0f) * 30.0f;
+        return;
+    }
+    if (cc_num == 87) {  // クリックリリース (0=10ms, 127=150ms)
+        pedal_click_.release_ms = 10.0f + (cc_val / 127.0f) * 140.0f;
+        return;
+    }
+
     if (cc_num == 64) {
         bool new_state = (cc_val >= 64);
+        // ペダル音（状態変化時のみ）
+        if (new_state != sustain_held_) {
+            if (new_state) {
+                // Pedal Down → 現在鳴っているノートで弦共鳴
+                int active_notes[MAX_VOICES];
+                int num_active = 0;
+                for (const auto& v : voices_) {
+                    if (v.state == Voice::State::PLAYING && !v.is_release_voice
+                        && num_active < MAX_VOICES) {
+                        active_notes[num_active++] = v.target_note;
+                    }
+                }
+                pedal_resonance_.volume = resonance_vol_;
+                pedal_resonance_.trigger_down(sample_rate_, active_notes, num_active);
+            } else {
+                // Pedal Up → 共鳴リリース + 機械クリック
+                pedal_resonance_.trigger_up();
+                pedal_click_.volume = click_vol_;
+                pedal_click_.trigger(sample_rate_);
+            }
+        }
         if (sustain_held_ && !new_state) {
             for (auto& v : voices_) {
                 if (v.sustained && v.state == Voice::State::PLAYING && !v.is_release_voice) {
