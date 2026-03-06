@@ -179,7 +179,8 @@ def _find_sync(data: bytes, start: int = 0) -> int:
 
 
 def _find_encrypted_frame1(data: bytes, search_start: int,
-                            max_scan: int = 200_000) -> tuple[int, int]:
+                            max_scan: int = 200_000,
+                            expected_byte2: int = -1) -> tuple[int, int]:
     """
     XOR 暗号化された FLAC フレーム同期ワードを探す（Sustain サンプル用）。
 
@@ -187,7 +188,8 @@ def _find_encrypted_frame1(data: bytes, search_start: int,
     data[pos+1] ^ XOR_BASE_KEY[(rot+1)%4] が 0xF8 または 0xF9
     になる (pos, rot) を返す。見つからなければ (-1, -1)。
 
-    bs_code >= 1 かつ sr_code が有効 (1-14) であればマッチとする。
+    expected_byte2 >= 0 の場合、復号後の byte2 が一致するフレームのみマッチ。
+    それ以外は bs_code >= 1 かつ sr_code が有効 (1-14) であればマッチとする。
     """
     search_end = min(len(data) - 4, search_start + max_scan)
     for pos in range(search_start, search_end):
@@ -196,10 +198,14 @@ def _find_encrypted_frame1(data: bytes, search_start: int,
             b1 = data[pos + 1] ^ XOR_BASE_KEY[(rot + 1) % 4]
             if b0 == 0xFF and (b1 & 0xFE) == 0xF8:
                 b2 = data[pos + 2] ^ XOR_BASE_KEY[(rot + 2) % 4]
-                bs_code = (b2 >> 4) & 0x0F
-                sr_code = b2 & 0x0F
-                if bs_code >= 1 and sr_code >= 1 and sr_code != 15:
-                    return pos, rot
+                if expected_byte2 >= 0:
+                    if b2 == expected_byte2:
+                        return pos, rot
+                else:
+                    bs_code = (b2 >> 4) & 0x0F
+                    sr_code = b2 & 0x0F
+                    if bs_code >= 1 and sr_code >= 1 and sr_code != 15:
+                        return pos, rot
     return -1, -1
 
 
@@ -287,11 +293,13 @@ def decode_spca(spca_bytes: bytes, encrypted: bool = False) -> bytes:
     if frame0_pos == -1:
         raise ValueError("フレーム0の同期ワードが見つかりません")
 
+    frame0_byte2 = result[frame0_pos + 2]  # block_size / sample_rate コード
     hdr_size    = _find_frame_header_size(result, frame0_pos)
     search_start = frame0_pos + max(hdr_size, 1)
 
-    # XOR 暗号化されたフレーム1を探す
-    enc_pos, enc_rot = _find_encrypted_frame1(bytes(result), search_start)
+    # XOR 暗号化されたフレーム1を探す（frame0 と同じ bs/sr コードを要求）
+    enc_pos, enc_rot = _find_encrypted_frame1(bytes(result), search_start,
+                                               expected_byte2=frame0_byte2)
     if enc_pos == -1:
         # フレームが1つのみ（または解析不能）
         return bytes(result)
@@ -565,7 +573,7 @@ def extract(db_path: Path, output_dir: Path, mode: str = "pattern1") -> None:
         label     = "Sustain"
     elif mode == "wurl200a":
         parse_fn  = parse_wurl200a_name
-        encrypted = False
+        encrypted = True
         label     = "Wurlitzer 200A"
     elif mode == "vvep":
         parse_fn  = parse_vvep_name

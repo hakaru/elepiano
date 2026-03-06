@@ -470,3 +470,150 @@
 決定事項: レビュー後コミット
 次のTODO: コミット実行
 ---
+
+---
+2026-03-06 18:02
+作業項目: リリースタイム CC 調整可能化
+追加機能の説明:
+  - CC74 でリリースタイム調整 (50ms〜2000ms)
+  - SynthEngine経由で全ボイスのrelease_rateを更新
+決定事項: 実装開始
+次のTODO: 実装→ビルド→テスト
+---
+
+---
+2026-03-06 18:04
+作業項目: CC74 リリースタイム調整 — synth_engine 実装
+追加機能の説明:
+  - SynthEngine に release_time_s_ メンバ追加 (デフォルト 0.200s)
+  - CC74 ハンドラ: 50ms〜2000ms 範囲で調整
+  - _note_on / _start_release_voice で release_time_s_ を Voice に渡す
+決定事項: voice.hpp/cpp は前回修正済み、synth_engine のみ変更
+次のTODO: ビルド確認
+---
+
+---
+2026-03-06 18:09
+作業項目: CC74 リリースタイム範囲変更
+追加機能の説明:
+  - CC74=0 をデフォルト (200ms) に変更
+  - CC74=127 で最長 200ms（変更なし＝CC74 は短縮方向のみ）
+  - CC74=0: 0ms (即切れ), CC74=127: 200ms, デフォルト 50ms
+  - voice.cpp: release_time_s≤1ms で即リリース (inf防止)
+決定事項: CC74=0で0ms, デフォルト50ms, CC74=127で200ms
+次のTODO: ビルド・デプロイ
+---
+
+---
+2026-03-06 18:14
+作業項目: Wurlitzer 音切れ修正 — release有無でデフォルト切替
+追加機能の説明:
+  - Program Change 時に release_db_ の有無で release_time_s_ を自動設定
+  - release サンプルあり (Rhodes): 50ms
+  - release サンプルなし (Wurlitzer/Vintage Vibe): 200ms
+  - CC74 で引き続き手動調整可能
+決定事項: 音色ごとにリリースフェード時間を自動切替
+次のTODO: ビルド・デプロイ・テスト
+---
+
+---
+2026-03-06 18:17
+作業項目: Wurlitzer sustain欠落修正 — MAX_SAMPLE_FRAMES 拡大
+追加機能の説明:
+  - MAX_SAMPLE_FRAMES 441000 (10s) → 882000 (20s) に拡大
+  - Wurlitzer サンプルは ~463000 フレーム (10.5s) で 441000 制限でカットされていた
+  - キャッシュバージョン 2→3 に更新（再生成を強制）
+決定事項: サンプル長制限が原因、sustainは元データにある
+次のTODO: ビルド・デプロイ（キャッシュ再生成のため初回ロードに時間がかかる）
+---
+
+---
+2026-03-06 18:22
+作業項目: OOM修正 — MAX_SAMPLE_FRAMES 882000→529200 (12秒)
+追加機能の説明:
+  - 20秒は3音色同時ロードでOOM（swap 2GB使い切り→スラッシング）
+  - 12秒に縮小（Wurlitzer 10.5秒をカバーしつつメモリ節約）
+  - キャッシュバージョン 3→4
+決定事項: vmstatでswpd=2097140, free=33MB, wa=75%を確認しOOMと断定
+次のTODO: ロード完了待ち→テスト
+---
+
+---
+2026-03-06 18:25
+作業項目: Vintage Vibe 削除 + MAX_SAMPLE_FRAMES 元に戻す
+追加機能の説明:
+  - 3音色同時ロードでOOM（12秒設定でも発生）
+  - Vintage Vibe を一旦削除、PG1=Rhodes PG2=Wurlitzer の2音色構成に
+  - MAX_SAMPLE_FRAMES=441000 (10秒) に戻す
+  - systemd サービスも2音色に変更
+決定事項: メモリ制約のため2音色構成に
+次のTODO: ビルド・デプロイ・systemd更新
+---
+
+---
+2026-03-06 18:32
+作業項目: PiSound音質評価 + I2S DAC HAT比較調査
+追加機能の説明: なし（調査）
+決定事項:
+  - PiSound: PCM5102A DAC, SNR 110dB, THD<0.05%, 48/96/192kHz対応
+  - 上位候補: HiFiBerry DAC2 HD (PCM1796, SNR>112dB, THD<0.003%)
+  - 最上位候補: ES9038Q2M系 (DNR 129dB, THD+N -120dB, 384kHz/32bit, DSD512)
+次のTODO: ユーザー判断
+---
+
+---
+2026-03-06 18:37
+作業項目: Durio Sound DAC 調査
+追加機能の説明: なし（調査）
+決定事項:
+  - Durio Sound Pro: PCM5102 DAC（PiSoundと同じチップ）, SNR 112dB, 192kHz/24bit
+  - DualMono構成可（Basic+Pro, SNR +3dB）
+  - PCB設計・電源回路に注力した高品質設計だが、DACチップ自体はPiSoundと同クラス
+  - ES9038Q2M系と比較するとスペック上は劣る
+次のTODO: なし
+---
+
+---
+2026-03-06 18:29
+作業項目: Wurlitzer 200A FLAC 大量スキップ問題の根本原因調査
+追加機能の説明: なし（調査のみ、コード変更なし）
+決定事項:
+  - 根本原因: dr_flac (DR_FLAC_NO_CRC) が各FLACファイルの最初のフレーム(4096サンプル)しかデコードしない
+  - SpCA→FLAC変換後、フレーム1以降のCRC-8ヘッダが壊れており、dr_flacがフレーム境界を検出できない
+  - find_frame_starts() もCRC-8有効なフレームを1つしか発見できない
+  - その1フレーム全体(audio_start〜EOF)のCRC-16チェック → 899/1024ファイルでNG
+  - CRC-16 NG → mute_bad_frames で最初の4096サンプルをゼロ埋め → 全PCMがゼロ → 「全サンプル同一値」でスキップ
+  - CRC-16 pass: 125件 → 成功ロード132件とほぼ一致（差分はトリミング後の生存分）
+  - 比較: Rhodes Classic は多フレーム構造のため部分ミュートで大部分が生存
+  - ffmpeg も vel000/vel126 両方でフレーム1以降のデコードに失敗（SpCA CRC破損が原因）
+次のTODO:
+  - 修正案1: CRC-16 NG時にミュートせずデコード結果をそのまま使う（dr_flac NO_CRCで正常デコードできている）
+  - 修正案2: find_frame_starts でCRC-8チェックを緩和（CRC-8なしでフレーム境界検出 → フレーム単位CRC-16判定）
+  - 修正案3: extract_samples.py でSpCAのCRC-8を正しく再計算してFLAC出力
+---
+
+---
+2026-03-06 18:51
+作業項目: Wurlitzer XOR暗号化修正 — extract_samples.py 修正 + 再抽出
+追加機能の説明:
+  - Wurlitzer 200A の SpCA は XOR 暗号化されていた（encrypted=False が誤り）
+  - extract_samples.py: wurl200a モードを encrypted=True に変更
+  - _find_encrypted_frame1: expected_byte2 パラメータ追加（偽sync排除）
+  - frame0 の byte2 (bs_code/sr_code) と一致するフレームのみマッチ
+  - 偽マッチ: pos=4095 rot=3 byte2=0x28 (576samples/32kHz) → 排除
+  - 正しいマッチ: pos=8969 rot=0 byte2=0xc9 (4096samples/44100Hz)
+決定事項:
+  - 全1024件の FLAC 再抽出成功
+  - Pi デプロイ後: 132→1013 サンプルのロードに成功（7.8倍改善）
+  - ロード時間: 5.1秒（キャッシュ再生成含む）
+  - 起動完了確認、演奏テスト待ち
+次のTODO: PG2に切り替えてWurlitzer演奏テスト
+---
+
+---
+2026-03-06 21:39
+作業項目: Wurlitzer 演奏テスト確認
+追加機能の説明: なし
+決定事項: ユーザー確認OK — Wurlitzer の音が正常に出ている
+次のTODO: コミット・プッシュ
+---

@@ -18,7 +18,8 @@ struct Voice {
     State state                 = State::IDLE;
     uint64_t start_time_samples = 0;     // Voice スチール判定用（音符開始時の sample_counter_）
 
-    void note_on(const SampleData* sd, int note, int velocity, int sample_rate);
+    void note_on(const SampleData* sd, int note, int velocity, int sample_rate,
+                 float release_time_s = 0.200f);
     void note_off();
 
     // buf に frames 分のサンプルを加算する。IDLE になったら true を返す

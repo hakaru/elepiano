@@ -44,6 +44,7 @@ private:
     int       sample_rate_;
     uint64_t  sample_counter_ = 0;
     bool      sustain_held_   = false;
+    float     release_time_s_ = 0.050f;  // CC74 で調整 (0ms〜200ms, default 50ms)
 
     std::array<Voice, MAX_VOICES> voices_;
     SpscQueue<MidiEvent, 256>     event_queue_;

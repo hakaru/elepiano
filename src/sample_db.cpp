@@ -12,14 +12,14 @@
 #include <atomic>
 #include <chrono>
 
-static constexpr size_t MAX_SAMPLE_FRAMES = 441000;
+static constexpr size_t MAX_SAMPLE_FRAMES = 441000;  // 10秒 @ 44100Hz
 static constexpr size_t FADE_OUT_FRAMES   = 4410;
 static constexpr size_t MAX_JSON_SIZE     = 10 * 1024 * 1024;
 static constexpr size_t MAX_SAMPLE_COUNT  = 10000;
 
 // キャッシュファイルのマジックとバージョン
 static constexpr uint32_t CACHE_MAGIC   = 0x50434D43; // "PCMC"
-static constexpr uint32_t CACHE_VERSION = 2;
+static constexpr uint32_t CACHE_VERSION = 5;
 
 using json = nlohmann::json;
 namespace fs = std::filesystem;

@@ -16,6 +16,7 @@ void SynthEngine::add_program(int program, SampleDB* attack, SampleDB* release)
         db_ = attack;
         release_db_ = release;
         current_program_ = program;
+        release_time_s_ = release ? 0.050f : 0.200f;
     }
 }
 
@@ -84,7 +85,7 @@ void SynthEngine::_note_on(int midi_note, int velocity)
 
     if (!target) return;
 
-    target->note_on(sd, midi_note, velocity, sample_rate_);
+    target->note_on(sd, midi_note, velocity, sample_rate_, release_time_s_);
     target->start_time_samples = sample_counter_;
 }
 
@@ -107,6 +108,12 @@ void SynthEngine::_note_off(int midi_note)
 
 void SynthEngine::_cc(int cc_num, int cc_val)
 {
+    // CC74: リリースタイム調整 (0=0ms, 127=200ms, default=50ms)
+    if (cc_num == 74) {
+        release_time_s_ = (cc_val / 127.0f) * 0.200f;
+        return;
+    }
+
     if (cc_num == 64) {
         bool new_state = (cc_val >= 64);
         if (sustain_held_ && !new_state) {
@@ -139,7 +146,11 @@ void SynthEngine::_program_change(int program)
     db_ = programs_[program].attack;
     release_db_ = programs_[program].release;
 
-    fprintf(stderr, "[SynthEngine] Program Change: %d\n", program + 1);
+    // release サンプルがない音色はフェード長め (200ms)、ある音色は短め (50ms)
+    release_time_s_ = release_db_ ? 0.050f : 0.200f;
+
+    fprintf(stderr, "[SynthEngine] Program Change: %d (release_fade=%dms)\n",
+            program + 1, static_cast<int>(release_time_s_ * 1000));
 }
 
 void SynthEngine::_start_release_voice(int midi_note, int velocity)
@@ -160,7 +171,7 @@ void SynthEngine::_start_release_voice(int midi_note, int velocity)
 
     if (!target) return;
 
-    target->note_on(sd, midi_note, velocity, sample_rate_);
+    target->note_on(sd, midi_note, velocity, sample_rate_, release_time_s_);
     target->is_release_voice  = true;
     target->start_time_samples = sample_counter_;
 }

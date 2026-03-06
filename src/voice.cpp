@@ -2,18 +2,16 @@
 #include <cmath>
 #include <algorithm>
 
-static constexpr float RELEASE_TIME_S = 0.200f;
-static constexpr float kMaxVelocity   = 127.0f;
+static constexpr float kMaxVelocity = 127.0f;
 
-void Voice::note_on(const SampleData* sd, int note, int vel, int sample_rate)
+void Voice::note_on(const SampleData* sd, int note, int vel, int sample_rate,
+                    float release_time_s)
 {
     sample           = sd;
     target_note      = note;
     velocity         = vel;
     is_release_voice = false;
     sustained        = false;
-    // double 精度で計算してから float に落とす
-    // サンプルレート比を掛けてピッチを補正（例: 44100Hz サンプル → 48000Hz 出力）
     double sr_ratio = (sd->sample_rate > 0 && sample_rate > 0)
                       ? static_cast<double>(sd->sample_rate) / sample_rate
                       : 1.0;
@@ -21,7 +19,9 @@ void Voice::note_on(const SampleData* sd, int note, int vel, int sample_rate)
     position     = 0.0;
     gain         = vel / kMaxVelocity;
     release_gain = 1.0f;
-    release_rate = 1.0f / (RELEASE_TIME_S * sample_rate);
+    release_rate = (release_time_s > 0.001f)
+                   ? 1.0f / (release_time_s * sample_rate)
+                   : 1.0f;  // 0ms: 即座にリリース完了
     state        = State::PLAYING;
 }
 
