@@ -16,8 +16,8 @@
 
 static std::atomic<bool> g_quit{false};
 static bool g_midi_log = false;
-static int  g_period_size = 256;
-static int  g_periods     = 4;
+static int  g_period_size = 128;
+static int  g_periods     = 3;
 static std::string g_wav_dump_path;
 static SpscQueue<MidiEvent, 128> g_midi_log_queue;
 

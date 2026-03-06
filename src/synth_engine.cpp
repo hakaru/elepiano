@@ -27,6 +27,8 @@ void SynthEngine::mix(float* buf, int frames)
             _note_on(ev->note, ev->velocity);
         } else if (ev->type == MidiEvent::Type::NOTE_OFF) {
             _note_off(ev->note);
+        } else if (ev->type == MidiEvent::Type::CC) {
+            _cc(ev->note, ev->velocity);
         }
     }
 
@@ -82,11 +84,35 @@ void SynthEngine::_note_off(int midi_note)
     for (auto& v : voices_) {
         if (v.state == Voice::State::PLAYING && v.target_note == midi_note
                 && !v.is_release_voice) {
+            if (sustain_held_) {
+                v.sustained = true;  // ペダルが離されるまでリリースを保留
+                continue;
+            }
             if (release_db_) {
                 _start_release_voice(midi_note, v.velocity);
             }
             v.note_off();
         }
+    }
+}
+
+void SynthEngine::_cc(int cc_num, int cc_val)
+{
+    if (cc_num == 64) {
+        bool new_state = (cc_val >= 64);
+        if (sustain_held_ && !new_state) {
+            // ペダルリリース: sustained フラグが立っている全ボイスをリリース
+            for (auto& v : voices_) {
+                if (v.sustained && v.state == Voice::State::PLAYING && !v.is_release_voice) {
+                    if (release_db_) {
+                        _start_release_voice(v.target_note, v.velocity);
+                    }
+                    v.note_off();
+                    v.sustained = false;
+                }
+            }
+        }
+        sustain_held_ = new_state;
     }
 }
 

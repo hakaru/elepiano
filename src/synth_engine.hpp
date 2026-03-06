@@ -25,6 +25,7 @@ private:
     // 以下はオーディオスレッドのみからアクセス（mutex 不要）
     void _note_on(int midi_note, int velocity);
     void _note_off(int midi_note);
+    void _cc(int cc_num, int cc_val);
     void _start_release_voice(int midi_note, int velocity);
     int  oldest_voice_idx() const;  // 非 release voice を優先してスチール
 
@@ -32,6 +33,7 @@ private:
     SampleDB* release_db_;           // nullptr = release サンプルなし
     int       sample_rate_;
     uint64_t  sample_counter_ = 0;           // mix() 呼び出し時に frames 分インクリメント
+    bool      sustain_held_   = false;       // CC64 サステインペダル状態
 
     std::array<Voice, MAX_VOICES> voices_;   // オーディオスレッドのみ
     SpscQueue<MidiEvent, 64>      event_queue_;  // MIDI → オーディオスレッド間
