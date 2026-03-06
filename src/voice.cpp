@@ -18,6 +18,8 @@ void Voice::note_on(const SampleData* sd, int note, int vel, int sample_rate)
                       ? static_cast<double>(sd->sample_rate) / sample_rate
                       : 1.0;
     pitch_ratio  = static_cast<float>(std::pow(2.0, (note - sd->midi_note) / 12.0) * sr_ratio);
+    fprintf(stderr, "[Voice] note=%d sd_note=%d sd_sr=%d out_sr=%d sr_ratio=%.4f pitch=%.4f\n",
+            note, sd->midi_note, sd->sample_rate, sample_rate, sr_ratio, static_cast<double>(pitch_ratio));
     position     = 0.0;
     gain         = vel / kMaxVelocity;
     release_gain = 1.0f;
