@@ -175,8 +175,10 @@ static int run_piano(const char* json_path,
     acfg.wav_dump_path = g_wav_dump_path;
 
     AudioOutput audio(acfg);
-    SynthEngine synth(db, acfg.sample_rate, release_db.get());
-    FxChain fx(acfg.sample_rate);
+    // ALSA が実際に確定したサンプルレートを使う（44100要求 → 48000等になりうる）
+    const int actual_rate = audio.sample_rate();
+    SynthEngine synth(db, actual_rate, release_db.get());
+    FxChain fx(actual_rate);
 
     audio.set_callback([&](float* buf, int frames) {
         synth.mix(buf, frames);
