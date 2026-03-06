@@ -69,18 +69,25 @@ public:
     struct Program {
         SampleDB* attack  = nullptr;
         SampleDB* release = nullptr;
+        const char* name  = nullptr;
     };
 
     SynthEngine(int sample_rate = 44100);
 
     // 音色を登録（program 0〜15）
-    void add_program(int program, SampleDB* attack, SampleDB* release = nullptr);
+    void add_program(int program, SampleDB* attack, SampleDB* release = nullptr,
+                     const char* name = nullptr);
 
     // MIDIスレッドから呼ぶ（ロックフリー push）
     void push_event(const MidiEvent& ev);
 
     // オーディオスレッドから呼ぶ
     void mix(float* buf, int frames);
+
+    // ステータス取得（StatusReporter 用）
+    int current_program() const { return current_program_; }
+    int active_voice_count() const;
+    const char* current_program_name() const;
 
 private:
     void _note_on(int midi_note, int velocity);

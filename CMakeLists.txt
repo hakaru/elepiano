@@ -35,6 +35,7 @@ add_executable(elepiano
     src/synth_engine.cpp
     src/organ_engine.cpp
     src/fx_chain.cpp
+    src/status_reporter.cpp
     src/midi_input.cpp
     src/audio_output.cpp
 )

@@ -811,3 +811,56 @@
 決定事項: Pi ビルド・デプロイ・起動OK
 次のTODO: テスト
 ---
+
+---
+2026-03-06 22:42
+作業項目: コミット・プッシュ
+追加機能の説明: commit 0149167
+決定事項: push完了
+次のTODO: なし
+---
+
+---
+2026-03-06 23:05
+作業項目: BLE リモートコントロール実装開始 (Phase 1-3)
+追加機能の説明:
+  - StatusReporter (UNIX domain socket) で elepiano ステータスを外部公開
+  - ble-bridge (Python/dbus-next) で BLE GATT サービス提供
+  - ALSA Seq 仮想ポート経由で CC/PC を elepiano に注入
+  - iOS SwiftUI アプリで BLE 接続・CC スライダー操作
+決定事項:
+  - GATT Service UUID: e1e00000-0001-4000-8000-00805f9b34fb
+  - Status/CC Control/Program Change/Audio Device/Batch CC の5キャラクタリスティック
+  - synth_engine.hpp に getter 追加、StatusReporter 新規作成
+次のTODO: 実装→ビルド→テスト
+---
+
+---
+2026-03-06 23:15
+作業項目: BLE リモートコントロール 全ファイル確認・ビルド・Xcodeプロジェクト作成
+追加機能の説明:
+  - 全作成済みファイルのコードレビュー・整合性確認
+  - C++ ローカルビルド確認
+  - iOS Xcode プロジェクト作成 (elepiano-remote.xcodeproj)
+決定事項:
+  - C++: status_reporter.hpp/cpp, synth_engine getter, main.cpp StatusReporter統合 すべて正常
+  - BLE: ble_bridge.py, gatt_service.py, alsa_midi_sender.py, status_monitor.py すべて正常
+  - iOS: 7 Swift ファイル + Info.plist すべて正常
+次のTODO: ローカルビルド確認 → Xcode プロジェクト生成
+---
+
+---
+2026-03-06 23:21
+作業項目: iOS アプリ iPhone 実機デプロイ
+追加機能の説明: なし
+決定事項: Development Team 設定 → 実機ビルド・インストール
+次のTODO: デプロイ実行
+---
+
+---
+2026-03-06 23:25
+作業項目: Pi5 SSH接続トラブルシュート
+追加機能の説明: なし
+決定事項: Pi5への接続確認・BLEブリッジ準備
+次のTODO: 接続確認
+---

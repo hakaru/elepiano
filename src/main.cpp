@@ -4,6 +4,7 @@
 #include "midi_input.hpp"
 #include "audio_output.hpp"
 #include "fx_chain.hpp"
+#include "status_reporter.hpp"
 #include "spsc_queue.hpp"
 #include <thread>
 #include <csignal>
@@ -20,6 +21,7 @@ static bool g_midi_log = false;
 static int  g_period_size = 128;
 static int  g_periods     = 3;
 static std::string g_wav_dump_path;
+static std::string g_status_socket;
 static SpscQueue<MidiEvent, 128> g_midi_log_queue;
 
 static void sig_handler(int) { g_quit.store(true); }
@@ -197,7 +199,8 @@ static int run_piano(const std::vector<ProgramDef>& programs,
     for (size_t i = 0; i < programs.size(); ++i) {
         synth.add_program(static_cast<int>(i),
                           attack_dbs[i].get(),
-                          release_dbs[i].get());
+                          release_dbs[i].get(),
+                          programs[i].name);
     }
 
     FxChain fx(actual_rate);
@@ -207,6 +210,12 @@ static int run_piano(const std::vector<ProgramDef>& programs,
         fx.process(buf, frames);
     });
 
+    // StatusReporter（--status-socket 指定時のみ）
+    std::unique_ptr<StatusReporter> status;
+    if (!g_status_socket.empty()) {
+        status = std::make_unique<StatusReporter>(g_status_socket);
+    }
+
     MidiInput midi("elepiano");
     midi.set_callback([&](const MidiEvent& ev) {
         log_midi_event(ev);
@@ -215,7 +224,49 @@ static int run_piano(const std::vector<ProgramDef>& programs,
         synth.push_event(ev);
     });
 
-    run_engine(audio, midi);
+    // run_engine にステータス更新を組み込む
+    {
+        EngineGuard guard(audio, midi);
+        fprintf(stderr, "起動完了。Ctrl+C で終了。\n");
+
+        uint32_t last_xruns = 0;
+        while (!g_quit.load()) {
+            while (auto ev = g_midi_log_queue.pop()) {
+                switch (ev->type) {
+                case MidiEvent::Type::NOTE_ON:
+                    fprintf(stderr, "[MIDI] NOTE ON  ch=%d note=%d vel=%d\n",
+                            ev->channel, ev->note, ev->velocity);
+                    break;
+                case MidiEvent::Type::NOTE_OFF:
+                    fprintf(stderr, "[MIDI] NOTE OFF ch=%d note=%d\n",
+                            ev->channel, ev->note);
+                    break;
+                case MidiEvent::Type::CC:
+                    fprintf(stderr, "[MIDI] CC       ch=%d cc=%d val=%d\n",
+                            ev->channel, ev->note, ev->velocity);
+                    break;
+                case MidiEvent::Type::PROGRAM_CHANGE:
+                    fprintf(stderr, "[MIDI] PG CHG   ch=%d pg=%d\n",
+                            ev->channel, ev->note + 1);
+                    break;
+                default: break;
+                }
+            }
+
+            uint32_t xruns = audio.underrun_count();
+            if (xruns != last_xruns) {
+                fprintf(stderr, "[AudioOutput] underrun count: %u\n", xruns);
+                last_xruns = xruns;
+            }
+
+            if (status) {
+                status->update(synth, audio);
+            }
+
+            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
+        fprintf(stderr, "\n終了中...\n");
+    }
     return 0;
 }
 
@@ -244,6 +295,10 @@ int main(int argc, char* argv[])
             argc -= 2; --i;
         } else if (arg == "--wav-dump" && i + 1 < argc) {
             g_wav_dump_path = argv[i + 1];
+            for (int j = i; j < argc - 2; ++j) argv[j] = argv[j + 2];
+            argc -= 2; --i;
+        } else if (arg == "--status-socket" && i + 1 < argc) {
+            g_status_socket = argv[i + 1];
             for (int j = i; j < argc - 2; ++j) argv[j] = argv[j + 2];
             argc -= 2; --i;
         }

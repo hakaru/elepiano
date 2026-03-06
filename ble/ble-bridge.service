@@ -1,0 +1,15 @@
+[Unit]
+Description=elepiano BLE Bridge
+After=bluetooth.target elepiano.service
+Wants=bluetooth.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /home/hakaru/elepiano/ble/ble_bridge.py
+WorkingDirectory=/home/hakaru/elepiano/ble
+Restart=on-failure
+RestartSec=3
+User=root
+
+[Install]
+WantedBy=multi-user.target

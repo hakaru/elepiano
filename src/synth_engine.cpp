@@ -142,10 +142,26 @@ SynthEngine::SynthEngine(int sample_rate)
     : sample_rate_(sample_rate)
 {}
 
-void SynthEngine::add_program(int program, SampleDB* attack, SampleDB* release)
+int SynthEngine::active_voice_count() const
+{
+    int count = 0;
+    for (const auto& v : voices_) {
+        if (v.state != Voice::State::IDLE) ++count;
+    }
+    return count;
+}
+
+const char* SynthEngine::current_program_name() const
+{
+    const auto& pg = programs_[current_program_];
+    return pg.name ? pg.name : "Unknown";
+}
+
+void SynthEngine::add_program(int program, SampleDB* attack, SampleDB* release,
+                               const char* name)
 {
     if (program < 0 || program >= MAX_PROGRAMS) return;
-    programs_[program] = {attack, release};
+    programs_[program] = {attack, release, name};
     // 最初に登録された音色をデフォルトにする
     if (!db_) {
         db_ = attack;
