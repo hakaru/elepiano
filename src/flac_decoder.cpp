@@ -194,9 +194,7 @@ static void mute_bad_frames(std::vector<float>& pcm, int block_size, int channel
         ++muted;
     }
 
-    if (muted > 0)
-        fprintf(stderr, "[FLAC] %d/%zu frames muted (CRC-16 NG)\n",
-                muted, frame_starts.size());
+    (void)muted;  // ログは decode_flac_file 側でファイル名付きで出力
 }
 
 // ─── メインデコード関数 ────────────────────────────────────────
@@ -235,6 +233,20 @@ DecodedAudio decode_flac_file(const std::string& path, size_t max_frames)
     size_t audio_start = find_audio_start(buf, block_size);
     if (audio_start > 0 && block_size > 0) {
         auto frame_starts = find_frame_starts(buf, audio_start);
+        int before_muted = 0;
+        // mute前のCRCエラー数をカウント（ログ用）
+        for (size_t i = 0; i < frame_starts.size(); ++i) {
+            size_t fpos = frame_starts[i];
+            size_t next = (i + 1 < frame_starts.size()) ? frame_starts[i + 1] : buf.size();
+            size_t flen = next - fpos;
+            if (flen < 6) continue;
+            uint16_t computed = flac_crc16(&buf[fpos], flen - 2);
+            uint16_t stored = (static_cast<uint16_t>(buf[next - 2]) << 8) | buf[next - 1];
+            if (computed != stored) ++before_muted;
+        }
+        if (before_muted > 0)
+            fprintf(stderr, "[FLAC] %s: %d/%zu frames CRC-16 NG\n",
+                    path.c_str(), before_muted, frame_starts.size());
         mute_bad_frames(result.pcm, block_size, result.num_channels, buf, frame_starts);
     }
 
