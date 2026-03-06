@@ -11,6 +11,8 @@ MidiInput::MidiInput(const std::string& client_name)
     }
 
     snd_seq_set_client_name(seq_, client_name.c_str());
+    snd_seq_set_client_pool_output(seq_, 0);   // 出力不要
+    snd_seq_set_client_pool_input(seq_, 256);   // 入力バッファ拡大
 
     port_id_ = snd_seq_create_simple_port(
         seq_, "MIDI In",
@@ -107,7 +109,7 @@ void MidiInput::run()
         int ret = snd_seq_event_input(seq_, &ev);
 
         if (ret < 0) {
-            if (ret == -EAGAIN) continue;
+            if (ret == -EAGAIN || ret == -ENOSPC) continue;  // バッファ溢れは継続
             fprintf(stderr, "[MidiInput] snd_seq_event_input error: %s\n",
                     snd_strerror(ret));
             break;  // 致命的エラーはループを抜ける
