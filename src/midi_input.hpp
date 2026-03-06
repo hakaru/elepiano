@@ -31,6 +31,8 @@ public:
     void stop() { running_.store(false); }
 
 private:
+    void subscribe_all_hw();  // 全HW MIDIポートから自動接続
+
     snd_seq_t*          seq_     = nullptr;
     int                 port_id_ = -1;
     std::atomic<bool>   running_{false};

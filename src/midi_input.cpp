@@ -26,6 +26,53 @@ MidiInput::MidiInput(const std::string& client_name)
 
     fprintf(stderr, "[MidiInput] client=%d port=%d\n",
             snd_seq_client_id(seq_), port_id_);
+
+    // 全ハードウェア MIDI ポートから自動接続（subscribe）
+    subscribe_all_hw();
+}
+
+void MidiInput::subscribe_all_hw()
+{
+    snd_seq_client_info_t* cinfo;
+    snd_seq_port_info_t*   pinfo;
+    snd_seq_client_info_alloca(&cinfo);
+    snd_seq_port_info_alloca(&pinfo);
+
+    const int my_client = snd_seq_client_id(seq_);
+
+    snd_seq_client_info_set_client(cinfo, -1);
+    while (snd_seq_query_next_client(seq_, cinfo) >= 0) {
+        int cid = snd_seq_client_info_get_client(cinfo);
+        if (cid == my_client || cid == 0 || cid == 14) continue;  // skip self, System, Midi Through
+
+        snd_seq_port_info_set_client(pinfo, cid);
+        snd_seq_port_info_set_port(pinfo, -1);
+        while (snd_seq_query_next_port(seq_, pinfo) >= 0) {
+            unsigned int caps = snd_seq_port_info_get_capability(pinfo);
+            if (!(caps & SND_SEQ_PORT_CAP_READ) || !(caps & SND_SEQ_PORT_CAP_SUBS_READ))
+                continue;
+
+            snd_seq_addr_t sender;
+            sender.client = cid;
+            sender.port   = snd_seq_port_info_get_port(pinfo);
+
+            snd_seq_port_subscribe_t* sub;
+            snd_seq_port_subscribe_alloca(&sub);
+
+            snd_seq_addr_t dest;
+            dest.client = my_client;
+            dest.port   = port_id_;
+
+            snd_seq_port_subscribe_set_sender(sub, &sender);
+            snd_seq_port_subscribe_set_dest(sub, &dest);
+
+            if (snd_seq_subscribe_port(seq_, sub) >= 0) {
+                fprintf(stderr, "[MidiInput] 自動接続: %d:%d (%s)\n",
+                        cid, sender.port,
+                        snd_seq_port_info_get_name(pinfo));
+            }
+        }
+    }
 }
 
 MidiInput::~MidiInput()
