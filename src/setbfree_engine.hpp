@@ -2,6 +2,7 @@
 #include "midi_input.hpp"
 #include "spsc_queue.hpp"
 #include <cstdint>
+#include <memory>
 
 // setBfree Hammond B3 シンセ — C++ ラッパー
 // vendor/setBfree を静的リンクして直接呼び出す
@@ -18,5 +19,5 @@ public:
 
 private:
     struct Impl;
-    Impl* impl_;
+    std::unique_ptr<Impl> impl_;
 };

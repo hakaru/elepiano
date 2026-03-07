@@ -863,3 +863,387 @@
   - elepiano.service の Environment 行を更新
 次のTODO: service 更新 → restart → テスト
 ---
+
+---
+2026-03-07 15:58
+作業項目: iOS アプリ Swift コンパイルエラー修正 + デプロイ
+追加機能の説明:
+  - CCControlView.swift:100 ccToggle() 関数で return 文が欠落 → Swift が戻り型推論不可
+  - let isOn = ... の後に HStack を返すため、return を明示追加
+決定事項:
+  - ccToggle 関数の HStack 前に return 追加
+次のTODO: ビルド → デバイスデプロイ
+---
+
+---
+2026-03-07 16:28
+作業項目: BLE 接続問題の調査・修正
+追加機能の説明:
+  - BLE bridge がクラッシュループ → 原因: RF-kill で Bluetooth がブロック → rfkill unblock で解除
+  - HCI advertising が bluetoothd 起動中は 0x0C (Command Disallowed) → Pi 再起動で解消
+  - iOS アプリの BLE スキャンフィルタを緩和 (UUID限定 → 全デバイススキャン + UUID/名前フィルタ)
+  - スキャンタイムアウトを 10秒 → 30秒 に延長
+  - Advertisement から LocalName プロパティ削除、Includes=["local-name"] に変更（31byte制限対策）
+  - StatusView に "Scanning..." / "Not connected" 表示追加（タップで再スキャン）
+決定事項:
+  - 接続成功の直接原因: Pi 再起動で HCI コントローラがクリーンな状態に復帰
+  - RF-kill ブロックが根本原因（長時間 ble-bridge のクラッシュループで BT チップが不安定化）
+  - BlueZ main.conf に Experimental=true, AutoEnable=true を追加
+次のTODO: コミット
+---
+
+---
+2026-03-07 16:37
+作業項目: iOS Remote - Landscape フェーダー UI リニューアル
+追加機能の説明:
+  - SimpleMIDIController 風の縦フェーダー並びミキサーレイアウトに刷新
+  - FaderView.swift: カスタム縦フェーダー (DragGesture, minimumDistance:0)
+  - LandscapeCCView.swift: 左サイドバー(プログラム) + タブ(4ページ) + フェーダー群
+  - CCParameter.swift: CCPage enum 追加 (Mix/Tone/Space/Organ)
+  - StatusView.swift: コンパクトモード追加
+  - ElepianoRemoteApp.swift: Landscape ロック + NavigationStack 除去
+決定事項:
+  - 4ページ構成: Mix(Vol/Exp/Mod/Rel), Tone(IR/OD/EQ), Space(Space/Chorus), Organ
+  - 左サイドバー56pt, トップバー32pt, フェーダー高さ~280pt
+  - グループ色: Volume=青, Mod=緑, IR/OD/EQ=オレンジ, Space/Chorus=紫, Organ=赤
+次のTODO: 実装 → ビルド → デバイスデプロイ
+---
+
+---
+2026-03-07 16:43
+作業項目: iOS アプリ 実機デプロイ
+追加機能の説明:
+  - xcodebuild で実機デプロイ実行
+決定事項:
+  - ビルド成功済み、デプロイ試行中
+次のTODO: デプロイ確認
+---
+
+---
+2026-03-07 16:53
+作業項目: iOS Landscape フェーダー UI v2 — 大型化 + ページ内容刷新
+追加機能の説明:
+  - フェーダー幅をフレキシブル化（画面横幅を均等分割）、trackWidth 40→56pt
+  - Mix ページ刷新: Expression削除、Drive/Tone移動、8コントロール
+  - Tone ページ: IR Mic セレクター（10値名前表示）、IR Wet/Lo EQ/Hi EQ
+  - Space ページ: Mode セレクター（OFF/Tape/Room/Plate）、7コントロール
+  - Organ ページ: 9本ドローバー（逆フェーダー）+ パーカッションスイッチ + キャラクター
+  - SelectorView / DrawbarView 新規コンポーネント追加
+決定事項:
+  - セレクター: タップで次の値に進む
+  - ドローバー: 上=0, 下=127 の逆フェーダー
+  - Organ パーカッション: 4つのトグル (Perc/Vol/Decay/Harm)
+次のTODO: CCParameter.swift → FaderView.swift → LandscapeCCView.swift の順で実装
+---
+
+---
+2026-03-07 17:01
+作業項目: iOS UI 修正 — CC送信不具合 + スワイプページ切替
+追加機能の説明:
+  - 左サイドバーのプログラムボタンがCC送信に干渉する問題を修正
+  - ページタブをスワイプ（横スライド）で切り替えられるように TabView + .page スタイルに変更
+決定事項:
+  - TabView(selection:) + .tabViewStyle(.page) でスワイプ切替
+  - タブバーのボタンと TabView の selection を同期
+次のTODO: 実装 → ビルド → デプロイ
+---
+
+---
+2026-03-07 17:04
+作業項目: プログラムチェンジ動作確認 + デバッグログ追加
+追加機能の説明:
+  - iOS側のsendProgramChangeは0-indexedで送信、elepiano側も0-indexedで受信 — ロジック上は正しい
+  - BLE接続状態やcharacteristic取得失敗の可能性を調査
+  - printデバッグログを追加してBLE送信の確認を容易に
+決定事項:
+  - sendProgramChangeにprint追加、pcCharacteristic nil チェック
+次のTODO: デバッグ → 原因特定
+---
+
+---
+2026-03-07 17:07
+作業項目: UI改善 — ボタンハイライト + サイドバー拡大 + Organ/Chorus/Vibrato
+追加機能の説明:
+  - プログラムボタン: BLEステータス待ちではなくローカルで即時ハイライト更新
+  - サイドバーボタン: 画面高さいっぱいに拡大
+  - Organ ページ: setBfree Vibrato/Chorus スイッチ (CC92/CC31) 追加
+  - Space ページ: Chorus/Vibrato トグル追加
+決定事項:
+  - selectedProgram を @State で管理、sendPC後に即時反映
+  - サイドバーボタンを Spacer() で均等配置
+次のTODO: 実装 → ビルド → デプロイ
+---
+
+---
+2026-03-07 17:12
+作業項目: IR Wet デフォルト127 + IR名をセレクタ内に統合
+追加機能の説明:
+  - IR Wet のデフォルトを 0→127 に変更（常時ON）
+  - IR パラメータは CC104(マイク選択) と CC105(wet) の2つのみ
+  - 「モデル切替」= マイクポジション切替、10種の Twin Reverb キャビネットIR
+決定事項:
+  - IR Wet デフォルト 127
+次のTODO: 実装 → デプロイ
+---
+
+---
+2026-03-07 17:14
+作業項目: LINE録音用プリアンプ/トランスIR候補調査
+追加機能の説明:
+  - Web検索でフリーのプリアンプ/トランスIR WAVを調査
+  - キャビネットIRは豊富だが、プリアンプ単体のIRは希少
+決定事項:
+  - 候補を回答にまとめる
+  - 無料プリアンプIRの直接DLが困難（CAPTCHA/Patreon有料/メール問合せ）
+  - 代替: Pythonでプリアンプ風IRを生成（トランス色 = 偶数次高調波 + ローミッド強調 + HFロールオフ）
+次のTODO: Python IR生成 → data/ir/ 配置 → Pi転送
+---
+
+---
+2026-03-07 17:24
+作業項目: LINE + CabIR 統合 — 全16種IR
+追加機能の説明:
+  - data/ir-all/ にプリアンプIR(6種) + Twin73 CabIR(10種) を統合
+  - Pythonで生成した6種プリアンプIR: Neve Warm/Bright, API Punch, SSL Clean, Tape Warm, Direct
+  - Pi に転送、ELEPIANO_IR_DIR を ir-all に変更、restart
+  - iOS セレクタ名を16種に更新
+  - Pi 正常起動確認: "[IR] loaded 16 IRs from /home/hakaru/elepiano/data/ir-all"
+決定事項:
+  - IR 01-06: LINE用プリアンプIR (512 samples)
+  - IR 07-16: Twin73 CabIR (1000 samples)
+  - CC104 セレクタで全16種を切替可能
+次のTODO: 演奏テスト、IR の音質チューニング
+---
+
+---
+2026-03-07 17:31
+作業項目: CC7/CC11 ボリューム復活 + フェーダー操作修正
+追加機能の説明:
+  - CC7→CC102リマップでMIDIキーボードのCC7が効かなくなっていた
+  - synth_engine.cpp: CC7をCC102のエイリアス、CC11をCC103のエイリアスとして追加
+  - FaderView: .gesture → .highPriorityGesture に変更（TabViewスワイプとの衝突解消）
+決定事項:
+  - CC7/CC102 両方でボリューム制御可能（setBfreeのCC7とは両方に効く）
+  - CC11/CC103 両方でエクスプレッション制御可能
+次のTODO: 演奏テスト
+---
+
+---
+2026-03-07 17:39
+作業項目: iOS アプリ TabView 削除修正 → ビルド・デプロイ
+追加機能の説明:
+  - TabView .page スタイルのスワイプがフェーダー DragGesture を消費する問題の修正
+  - TabView を完全に除去、pageContent(selectedPage) で直接レンダリング
+  - FaderView は .highPriorityGesture を維持
+決定事項:
+  - フェーダー操作が効かない根本原因は TabView ジェスチャー衝突
+  - 修正済みコードを両デバイスにデプロイする
+次のTODO: ビルド → 実機デプロイ
+---
+
+---
+2026-03-07 18:01
+作業項目: BLE→MIDI 再接続問題の修正 + IR レベル比較
+追加機能の説明:
+  - BLE bridge が elepiano 再起動後に CC を送れなくなる問題を修正
+  - 原因: AlsaMidiSender が起動時の elepiano client ID を保持し、elepiano 再起動で client ID が変わると不一致
+  - 修正: reconnect() メソッド追加、10秒ごとに client ID を確認して再接続
+  - SUBSCRIBERS アドレッシングは ALSA seq で動作しなかったため、直接アドレッシングを維持
+  - IR レベル比較: LINE IR (peak -0.4dB) vs Twin73 IR (peak -3〜-4dB)
+決定事項:
+  - LINE IR の peak が Twin73 より約3dB 高い（LINE IR が大きい方）
+  - Twin73 は実測キャビネット IR なのでレベルが自然に低い
+次のTODO: IR レベル正規化の検討
+---
+
+---
+2026-03-07 18:12
+作業項目: BLE 自動再接続の完全自動化
+追加機能の説明:
+  - Pi側: ble-bridge.service に PartOf=elepiano.service + ExecStartPre=sleep 5 追加
+    → elepiano 再起動時に BLE bridge も自動連動再起動
+  - Pi側: AlsaMidiSender の _find_elepiano_client を ctypes 直接呼び出しに変更
+    → aconnect コマンドのタイムアウト問題を解消
+  - Pi側: 10秒ごとの reconnect() で elepiano client ID 変更を検知・再接続
+  - iOS側: stopScan() 後に未接続なら5秒後にリトライスキャン
+    → BLE bridge 再起動後も自動再接続
+  - LINE IR レベルを Twin73 と同等に正規化（peak 0.95 → 0.625）
+決定事項:
+  - systemd PartOf で elepiano/BLE bridge のライフサイクルを連動
+  - iOS は未接続時に無限リトライスキャン
+次のTODO: 動作確認
+---
+
+---
+2026-03-07 18:18
+作業項目: elepiano プロジェクト性能監査（src/ble/ios 全体）
+追加機能の説明:
+  - リアルタイムオーディオスレッドの禁止操作検出
+  - 不要コピー・計算、キャッシュ効率、ALSA/MIDIレイテンシ
+  - BLE通信スロットリング、iOS SwiftUI再描画
+  - IR畳み込み計算効率、SpscQueueサイズ適正性
+決定事項:
+  - 全ソースファイルを読み込んで分析中
+次のTODO: 分析結果を Impact 分類で報告
+---
+
+---
+2026-03-07 18:18
+作業項目: 全変更ファイルのコードレビュー
+追加機能の説明:
+  - git diff で確認できる全変更ファイル（staged + unstaged + untracked）を対象にレビュー
+  - 対象: alsa_midi_sender.py, ble_bridge.py, gatt_service.py, synth_engine.cpp,
+    BLEManager.swift, ElepianoRemoteApp.swift, CCParameter.swift, CCControlView.swift,
+    StatusView.swift, FaderView.swift, LandscapeCCView.swift, Info.plist
+  - 観点: ロジック正しさ、API使用法、エラーハンドリング、スレッド安全性、コード一貫性
+決定事項:
+  - レビュー結果を severity 分類で報告
+次のTODO: 指摘事項の修正
+---
+
+---
+2026-03-07 18:18
+作業項目: ドキュメント作成 (CC_MAP.md / ARCHITECTURE.md / DEPLOY.md)
+追加機能の説明:
+  - ソースコードを読んで正確な情報を収集
+  - docs/CC_MAP.md: 全CC番号マッピング表（SynthEngine/FxChain/LV2/setBfree）
+  - docs/ARCHITECTURE.md: コンポーネント図、BLE Bridge 構成、シグナルフロー
+  - docs/DEPLOY.md: Pi/iOS ビルド手順、systemd 設定、環境変数一覧
+決定事項:
+  - ソースから直接情報収集し、正確なドキュメントを作成
+次のTODO: ドキュメント完成後に git commit
+---
+
+---
+2026-03-07 18:18
+作業項目: セキュリティ監査 (ble/src/ios)
+追加機能の説明:
+  - BLE GATT 認証なし CC/PC/コマンド受付リスク
+  - on_command() systemctl コマンドインジェクション
+  - MIDI/BLE データバリデーション、バッファオーバーフロー
+  - 整数オーバーフロー CC/velocity 範囲チェック
+  - root 権限 Python 実行リスク
+  - ctypes unsafe 操作
+  - ALSA sequencer 入力バリデーション
+  - iOS 通信セキュリティ
+決定事項:
+  - 全ソースファイル読み込み完了、脆弱性分析実施
+次のTODO: 脆弱性レポート作成、修正提案
+---
+
+---
+2026-03-07 18:18
+作業項目: リファクタリング分析・提案（コード変更なし）
+追加機能の説明:
+  - src/ (C++ シンセエンジン 27ファイル), ble/ (Python BLE bridge 4ファイル), ios/ (SwiftUI 10ファイル) を全読み込み
+  - 7観点で分析: 重複、責務分離、モジュール構造、抽象化、命名一貫性、マジックナンバー、ハードコード
+  - Priority (High/Medium/Low) で分類し、具体的手順を提案
+決定事項:
+  - コード変更は行わず、分析と提案のみ
+次のTODO: ユーザーの承認後に個別リファクタリングを実施
+---
+
+---
+2026-03-07 18:19
+作業項目: elepiano 性能監査レポート（8観点、全ファイル精査完了）
+追加機能の説明:
+  - 全ソースファイル（C++ 27, Python 4, Swift 10）を精読して性能問題を分析
+  - 8観点: RTスレッド禁止操作、不要コピー/計算、キャッシュ効率、ALSA/MIDIレイテンシ、BLEスロットリング、iOS再描画、IR畳み込み効率、SpscQueueサイズ
+決定事項:
+  - High (5件): IR O(N*M) 直接畳み込み、WAV dump fwrite RTスレッド内、fprintf RTスレッド内(複数箇所)、Lv2Host::set_cc 線形探索、FxChain process_phaser 毎サンプル std::exp
+  - Medium (6件): FxChain巨大スタック構造体、OrganEngine 128ノート全走査、StatusReporter RTスレッドから呼び出し可能、BLE StatusMonitor 切断検知5秒遅延、alsa_midi_sender restype設定位置、LV2 in/out バッファ8192固定確保
+  - Low (5件): SpscQueue FxEvent 32エントリ小さめ、Voice::mix 分岐予測、iOS CC Dictionary lookup、chorus/delay バッファゼロ初期化、SampleDB::find candidates_ 未使用メンバ
+  - コード変更なし（監査レポートのみ）
+次のTODO: ユーザーの優先度判断を受けて改善実装
+---
+
+---
+2026-03-07 18:22
+作業項目: 5エージェント監査結果の統合サマリー提示
+追加機能の説明:
+  - コードレビュー、性能監査、セキュリティ監査、リファクタリング提案、ドキュメント作成の全5件完了
+  - 各エージェントの結果を統合し、優先度別にサマリー提示
+決定事項:
+  - 全5エージェント完了確認済み
+  - Critical 修正（ctypes restype/argtypes）は即時適用済み
+次のTODO: ユーザーに統合結果を報告、次のアクション決定
+---
+
+---
+2026-03-07 18:22
+作業項目: 監査結果を GitHub Issue に登録
+追加機能の説明:
+  - 新規 issue 10件作成:
+    - #45 RT fprintf (bug)
+    - #46 phaser exp() per sample (enhancement)
+    - #47 set_cc linear search (enhancement)
+    - #48 BLE GATT auth (bug)
+    - #49 OrganEngine 128 note scan (enhancement)
+    - #50 FxChain 752KB buffer cache (enhancement)
+    - #51 IR ring buffer modulo (enhancement)
+    - #52 FxChain CC enum化 (enhancement)
+    - #53 SetBfreeEngine unique_ptr (enhancement)
+    - #54 StatusMonitor timeout (enhancement)
+  - #38 (BLE MIDI reconnect) をクローズ（実装済み）
+決定事項:
+  - 既存 issue (#26,40,41) と重複しない項目のみ新規作成
+  - #38 は reconnect() + systemd PartOf で解決済み
+次のTODO: ユーザーの優先度判断を受けて改善実装
+---
+
+---
+2026-03-07 22:52
+作業項目: オープン Issue 整理 — 4 Tier 優先度プラン策定
+追加機能の説明:
+  - 15件のオープン issue を4段階に分類
+  - Tier 1: RT安全性 (#26,#45) — underrun 直結、最優先
+  - Tier 2: 性能改善 (#46,#47,#51,#41,#49,#50) — CPU削減
+  - Tier 3: セキュリティ (#48,#40) — BLE認証
+  - Tier 4: コード品質 (#52,#53,#54,#36,#30) — 急ぎではない
+決定事項:
+  - Phase 1→2→3→4 の順で実装
+  - 旧プラン（iOS UI v2）は実装済みのため上書き
+次のTODO: ユーザー承認後に Phase 1 から実装開始
+---
+
+---
+2026-03-07 22:53
+作業項目: Issue整理プラン実装開始 — Phase 1 (RT安全性 #26+#45) + Phase 2 (#46+#47+#51)
+追加機能の説明:
+  - Phase 1: RTスレッド内の fprintf/fwrite を SpscQueue 経由の非同期ログに置換
+  - Phase 2: phaser exp() 定数化、set_cc 固定配列化、IR ring buffer ビットマスク化
+  - Phase 3: BLE GATT encrypt-write
+  - Phase 4: コード品質改善
+決定事項:
+  - 全4フェーズを順次実装
+次のTODO: Phase 1 実装中
+---
+
+---
+2026-03-07 23:11
+作業項目: Phase 1-4 全実装完了 — RT安全性 + 性能改善 + BLEセキュリティ + コード品質
+追加機能の説明:
+  Phase 1 (RT安全性 #26+#45):
+  - src/rt_log.hpp 新規: SpscQueue<RtLogEntry,64> による非同期ログ
+  - audio_output.cpp: WAV dump を lock-free ring buffer 経由に変更（fwrite排除）
+  - audio_output.cpp: snd_pcm_recover fprintf → rt_log
+  - synth_engine.cpp: _program_change fprintf → rt_log
+  - fx_chain.cpp: CC3/CC110 fprintf → rt_log
+  - ir_convolver.cpp: select() fprintf → rt_log
+  - main.cpp: run_engine ループに drain_rt_log() + flush_wav_dump() 追加
+  Phase 2 (性能改善 #46+#47+#51):
+  - fx_chain.cpp: process_phaser の exp() をブロック単位に削減 (2*frames → 2回/ブロック)
+  - fx_chain.hpp: phaser_log_min_/phaser_log_range_ を定数メンバ化
+  - lv2_host.cpp: set_cc を CcMapping cc_lut_[128] 直接参照に変更（hash+線形探索→O(1)）
+  - ir_convolver: ring_size_ を2の冪に切り上げ、ビットマスクで modulo/conditional 排除
+  Phase 3 (BLEセキュリティ #40+#48):
+  - gatt_service.py: CC/PC/BatchCC/Command の Flags に encrypt-write 追加
+  - ObjectManager の GetManagedObjects プロパティも同期更新
+  - ペアリング済みデバイスのみ書き込み可能に
+  Phase 4 (コード品質 #53):
+  - setbfree_engine: raw pointer → std::unique_ptr<Impl> に変更
+決定事項:
+  - Pi オフラインのためビルド検証は次回接続時に実施
+  - 全変更は構文チェック済み、ブレース均衡OK
+次のTODO: Pi 接続時にビルド検証 → デプロイ → 演奏テスト
+---

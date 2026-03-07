@@ -16,12 +16,24 @@ struct ContentView: View {
     @EnvironmentObject var ble: BLEManager
 
     var body: some View {
-        NavigationStack {
+        Group {
             if ble.isConnected {
-                CCControlView()
+                LandscapeCCView()
             } else {
                 ConnectionView()
             }
         }
+        .preferredColorScheme(.dark)
+    }
+}
+
+// Force landscape orientation
+struct LandscapeModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        content
+            .onAppear {
+                let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene
+                windowScene?.requestGeometryUpdate(.iOS(interfaceOrientations: .landscape))
+            }
     }
 }

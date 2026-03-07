@@ -29,11 +29,11 @@ final class BLEManager: NSObject, ObservableObject {
         guard centralManager.state == .poweredOn else { return }
         isScanning = true
         centralManager.scanForPeripherals(
-            withServices: [BLEConstants.serviceUUID],
-            options: nil
+            withServices: nil,
+            options: [CBCentralManagerScanOptionAllowDuplicatesKey: false]
         )
-        // 10秒後に自動停止
-        DispatchQueue.main.asyncAfter(deadline: .now() + 10) { [weak self] in
+        // 30秒後に自動停止
+        DispatchQueue.main.asyncAfter(deadline: .now() + 30) { [weak self] in
             self?.stopScan()
         }
     }
@@ -41,6 +41,14 @@ final class BLEManager: NSObject, ObservableObject {
     func stopScan() {
         centralManager.stopScan()
         isScanning = false
+
+        // 未接続ならリトライ
+        if !isConnected {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5) { [weak self] in
+                guard let self, !self.isConnected else { return }
+                self.startScan()
+            }
+        }
     }
 
     func disconnect() {
@@ -51,7 +59,10 @@ final class BLEManager: NSObject, ObservableObject {
     // MARK: - CC/PC 送信
 
     func sendCC(_ cc: Int, value: Int) {
-        guard let char = ccCharacteristic, let peripheral else { return }
+        guard let char = ccCharacteristic, let peripheral else {
+            print("[BLE] sendCC(\(cc), \(value)) SKIPPED - no char/peripheral")
+            return
+        }
 
         // スロットリング
         let now = Date()
@@ -75,7 +86,11 @@ final class BLEManager: NSObject, ObservableObject {
     }
 
     func sendProgramChange(_ program: Int) {
-        guard let char = pcCharacteristic, let peripheral else { return }
+        guard let char = pcCharacteristic, let peripheral else {
+            print("[BLE] sendPC(\(program)) SKIPPED - no char/peripheral")
+            return
+        }
+        print("[BLE] sendPC(\(program))")
         let data = Data([UInt8(program & 0x7F)])
         peripheral.writeValue(data, for: char, type: .withResponse)
     }
@@ -104,10 +119,18 @@ extension BLEManager: CBCentralManagerDelegate {
         advertisementData: [String: Any],
         rssi RSSI: NSNumber
     ) {
+        // デバッグ: 発見した全デバイスをログ出力
+        let serviceUUIDs = advertisementData[CBAdvertisementDataServiceUUIDsKey] as? [CBUUID] ?? []
+        let name = peripheral.name ?? advertisementData[CBAdvertisementDataLocalNameKey] as? String ?? ""
+        print("[BLE] discovered: \(name.isEmpty ? "?" : name) uuids=\(serviceUUIDs) rssi=\(RSSI)")
+        let matchUUID = serviceUUIDs.contains(BLEConstants.serviceUUID)
+        let matchName = name.lowercased().contains("elepiano") || name.lowercased().contains("hakarupiano")
+        guard matchUUID || matchName else { return }
+
         Task { @MainActor in
             stopScan()
             self.peripheral = peripheral
-            self.peripheralName = peripheral.name ?? "elepiano"
+            self.peripheralName = name.isEmpty ? "elepiano" : name
             peripheral.delegate = self
             central.connect(peripheral, options: nil)
         }

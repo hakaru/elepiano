@@ -55,7 +55,8 @@ private:
         int write_pos = 0;
     };
     ChannelState ch_[2];
-    int ring_size_ = 0;   // size of circular buffer (max IR length)
+    int ring_size_ = 0;   // size of circular buffer (power of 2)
+    int ring_mask_ = 0;   // ring_size_ - 1 (bitmask for modulo)
 
     // Internal: load a WAV and return normalized float samples
     bool load_wav_internal(const std::string& path, IrSlot& slot);

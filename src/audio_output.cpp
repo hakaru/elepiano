@@ -1,4 +1,5 @@
 #include "audio_output.hpp"
+#include "rt_log.hpp"
 #include <stdexcept>
 #include <cstring>
 #include <algorithm>
@@ -71,11 +72,45 @@ void AudioOutput::open_wav_dump()
 
     wav_data_bytes_ = 0;
     fprintf(stderr, "[AudioOutput] WAV dump: %s\n", cfg_.wav_dump_path.c_str());
+
+    // WAV dump 用 ring buffer 確保 (1M samples ≈ 11秒 @ 44.1kHz stereo)
+    static constexpr size_t WAV_RING_SIZE = 1 << 20;
+    wav_ring_.resize(WAV_RING_SIZE);
+    wav_ring_mask_ = WAV_RING_SIZE - 1;
+    wav_ring_head_.store(0, std::memory_order_relaxed);
+    wav_ring_tail_.store(0, std::memory_order_relaxed);
+}
+
+void AudioOutput::flush_wav_dump()
+{
+    if (!wav_file_ || wav_ring_.empty()) return;
+
+    const size_t t = wav_ring_tail_.load(std::memory_order_relaxed);
+    const size_t h = wav_ring_head_.load(std::memory_order_acquire);
+    size_t avail = h - t;
+    if (avail == 0) return;
+
+    static constexpr size_t CHUNK = 4096;
+    int16_t tmp[CHUNK];
+    size_t pos = t;
+    while (avail > 0) {
+        const size_t n = std::min(avail, CHUNK);
+        for (size_t i = 0; i < n; ++i)
+            tmp[i] = wav_ring_[(pos + i) & wav_ring_mask_];
+        fwrite(tmp, sizeof(int16_t), n, wav_file_);
+        wav_data_bytes_ += static_cast<uint32_t>(n * sizeof(int16_t));
+        pos += n;
+        avail -= n;
+    }
+    wav_ring_tail_.store(pos, std::memory_order_release);
 }
 
 void AudioOutput::close_wav_dump()
 {
     if (!wav_file_) return;
+
+    // 残りデータを flush
+    flush_wav_dump();
 
     // ヘッダのサイズフィールドを書き戻す
     uint32_t file_size = 36 + wav_data_bytes_;
@@ -185,11 +220,18 @@ void AudioOutput::run()
         }
 #endif
 
-        // WAV ダンプ
-        if (wav_file_) {
-            size_t n = static_cast<size_t>(frames * cfg_.channels);
-            fwrite(s16_buf_.data(), sizeof(int16_t), n, wav_file_);
-            wav_data_bytes_ += static_cast<uint32_t>(n * sizeof(int16_t));
+        // WAV ダンプ（RT-safe: ring buffer に push、メインスレッドで flush）
+        if (!wav_ring_.empty()) {
+            const size_t n = static_cast<size_t>(frames * cfg_.channels);
+            const size_t h = wav_ring_head_.load(std::memory_order_relaxed);
+            const size_t t = wav_ring_tail_.load(std::memory_order_acquire);
+            const size_t avail = wav_ring_.size() - (h - t);
+            if (n <= avail) {
+                for (size_t j = 0; j < n; ++j)
+                    wav_ring_[(h + j) & wav_ring_mask_] = s16_buf_[j];
+                wav_ring_head_.store(h + n, std::memory_order_release);
+            }
+            // avail < n → ring full, drop（デバッグ用途なので許容）
         }
 
         // 部分書き込みも含めてリトライ
@@ -204,8 +246,7 @@ void AudioOutput::run()
             } else if (ret < 0) {
                 ret = snd_pcm_recover(pcm_, ret, 1);
                 if (ret < 0) {
-                    fprintf(stderr, "[AudioOutput] snd_pcm_recover 失敗: %s\n",
-                            snd_strerror(ret));
+                    rt_log(RtLogEntry::Tag::PCM_RECOVER_FAIL, ret);
                     return;
                 }
             } else {

@@ -67,12 +67,8 @@ class Advertisement(ServiceInterface):
         return [SERVICE_UUID]
 
     @dbus_property(access=PropertyAccess.READ)
-    def LocalName(self) -> "s":  # type: ignore  # noqa: N802
-        return "elepiano"
-
-    @dbus_property(access=PropertyAccess.READ)
     def Includes(self) -> "as":  # type: ignore  # noqa: N802
-        return ["tx-power"]
+        return ["local-name"]
 
     @method()
     def Release(self) -> None:  # noqa: N802
@@ -137,7 +133,7 @@ class StatusCharacteristic(ServiceInterface):
 
 
 class CCControlCharacteristic(ServiceInterface):
-    """CC Control (Write Without Response) - [cc, val] 2B"""
+    """CC Control (Write Without Response, encrypted) - [cc, val] 2B"""
 
     def __init__(self, on_cc: Callable[[int, int], None]):
         super().__init__("org.bluez.GattCharacteristic1")
@@ -153,7 +149,7 @@ class CCControlCharacteristic(ServiceInterface):
 
     @dbus_property(access=PropertyAccess.READ)
     def Flags(self) -> "as":  # type: ignore  # noqa: N802
-        return ["write-without-response"]
+        return ["encrypt-write", "write-without-response"]
 
     @method()
     def WriteValue(self, value: "ay", options: "a{sv}") -> None:  # type: ignore  # noqa: N802
@@ -183,7 +179,7 @@ class ProgramChangeCharacteristic(ServiceInterface):
 
     @dbus_property(access=PropertyAccess.READ)
     def Flags(self) -> "as":  # type: ignore  # noqa: N802
-        return ["read", "write", "notify"]
+        return ["read", "encrypt-write", "notify"]
 
     @method()
     def ReadValue(self, options: "a{sv}") -> "ay":  # type: ignore  # noqa: N802
@@ -209,7 +205,7 @@ class ProgramChangeCharacteristic(ServiceInterface):
 
 
 class BatchCCCharacteristic(ServiceInterface):
-    """Batch CC (Write Without Response) - [cc1,v1,...ccN,vN]"""
+    """Batch CC (Write Without Response, encrypted) - [cc1,v1,...ccN,vN]"""
 
     def __init__(self, on_cc: Callable[[int, int], None]):
         super().__init__("org.bluez.GattCharacteristic1")
@@ -225,7 +221,7 @@ class BatchCCCharacteristic(ServiceInterface):
 
     @dbus_property(access=PropertyAccess.READ)
     def Flags(self) -> "as":  # type: ignore  # noqa: N802
-        return ["write-without-response"]
+        return ["encrypt-write", "write-without-response"]
 
     @method()
     def WriteValue(self, value: "ay", options: "a{sv}") -> None:  # type: ignore  # noqa: N802
@@ -254,7 +250,7 @@ class CommandCharacteristic(ServiceInterface):
 
     @dbus_property(access=PropertyAccess.READ)
     def Flags(self) -> "as":  # type: ignore  # noqa: N802
-        return ["write"]
+        return ["encrypt-write"]
 
     @method()
     def WriteValue(self, value: "ay", options: "a{sv}") -> None:  # type: ignore  # noqa: N802
@@ -315,13 +311,13 @@ class GattApplication:
         self.obj_mgr.add_object(f"{SVC_PATH}/char0", CHAR_IFACE,
                                 _char_props(STATUS_UUID, SVC_PATH, ["read", "notify"]))
         self.obj_mgr.add_object(f"{SVC_PATH}/char1", CHAR_IFACE,
-                                _char_props(CC_CONTROL_UUID, SVC_PATH, ["write-without-response"]))
+                                _char_props(CC_CONTROL_UUID, SVC_PATH, ["encrypt-write", "write-without-response"]))
         self.obj_mgr.add_object(f"{SVC_PATH}/char2", CHAR_IFACE,
-                                _char_props(PROGRAM_CHANGE_UUID, SVC_PATH, ["read", "write", "notify"]))
+                                _char_props(PROGRAM_CHANGE_UUID, SVC_PATH, ["read", "encrypt-write", "notify"]))
         self.obj_mgr.add_object(f"{SVC_PATH}/char3", CHAR_IFACE,
-                                _char_props(BATCH_CC_UUID, SVC_PATH, ["write-without-response"]))
+                                _char_props(BATCH_CC_UUID, SVC_PATH, ["encrypt-write", "write-without-response"]))
         self.obj_mgr.add_object(f"{SVC_PATH}/char4", CHAR_IFACE,
-                                _char_props(COMMAND_UUID, SVC_PATH, ["write"]))
+                                _char_props(COMMAND_UUID, SVC_PATH, ["encrypt-write"]))
 
     async def register(self, bus: MessageBus) -> None:
         """BlueZ に GATT サービスと Advertisement を登録する"""

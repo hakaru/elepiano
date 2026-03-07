@@ -99,7 +99,7 @@ struct CCControlView: View {
 
     private func ccToggle(_ param: CCParameter, offLabel: String, onLabel: String) -> some View {
         let isOn = (ccValues[param.cc] ?? Double(param.defaultValue)) >= 64
-        HStack {
+        return HStack {
             Text(offLabel)
                 .font(.subheadline)
                 .foregroundStyle(isOn ? .secondary : .primary)

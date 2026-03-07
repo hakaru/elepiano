@@ -42,6 +42,33 @@ class _snd_seq_event_t(ctypes.Structure):
 SND_SEQ_EVENT_CONTROLLER = 10
 SND_SEQ_EVENT_PGMCHANGE = 11
 
+# --- ALSA 関数シグネチャ宣言 ---
+_lib.snd_seq_open.argtypes = [ctypes.POINTER(ctypes.c_void_p), ctypes.c_char_p, ctypes.c_int, ctypes.c_int]
+_lib.snd_seq_open.restype = ctypes.c_int
+_lib.snd_seq_set_client_name.argtypes = [ctypes.c_void_p, ctypes.c_char_p]
+_lib.snd_seq_client_id.argtypes = [ctypes.c_void_p]
+_lib.snd_seq_client_id.restype = ctypes.c_int
+_lib.snd_seq_create_simple_port.argtypes = [ctypes.c_void_p, ctypes.c_char_p, ctypes.c_uint, ctypes.c_uint]
+_lib.snd_seq_create_simple_port.restype = ctypes.c_int
+_lib.snd_seq_connect_to.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int, ctypes.c_int]
+_lib.snd_seq_connect_to.restype = ctypes.c_int
+_lib.snd_seq_disconnect_to.argtypes = [ctypes.c_void_p, ctypes.c_int, ctypes.c_int, ctypes.c_int]
+_lib.snd_seq_disconnect_to.restype = ctypes.c_int
+_lib.snd_seq_event_output_direct.argtypes = [ctypes.c_void_p, ctypes.POINTER(_snd_seq_event_t)]
+_lib.snd_seq_event_output_direct.restype = ctypes.c_int
+_lib.snd_seq_close.argtypes = [ctypes.c_void_p]
+_lib.snd_seq_close.restype = ctypes.c_int
+_lib.snd_seq_client_info_malloc.argtypes = [ctypes.POINTER(ctypes.c_void_p)]
+_lib.snd_seq_client_info_malloc.restype = ctypes.c_int
+_lib.snd_seq_client_info_free.argtypes = [ctypes.c_void_p]
+_lib.snd_seq_client_info_set_client.argtypes = [ctypes.c_void_p, ctypes.c_int]
+_lib.snd_seq_query_next_client.argtypes = [ctypes.c_void_p, ctypes.c_void_p]
+_lib.snd_seq_query_next_client.restype = ctypes.c_int
+_lib.snd_seq_client_info_get_name.argtypes = [ctypes.c_void_p]
+_lib.snd_seq_client_info_get_name.restype = ctypes.c_char_p
+_lib.snd_seq_client_info_get_client.argtypes = [ctypes.c_void_p]
+_lib.snd_seq_client_info_get_client.restype = ctypes.c_int
+
 
 class AlsaMidiSender:
     """ALSA Seq 仮想ポートを作成し CC/PC イベントを elepiano に直接送信する"""
@@ -72,29 +99,48 @@ class AlsaMidiSender:
         self._dest_port = 0
         self._connect_to_elepiano()
 
+    def _find_elepiano_client(self) -> int:
+        """'elepiano' ALSA client ID を返す（ctypes 直接呼び出し）。見つからなければ -1"""
+        info = ctypes.c_void_p()
+        if _lib.snd_seq_client_info_malloc(ctypes.byref(info)) < 0:
+            return -1
+        try:
+            _lib.snd_seq_client_info_set_client(info, -1)
+            while _lib.snd_seq_query_next_client(self._seq, info) >= 0:
+                name = _lib.snd_seq_client_info_get_name(info)
+                if name and b"elepiano" in name:
+                    return _lib.snd_seq_client_info_get_client(info)
+            return -1
+        except Exception as e:
+            print(f"[AlsaMidiSender] find failed: {e}")
+            return -1
+        finally:
+            _lib.snd_seq_client_info_free(info)
+
     def _connect_to_elepiano(self) -> None:
         """'elepiano' クライアントを探して snd_seq_connect_to で接続"""
-        import subprocess
-        try:
-            result = subprocess.run(
-                ["aconnect", "-o"], capture_output=True, text=True, timeout=5
-            )
-            for line in result.stdout.splitlines():
-                if "elepiano" in line and "client" in line:
-                    parts = line.split(":")
-                    client_id = int(parts[0].split()[-1])
-                    # snd_seq_connect_to で接続
-                    rc = _lib.snd_seq_connect_to(self._seq, self._port, client_id, 0)
-                    if rc >= 0:
-                        self._dest_client = client_id
-                        self._dest_port = 0
-                        print(f"[AlsaMidiSender] connected to elepiano (client {client_id})")
-                    else:
-                        print(f"[AlsaMidiSender] connect_to failed: {rc}")
-                    return
+        client_id = self._find_elepiano_client()
+        if client_id < 0:
             print("[AlsaMidiSender] WARNING: elepiano not found")
-        except Exception as e:
-            print(f"[AlsaMidiSender] auto-connect failed: {e}")
+            return
+        if client_id == self._dest_client:
+            return  # 既に接続済み
+        # 旧接続を切断
+        if self._dest_client >= 0:
+            _lib.snd_seq_disconnect_to(self._seq, self._port,
+                                       self._dest_client, self._dest_port)
+        # 新接続
+        rc = _lib.snd_seq_connect_to(self._seq, self._port, client_id, 0)
+        if rc >= 0:
+            self._dest_client = client_id
+            self._dest_port = 0
+            print(f"[AlsaMidiSender] connected to elepiano (client {client_id})")
+        else:
+            print(f"[AlsaMidiSender] connect_to failed: {rc}")
+
+    def reconnect(self) -> None:
+        """elepiano の client ID が変わっていれば再接続"""
+        self._connect_to_elepiano()
 
     def _make_event(self, event_type: int) -> _snd_seq_event_t:
         ev = _snd_seq_event_t()
@@ -109,8 +155,8 @@ class AlsaMidiSender:
             ev.dest[0] = self._dest_client & 0xFF
             ev.dest[1] = self._dest_port & 0xFF
         else:
-            ev.dest[0] = 253  # SUBSCRIBERS fallback
-            ev.dest[1] = 253
+            ev.dest[0] = 254  # SND_SEQ_ADDRESS_SUBSCRIBERS
+            ev.dest[1] = 0
         return ev
 
     def send_cc(self, channel: int, cc: int, value: int) -> None:

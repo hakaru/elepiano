@@ -1,4 +1,5 @@
 #include "synth_engine.hpp"
+#include "rt_log.hpp"
 #include <cstring>
 #include <climits>
 #include <cstdio>
@@ -263,13 +264,13 @@ void SynthEngine::_note_off(int midi_note)
 
 void SynthEngine::_cc(int cc_num, int cc_val)
 {
-    // CC102: Volume
-    if (cc_num == 102) {
+    // CC7 / CC102: Volume
+    if (cc_num == 7 || cc_num == 102) {
         volume_ = cc_val / 127.0f;
         return;
     }
-    // CC103: Expression
-    if (cc_num == 103) {
+    // CC11 / CC103: Expression
+    if (cc_num == 11 || cc_num == 103) {
         expression_ = cc_val / 127.0f;
         return;
     }
@@ -318,8 +319,8 @@ void SynthEngine::_program_change(int program)
     // release サンプルがない音色はフェード長め (200ms)、ある音色は短め (50ms)
     release_time_s_ = release_db_ ? 0.050f : 0.200f;
 
-    fprintf(stderr, "[SynthEngine] Program Change: %d (release_fade=%dms)\n",
-            program + 1, static_cast<int>(release_time_s_ * 1000));
+    rt_log(RtLogEntry::Tag::PROGRAM_CHANGE, program,
+           static_cast<int>(release_time_s_ * 1000));
 }
 
 void SynthEngine::_start_release_voice(int midi_note, int velocity)

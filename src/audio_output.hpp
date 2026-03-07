@@ -38,6 +38,9 @@ public:
     int sample_rate() const { return cfg_.sample_rate; }
     uint32_t underrun_count() const { return underrun_count_.load(std::memory_order_relaxed); }
 
+    /// メインスレッドから呼ぶ: WAV dump ring buffer をファイルに flush
+    void flush_wav_dump();
+
 private:
     void open_pcm();
 
@@ -53,4 +56,10 @@ private:
     FillCallback            fill_cb_;
     std::vector<float>      float_buf_;
     std::vector<int16_t>    s16_buf_;
+
+    // WAV dump 用 lock-free ring buffer（audio thread → main thread）
+    std::vector<int16_t>    wav_ring_;
+    size_t                  wav_ring_mask_ = 0;
+    std::atomic<size_t>     wav_ring_head_{0};
+    std::atomic<size_t>     wav_ring_tail_{0};
 };

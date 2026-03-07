@@ -6,9 +6,7 @@ struct StatusView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            // メインステータスバー
             HStack(spacing: 12) {
-                // 接続状態インジケーター
                 statusIndicator
 
                 if let status = ble.status, status.isReady {
@@ -31,7 +29,6 @@ struct StatusView: View {
                     Spacer()
                 }
 
-                // リスタートメニュー
                 Menu {
                     Button {
                         ble.sendCommand("restart_elepiano")
@@ -69,7 +66,12 @@ struct StatusView: View {
     @ViewBuilder
     private var statusMessage: some View {
         let status = ble.status
-        if status == nil {
+        if !ble.isConnected {
+            Text(ble.isScanning ? "Scanning..." : "Not connected")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .onTapGesture { ble.startScan() }
+        } else if status == nil {
             Text("Waiting for status...")
                 .font(.subheadline)
                 .foregroundStyle(.secondary)
@@ -81,6 +83,30 @@ struct StatusView: View {
             Text("Loading...")
                 .font(.subheadline)
                 .foregroundStyle(.orange)
+        }
+    }
+}
+
+// Compact status for landscape top bar
+struct CompactStatusView: View {
+    @EnvironmentObject var ble: BLEManager
+
+    var body: some View {
+        HStack(spacing: 4) {
+            let status = ble.status
+            let isReady = status?.isReady ?? false
+            let isEleConnected = status?.elepianoConnected ?? false
+
+            Circle()
+                .fill(isReady ? .green : (isEleConnected ? .orange : (ble.isConnected ? .yellow : .red)))
+                .frame(width: 7, height: 7)
+
+            if !ble.isConnected {
+                Text(ble.isScanning ? "Scan..." : "No BLE")
+                    .font(.system(size: 10))
+                    .foregroundStyle(.secondary)
+                    .onTapGesture { ble.startScan() }
+            }
         }
     }
 }

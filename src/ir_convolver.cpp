@@ -1,4 +1,5 @@
 #include "ir_convolver.hpp"
+#include "rt_log.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -178,9 +179,14 @@ int IrConvolver::load_dir(const std::string& dir_path) {
 
 void IrConvolver::resize_ring() {
     // Find max IR length across all slots
-    ring_size_ = 0;
+    int max_len = 0;
     for (const auto& slot : irs_)
-        ring_size_ = std::max(ring_size_, static_cast<int>(slot.data.size()));
+        max_len = std::max(max_len, static_cast<int>(slot.data.size()));
+
+    // Round up to power of 2 for bitmask modulo (#51)
+    ring_size_ = 1;
+    while (ring_size_ < max_len) ring_size_ <<= 1;
+    ring_mask_ = ring_size_ - 1;
 
     for (auto& ch : ch_) {
         ch.ring.assign(ring_size_, 0.0f);
@@ -218,7 +224,7 @@ void IrConvolver::select(int index) {
     int new_idx = std::clamp(index, 0, static_cast<int>(irs_.size()) - 1);
     if (new_idx != active_) {
         active_ = new_idx;
-        std::fprintf(stderr, "[IR] selected: [%d] %s\n", active_, irs_[active_].name.c_str());
+        rt_log(RtLogEntry::Tag::IR_SELECT, active_);
     }
 }
 
@@ -242,10 +248,10 @@ void IrConvolver::process(float* interleaved_stereo, int frames) {
             int pos = state.write_pos;
             for (int k = 0; k < ir_len; ++k) {
                 conv += ir[k] * state.ring[pos];
-                if (--pos < 0) pos = ring_size_ - 1;
+                pos = (pos - 1) & ring_mask_;
             }
 
-            state.write_pos = (state.write_pos + 1) % ring_size_;
+            state.write_pos = (state.write_pos + 1) & ring_mask_;
 
             interleaved_stereo[i * 2 + ch] = x * dry + conv * wet;
         }

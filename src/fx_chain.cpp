@@ -1,5 +1,6 @@
 #include "fx_chain.hpp"
 #include "ir_convolver.hpp"
+#include "rt_log.hpp"
 #include <cmath>
 #include <algorithm>
 #include <cstdio>
@@ -18,6 +19,10 @@ FxChain::FxChain(int sample_rate) : sr_(sample_rate)
 {
     for (int i = 0; i < LUT_SIZE; ++i)
         sin_lut_[i] = static_cast<float>(std::sin(PI2 * i / LUT_SIZE));
+
+    // フェイザー用定数（process_phaser で毎回計算しない）
+    phaser_log_min_ = std::log(200.0f);
+    phaser_log_range_ = std::log(4000.0f) - phaser_log_min_;
 
     // デフォルト LFO レート
     trem_.inc = 2.0 / sr_;   // 2 Hz
@@ -223,8 +228,8 @@ void FxChain::apply_param(int cc, int val)
             // Phaser 切替時に depth=0 なら最低値を保証
             if (new_mode == ModMode::PHASER && phaser_.depth < 0.01f)
                 phaser_.depth = 0.8f;
-            fprintf(stderr, "[FxChain] Mod: %s\n",
-                    new_mode == ModMode::TREMOLO ? "Tremolo" : "Phaser");
+            rt_log(RtLogEntry::Tag::MOD_MODE,
+                   new_mode == ModMode::TREMOLO ? 0 : 1);
         }
         break;
     }
@@ -285,8 +290,7 @@ void FxChain::apply_param(int cc, int val)
         else                new_mode = SpaceMode::PLATE;
         if (new_mode != space_mode_) {
             space_mode_ = new_mode;
-            const char* names[] = {"Off", "Tape Echo", "Room Reverb", "Plate Reverb"};
-            fprintf(stderr, "[FxChain] Space: %s\n", names[static_cast<int>(new_mode)]);
+            rt_log(RtLogEntry::Tag::SPACE_MODE, static_cast<int>(new_mode));
         }
         break;
     }
@@ -337,27 +341,27 @@ void FxChain::process_tremolo(float* buf, int frames)
 }
 
 // ─── フェイザー（Small Stone 風 4段オールパス, ステレオ） ──────────
+// Phase 2 最適化: exp() をブロック単位に削減（2*frames → 2 回/ブロック）
 void FxChain::process_phaser(float* buf, int frames)
 {
-    const float min_fc = 200.0f;
-    const float max_fc = 4000.0f;
-    const float log_min = std::log(min_fc);
-    const float log_max = std::log(max_fc);
     const float depth = phaser_.depth;
     const float fb = phaser_.feedback;
     const double phase_inc = static_cast<double>(phaser_.rate) / sr_;
 
+    // ブロック先頭の LFO 値からオールパス係数を計算（exp 2回/ブロック）
+    auto compute_a = [&](double phase) -> float {
+        float lfo = lut(phase);
+        float log_fc = phaser_log_min_ + phaser_log_range_ * (0.5f + 0.5f * lfo * depth);
+        float fc = std::exp(log_fc);
+        float wc = 2.0f * static_cast<float>(M_PI) * fc / sr_;
+        return (1.0f - wc) / (1.0f + wc);
+    };
+    const float a_l = compute_a(phaser_.lfo_phase_l);
+    const float a_r = compute_a(phaser_.lfo_phase_r);
+
     for (int i = 0; i < frames; ++i) {
         for (int ch = 0; ch < 2; ++ch) {
-            double phase = (ch == 0) ? phaser_.lfo_phase_l : phaser_.lfo_phase_r;
-            float lfo = lut(phase);  // -1..1
-
-            // 指数スケールで fc をスイープ
-            float log_fc = log_min + (log_max - log_min) * (0.5f + 0.5f * lfo * depth);
-            float fc = std::exp(log_fc);
-            float wc = 2.0f * static_cast<float>(M_PI) * fc / sr_;
-            float a = (1.0f - wc) / (1.0f + wc);
-
+            const float a = (ch == 0) ? a_l : a_r;
             float x = buf[i * 2 + ch] + phaser_.fb_state[ch] * fb;
 
             // 4段カスケードオールパス
@@ -369,8 +373,6 @@ void FxChain::process_phaser(float* buf, int frames)
             }
 
             phaser_.fb_state[ch] = x;
-
-            // dry/wet ミックス
             buf[i * 2 + ch] = buf[i * 2 + ch] * (1.0f - depth * 0.5f) + x * depth * 0.5f;
         }
 

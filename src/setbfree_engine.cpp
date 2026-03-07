@@ -34,7 +34,7 @@ struct SetBfreeEngine::Impl {
 };
 
 SetBfreeEngine::SetBfreeEngine(int sample_rate)
-    : impl_(new Impl)
+    : impl_(std::make_unique<Impl>())
 {
     impl_->sample_rate = static_cast<double>(sample_rate);
     SampleRateD = impl_->sample_rate;  // setBfree global
@@ -90,7 +90,6 @@ SetBfreeEngine::~SetBfreeEngine()
         freePreamp(impl_->inst.preamp);
         freeProgs(impl_->inst.progs);
         freeRunningConfig(impl_->inst.state);
-        delete impl_;
     }
 }
 

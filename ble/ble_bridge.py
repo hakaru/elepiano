@@ -84,10 +84,15 @@ class BleBridge:
 
         print("BLE Bridge running. Ctrl+C to stop.")
 
-        # メインループ — elepiano 未接続時は定期的に通知
+        # メインループ — elepiano 未接続時は定期的に通知 + MIDI 再接続
+        reconnect_counter = 0
         try:
             while self._running:
                 await asyncio.sleep(2.0)
+                reconnect_counter += 1
+                # 10秒ごとに elepiano ALSA MIDI 接続を確認・再接続
+                if reconnect_counter % 5 == 0:
+                    self.midi.reconnect()
                 # elepiano 未接続なら disconnected ステータスを送信
                 if not self.status.last_status:
                     self._send_disconnected_status()

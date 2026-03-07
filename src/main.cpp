@@ -7,6 +7,7 @@
 #include "fx_chain.hpp"
 #include "status_reporter.hpp"
 #include "spsc_queue.hpp"
+#include "rt_log.hpp"
 #include <thread>
 #include <csignal>
 #include <cstdio>
@@ -102,6 +103,12 @@ static void run_engine(AudioOutput& audio, MidiInput& midi, std::function<void()
             default: break;
             }
         }
+
+        // RT スレッドからのログを flush
+        drain_rt_log();
+
+        // WAV dump ring buffer をファイルに flush
+        audio.flush_wav_dump();
 
         // Underrun カウント表示
         uint32_t xruns = audio.underrun_count();

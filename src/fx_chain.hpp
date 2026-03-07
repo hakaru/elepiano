@@ -54,6 +54,8 @@ private:
         float ap_y[2][4] = {};      // [ch][stage]
         float ap_x[2][4] = {};
     } phaser_;
+    float phaser_log_min_ = 0.0f;   // log(200 Hz) — 定数メンバ
+    float phaser_log_range_ = 0.0f; // log(4000) - log(200) — 定数メンバ
     void process_phaser(float* buf, int frames);
 
     // ── トレモロ（AM変調, L/R 90° 位相差） ──

@@ -38,6 +38,14 @@ struct Lv2Host::Impl {
     std::vector<float> control_values;
     std::unordered_map<int, uint32_t> cc_to_control_port; // cc -> port index
 
+    // CC→port 直接参照テーブル (#47: 線形探索を排除)
+    struct CcMapping {
+        uint32_t port_idx = UINT32_MAX;
+        float min_val = 0.0f;
+        float range = 0.0f;  // max - min
+    };
+    CcMapping cc_lut_[128] = {};
+
     std::vector<float> in_l_buf;
     std::vector<float> in_r_buf;
     std::vector<float> out_l_buf;
@@ -183,6 +191,20 @@ struct Lv2Host::Impl {
         }
 
         lilv_instance_activate(instance);
+
+        // CC→port 直接参照テーブルを構築 (#47)
+        for (const auto& [cc, port_idx] : cc_to_control_port) {
+            if (cc < 0 || cc > 127) continue;
+            cc_lut_[cc].port_idx = port_idx;
+            for (const auto& cp : control_ports) {
+                if (cp.index == port_idx) {
+                    cc_lut_[cc].min_val = cp.min_val;
+                    cc_lut_[cc].range = cp.max_val - cp.min_val;
+                    break;
+                }
+            }
+        }
+
         std::fprintf(stderr, "[LV2] loaded: %s (%s in, %s out)\n", uri,
                      mono_in ? "mono" : "stereo", mono_out ? "mono" : "stereo");
         return true;
@@ -234,21 +256,10 @@ bool Lv2Host::initialize(const std::string& uri, const char* cc_map, float wet,
 }
 
 void Lv2Host::set_cc(int cc, float normalized) {
-    if (!p_ || !p_->instance) return;
-    auto it = p_->cc_to_control_port.find(cc);
-    if (it == p_->cc_to_control_port.end()) return;
-    uint32_t port_idx = it->second;
-    if (port_idx >= p_->control_values.size()) return;
-
-    // Find port range info and scale normalized 0-1 to port min..max
-    float val = std::clamp(normalized, 0.0f, 1.0f);
-    for (const auto& cp : p_->control_ports) {
-        if (cp.index == port_idx) {
-            val = cp.min_val + val * (cp.max_val - cp.min_val);
-            break;
-        }
-    }
-    p_->control_values[port_idx] = val;
+    if (!p_ || !p_->instance || cc < 0 || cc > 127) return;
+    const auto& m = p_->cc_lut_[cc];
+    if (m.port_idx == UINT32_MAX || m.port_idx >= p_->control_values.size()) return;
+    p_->control_values[m.port_idx] = m.min_val + std::clamp(normalized, 0.0f, 1.0f) * m.range;
 }
 
 void Lv2Host::process(float* interleaved_stereo, int frames) {
