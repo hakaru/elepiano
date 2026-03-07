@@ -150,6 +150,13 @@ void MidiInput::run()
             me.note    = ev->data.control.value & 0x7F;  // program number 0-127
             break;
         }
+        case SND_SEQ_EVENT_PITCHBEND: {
+            me.type     = MidiEvent::Type::PITCH_BEND;
+            me.channel  = ev->data.control.channel & 0x0F;
+            // ALSA pitch bend value: -8192..+8191 → convert to 0..16383
+            me.velocity = ev->data.control.value + 8192;
+            break;
+        }
         case SND_SEQ_EVENT_CONTROLLER: {
             const int param = ev->data.control.param;
             const int value = ev->data.control.value;

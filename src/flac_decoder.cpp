@@ -244,10 +244,14 @@ DecodedAudio decode_flac_file(const std::string& path, size_t max_frames)
             uint16_t stored = (static_cast<uint16_t>(buf[next - 2]) << 8) | buf[next - 1];
             if (computed != stored) ++before_muted;
         }
-        if (before_muted > 0)
+        if (before_muted > 0) {
             fprintf(stderr, "[FLAC] %s: %d/%zu frames CRC-16 NG\n",
                     path.c_str(), before_muted, frame_starts.size());
-        mute_bad_frames(result.pcm, block_size, result.num_channels, buf, frame_starts);
+            // CRC-16 エラーが少数ならミュート（実際の破損）
+            // 大多数なら SpCA の仕様的 CRC 破損 → dr_flac の出力を信頼
+            if (before_muted * 2 < static_cast<int>(frame_starts.size()))
+                mute_bad_frames(result.pcm, block_size, result.num_channels, buf, frame_starts);
+        }
     }
 
     return result;

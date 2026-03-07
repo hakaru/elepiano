@@ -53,9 +53,8 @@ struct CCControlView: View {
                 .foregroundStyle(.secondary)
 
             HStack(spacing: 12) {
-                ForEach(["Rhodes", "Wurlitzer"], id: \.self) { name in
-                    let index = name == "Rhodes" ? 0 : 1
-                    let isActive = (ble.status?.program ?? 1) == index + 1
+                ForEach(Array(["Rhodes", "LA Custom", "Vintage Vibe"].enumerated()), id: \.offset) { index, name in
+                    let isActive = (ble.status?.program ?? 1) == (index + 1)
                     Button {
                         ble.sendProgramChange(index)
                     } label: {
@@ -86,12 +85,37 @@ struct CCControlView: View {
                 .foregroundStyle(.secondary)
 
             ForEach(params) { param in
-                ccSlider(param)
+                if param.cc == 3 {
+                    ccToggle(param, offLabel: "Tremolo", onLabel: "Phaser")
+                } else {
+                    ccSlider(param)
+                }
             }
         }
         .padding()
         .background(.ultraThinMaterial)
         .cornerRadius(12)
+    }
+
+    private func ccToggle(_ param: CCParameter, offLabel: String, onLabel: String) -> some View {
+        let isOn = (ccValues[param.cc] ?? Double(param.defaultValue)) >= 64
+        HStack {
+            Text(offLabel)
+                .font(.subheadline)
+                .foregroundStyle(isOn ? .secondary : .primary)
+            Toggle("", isOn: Binding(
+                get: { isOn },
+                set: { newValue in
+                    let val = newValue ? 127.0 : 0.0
+                    ccValues[param.cc] = val
+                    ble.sendCC(param.cc, value: Int(val))
+                }
+            ))
+            .labelsHidden()
+            Text(onLabel)
+                .font(.subheadline)
+                .foregroundStyle(isOn ? .primary : .secondary)
+        }
     }
 
     private func ccSlider(_ param: CCParameter) -> some View {

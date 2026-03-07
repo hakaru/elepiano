@@ -1,0 +1,3 @@
+[submodule "vendor/setBfree"]
+	path = vendor/setBfree
+	url = https://github.com/pantherb/setBfree.git

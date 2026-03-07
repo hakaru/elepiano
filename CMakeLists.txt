@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(elepiano CXX)
+project(elepiano C CXX)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 option(ELEPIANO_ENABLE_LV2 "Enable LV2 host in FxChain (requires lilv-0)" OFF)
@@ -26,6 +26,35 @@ if(NOT nlohmann_json_FOUND)
 endif()
 
 # ============================================================
+# setBfree (Hammond B3 tonewheel organ) — 静的ライブラリ
+# ============================================================
+set(SETBFREE_DIR ${CMAKE_SOURCE_DIR}/vendor/setBfree)
+add_library(setbfree STATIC
+    ${SETBFREE_DIR}/src/tonegen.c
+    ${SETBFREE_DIR}/src/vibrato.c
+    ${SETBFREE_DIR}/src/midi.c
+    ${SETBFREE_DIR}/src/state.c
+    ${SETBFREE_DIR}/src/cfgParser.c
+    ${SETBFREE_DIR}/src/pgmParser.c
+    ${SETBFREE_DIR}/src/program.c
+    ${SETBFREE_DIR}/src/midnam.c
+    src/setbfree_stubs.c
+    ${SETBFREE_DIR}/b_overdrive/overdrive.c
+    ${SETBFREE_DIR}/b_whirl/whirl.c
+    ${SETBFREE_DIR}/b_whirl/eqcomp.c
+    ${SETBFREE_DIR}/b_reverb/reverb.c
+)
+target_include_directories(setbfree PUBLIC
+    ${SETBFREE_DIR}/src
+    ${SETBFREE_DIR}/b_overdrive
+    ${SETBFREE_DIR}/b_whirl
+    ${SETBFREE_DIR}/b_reverb
+)
+target_compile_options(setbfree PRIVATE -O3 -ffast-math -fomit-frame-pointer -w)
+target_compile_definitions(setbfree PRIVATE _GNU_SOURCE)
+set_target_properties(setbfree PROPERTIES C_STANDARD 99)
+
+# ============================================================
 # ターゲット
 # ============================================================
 add_executable(elepiano
@@ -35,7 +64,9 @@ add_executable(elepiano
     src/voice.cpp
     src/synth_engine.cpp
     src/organ_engine.cpp
+    src/setbfree_engine.cpp
     src/fx_chain.cpp
+    src/ir_convolver.cpp
     src/status_reporter.cpp
     src/midi_input.cpp
     src/audio_output.cpp
@@ -60,7 +91,9 @@ target_include_directories(elepiano PRIVATE
 target_link_libraries(elepiano PRIVATE
     ALSA::ALSA
     nlohmann_json::nlohmann_json
+    setbfree
     pthread
+    m
 )
 
 # 最適化フラグ

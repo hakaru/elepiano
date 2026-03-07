@@ -1,11 +1,15 @@
 #include "fx_chain.hpp"
+#include "ir_convolver.hpp"
 #include <cmath>
 #include <algorithm>
 #include <cstdio>
 #include <cstdlib>
+#include <sstream>
+#include <string>
 
 #ifdef ELEPIANO_ENABLE_LV2
 #include "lv2_host.hpp"
+#include <lilv/lilv.h>
 #endif
 
 static constexpr double PI2 = 2.0 * M_PI;
@@ -40,36 +44,156 @@ FxChain::FxChain(int sample_rate) : sr_(sample_rate)
     // Plate reverb 初期設定
     setup_plate(0.7f);
 
+    // ── IR 畳み込み（LV2 不要、常時利用可） ──
+    {
+        auto ir = std::make_unique<IrConvolver>();
+        if (ir->initialize_from_env()) {
+            ir_conv_ = std::move(ir);
+            fprintf(stderr, "[FxChain] IR convolver enabled (%d IRs, active: %s)\n",
+                    ir_conv_->ir_count(), ir_conv_->active_name().c_str());
+        }
+    }
+
 #ifdef ELEPIANO_ENABLE_LV2
-    lv2_ = std::make_unique<::Lv2Host>(sample_rate, 8192);
-    if (lv2_->initialize_from_env()) {
-        fprintf(stderr, "[FxChain] LV2 host enabled from environment\n");
-    } else {
-        lv2_.reset();
+    // ── LV2 チェーン初期化 ──
+    // ELEPIANO_LV2_CHAIN: IR 前チェーン (セミコロン区切り URI)
+    // ELEPIANO_LV2_POST_CHAIN: IR 後チェーン (セミコロン区切り URI)
+    // 後方互換: ELEPIANO_LV2_URI (単体、pre chain)
+    {
+        auto parse_uris = [](const char* env) -> std::vector<std::string> {
+            std::vector<std::string> uris;
+            if (!env || !*env) return uris;
+            std::istringstream ss(env);
+            std::string uri;
+            while (std::getline(ss, uri, ';'))
+                if (!uri.empty()) uris.push_back(uri);
+            return uris;
+        };
+
+        std::vector<std::string> pre_uris = parse_uris(std::getenv("ELEPIANO_LV2_CHAIN"));
+        if (pre_uris.empty()) pre_uris = parse_uris(std::getenv("ELEPIANO_LV2_URI"));
+        std::vector<std::string> post_uris = parse_uris(std::getenv("ELEPIANO_LV2_POST_CHAIN"));
+
+        if (!pre_uris.empty() || !post_uris.empty()) {
+            lilv_world_ = lilv_world_new();
+            if (lilv_world_) {
+                lilv_world_load_all(lilv_world_);
+
+                // ヘルパー: URI リストから LV2 チェーンを構築
+                auto build_chain = [&](const std::vector<std::string>& uris,
+                                       std::vector<std::unique_ptr<Lv2Host>>& chain,
+                                       const char* prefix, int idx_offset) {
+                    for (size_t i = 0; i < uris.size(); ++i) {
+                        auto host = std::make_unique<Lv2Host>(sample_rate, 8192);
+                        int gi = idx_offset + static_cast<int>(i);  // global index
+
+                        char env_cc[64], env_wet[64], env_def[64];
+                        std::snprintf(env_cc, sizeof(env_cc), "ELEPIANO_LV2_%d_CC_MAP", gi);
+                        std::snprintf(env_wet, sizeof(env_wet), "ELEPIANO_LV2_%d_WET", gi);
+                        std::snprintf(env_def, sizeof(env_def), "ELEPIANO_LV2_%d_DEFAULTS", gi);
+
+                        const char* cc_map = std::getenv(env_cc);
+                        const char* defaults = std::getenv(env_def);
+                        float wet = 1.0f;
+                        if (const char* w = std::getenv(env_wet))
+                            wet = static_cast<float>(std::atof(w));
+
+                        // Legacy fallback for global index 0
+                        if (gi == 0 && !cc_map)
+                            cc_map = std::getenv("ELEPIANO_LV2_CC_MAP");
+                        if (gi == 0 && !std::getenv(env_wet)) {
+                            if (const char* w = std::getenv("ELEPIANO_LV2_WET"))
+                                wet = static_cast<float>(std::atof(w));
+                        }
+
+                        if (host->initialize(uris[i], cc_map, wet, lilv_world_, defaults)) {
+                            chain.push_back(std::move(host));
+                            fprintf(stderr, "[FxChain] %s[%zu] loaded: %s\n", prefix, i, uris[i].c_str());
+                        } else {
+                            fprintf(stderr, "[FxChain] %s[%zu] failed: %s\n", prefix, i, uris[i].c_str());
+                        }
+                    }
+                };
+
+                build_chain(pre_uris, lv2_pre_chain_, "LV2-pre", 0);
+                build_chain(post_uris, lv2_post_chain_, "LV2-post",
+                            static_cast<int>(pre_uris.size()));
+            }
+        }
+
+        use_lv2_pre_ = !lv2_pre_chain_.empty();
+        use_lv2_post_ = !lv2_post_chain_.empty();
+        if (use_lv2_pre_) {
+            fprintf(stderr, "[FxChain] LV2 pre-IR chain active (%zu plugins), "
+                    "internal preamp/cabinet bypassed\n", lv2_pre_chain_.size());
+        }
+        if (use_lv2_post_) {
+            fprintf(stderr, "[FxChain] LV2 post-IR chain active (%zu plugins), "
+                    "internal EQ/chorus/space bypassed\n", lv2_post_chain_.size());
+        }
     }
 #endif
 }
 
-FxChain::~FxChain() = default;
+FxChain::~FxChain() {
+#ifdef ELEPIANO_ENABLE_LV2
+    // LV2 instances must be freed before the shared world
+    lv2_pre_chain_.clear();
+    lv2_post_chain_.clear();
+    if (lilv_world_) {
+        lilv_world_free(lilv_world_);
+        lilv_world_ = nullptr;
+    }
+#endif
+}
 
-// ─── メイン処理（信号順: トレモロ→プリアンプ→EQ→コーラス→テープディレイ）──
+// ─── メイン処理 ──────────────────────────────────────
+// シグナルフロー:
+//   [tremolo or phaser] → [LV2 pre chain] or [preamp → cabinet] → IR
+//           → [LV2 post chain] or [EQ → chorus → space]
 void FxChain::process(float* buf, int frames)
 {
     // MIDIスレッドからのパラメータ変更をオーディオスレッドで適用
     while (auto ev = param_queue_.pop())
         apply_param(ev->cc, ev->value);
-    if (trem_.depth > 0.001f)        process_tremolo(buf, frames);
-    if (preamp_.drive > 1.01f) {
-        process_preamp(buf, frames);
-        process_cabinet(buf, frames);
+
+    // ── モジュレーション（Tremolo / Phaser 排他） ──
+    if (mod_mode_ == ModMode::TREMOLO) {
+        if (trem_.depth > 0.001f)
+            process_tremolo(buf, frames);
+    } else {
+        process_phaser(buf, frames);
     }
-    if (eq_lo_db_ != 0.0f)          process_biquad(eq_lo_, buf, frames);
-    if (eq_hi_db_ != 0.0f)          process_biquad(eq_hi_, buf, frames);
-    if (chorus_.wet > 0.001f)        process_chorus(buf, frames);
-    if (space_wet_ > 0.001f)         process_space(buf, frames);
+
+    // ── Pre-IR: LV2 pre chain or 内蔵 preamp/cabinet ──
+    if (use_lv2_pre_) {
 #ifdef ELEPIANO_ENABLE_LV2
-    if (lv2_)                        lv2_->process(buf, frames);
+        for (auto& lv2 : lv2_pre_chain_)
+            lv2->process(buf, frames);
 #endif
+    } else {
+        if (preamp_.drive > 1.01f) {
+            process_preamp(buf, frames);
+            process_cabinet(buf, frames);
+        }
+    }
+
+    // ── IR 畳み込み ──
+    if (ir_conv_)
+        ir_conv_->process(buf, frames);
+
+    // ── Post-IR: LV2 post chain or 内蔵 EQ/chorus/space ──
+    if (use_lv2_post_) {
+#ifdef ELEPIANO_ENABLE_LV2
+        for (auto& lv2 : lv2_post_chain_)
+            lv2->process(buf, frames);
+#endif
+    } else {
+        if (eq_lo_db_ != 0.0f)          process_biquad(eq_lo_, buf, frames);
+        if (eq_hi_db_ != 0.0f)          process_biquad(eq_hi_, buf, frames);
+        if (chorus_.wet > 0.001f)        process_chorus(buf, frames);
+        if (space_wet_ > 0.001f)         process_space(buf, frames);
+    }
 }
 
 // ─── MIDI CC パラメータ（MIDIスレッドから呼ばれる → キューに push） ──
@@ -84,30 +208,76 @@ void FxChain::apply_param(int cc, int val)
     const float v = val / 127.0f;  // 0.0〜1.0
 
 #ifdef ELEPIANO_ENABLE_LV2
-    if (lv2_) lv2_->set_cc(cc, v);
+    for (auto& lv2 : lv2_pre_chain_)
+        lv2->set_cc(cc, v);
+    for (auto& lv2 : lv2_post_chain_)
+        lv2->set_cc(cc, v);
 #endif
 
     switch (cc) {
-    // ── Tremolo (CC1-2) ──
-    case 1:  trem_.depth = v * 0.8f; break;              // Depth (モジュレーションホイール)
-    case 2:  trem_.inc = (0.5 + v * 7.5) / sr_; break;   // Rate 0.5〜8 Hz
+    // ── Modulation 切替 (CC3) ──
+    case 3: {
+        ModMode new_mode = (val < 64) ? ModMode::TREMOLO : ModMode::PHASER;
+        if (new_mode != mod_mode_) {
+            mod_mode_ = new_mode;
+            // Phaser 切替時に depth=0 なら最低値を保証
+            if (new_mode == ModMode::PHASER && phaser_.depth < 0.01f)
+                phaser_.depth = 0.8f;
+            fprintf(stderr, "[FxChain] Mod: %s\n",
+                    new_mode == ModMode::TREMOLO ? "Tremolo" : "Phaser");
+        }
+        break;
+    }
 
-    // ── Overdrive (CC70-71) ──
-    case 70: preamp_.drive = 1.0f + v * 7.0f; break;     // Drive 1〜8
-    case 71: preamp_.tone = v; break;                     // Tone (0=dark, 1=bright)
+    // ── Tremolo / Phaser 共有 (CC1-2) + Phaser Color (CC4) ──
+    case 1:
+        trem_.depth = v * 0.8f;
+        phaser_.depth = v;
+        break;
+    case 2: {
+        double rate_hz = 0.1 + v * 7.9;  // 0.1〜8 Hz
+        trem_.inc = rate_hz / sr_;
+        phaser_.rate = static_cast<float>(rate_hz);
+        break;
+    }
+    case 4:  // Phaser Color (feedback/resonance)
+        phaser_.feedback = v * 0.9f;  // 0..0.9
+        break;
 
-    // ── EQ (CC72-73) ──
-    case 72:
-        eq_lo_db_ = (val - 64) * (20.0f / 64.0f);        // Lo EQ -20〜+20 dB @ 150Hz
+    // ── IR Convolver (CC104, CC105) ──
+    case 104:  // IR マイク位置選択
+        if (ir_conv_ && ir_conv_->ir_count() > 1) {
+            int idx = val * ir_conv_->ir_count() / 128;
+            ir_conv_->select(idx);
+        }
+        break;
+    case 105:  // IR wet (0=OFF, 1-127=ON)
+        if (ir_conv_)
+            ir_conv_->set_wet(v);
+        break;
+
+    // ── Overdrive (CC106-107) ──
+    case 106:  // Drive
+        preamp_.drive = 1.0f + v * 7.0f;
+        break;
+    case 107:  // Tone
+        preamp_.tone = v;
+        break;
+
+    // ── EQ (CC108-109) ──
+    case 108: {  // Lo
+        eq_lo_db_ = (v - 0.5f) * 24.0f;  // -12..+12 dB
         compute_shelf(eq_lo_, 150.0f, eq_lo_db_, false);
         break;
-    case 73:
-        eq_hi_db_ = (val - 64) * (20.0f / 64.0f);        // Hi EQ -20〜+20 dB @ 3kHz
+    }
+    case 109: {  // Hi
+        eq_hi_db_ = (v - 0.5f) * 24.0f;
         compute_shelf(eq_hi_, 3000.0f, eq_hi_db_, true);
         break;
+    }
 
-    // ── Space エフェクト (CC75-78) ──
-    case 75: {                                             // Space モード切替
+    // ── Space エフェクト (CC110-113) ──
+    case 110: {                                            // Space モード切替
         SpaceMode new_mode;
         if (val < 32)       new_mode = SpaceMode::OFF;
         else if (val < 64)  new_mode = SpaceMode::TAPE_ECHO;
@@ -120,7 +290,7 @@ void FxChain::apply_param(int cc, int val)
         }
         break;
     }
-    case 76:                                               // Tape: Time / Room: Size
+    case 111:                                              // Tape: Time / Room: Size
         if (space_mode_ == SpaceMode::TAPE_ECHO) {
             delay_.delay_samples = v * 0.5f * sr_;
         } else if (space_mode_ == SpaceMode::ROOM) {
@@ -128,7 +298,7 @@ void FxChain::apply_param(int cc, int val)
             setup_room(v, room_decay_);
         }
         break;
-    case 77:                                               // Tape: Feedback / Reverb: Decay
+    case 112:                                              // Tape: Feedback / Reverb: Decay
         if (space_mode_ == SpaceMode::TAPE_ECHO) {
             delay_.feedback = v * 0.85f;
         } else if (space_mode_ == SpaceMode::ROOM) {
@@ -139,15 +309,15 @@ void FxChain::apply_param(int cc, int val)
             setup_plate(plate_decay_);
         }
         break;
-    case 78:                                               // Wet レベル（共通）
+    case 113:                                              // Wet レベル（共通）
         space_wet_target_ = v;
         space_wet_ = v;
         break;
 
-    // ── Chorus (CC79-81) ──
-    case 79: chorus_.inc = (0.5 + v * 1.5) / sr_; break;  // Rate 0.5〜2 Hz
-    case 80: chorus_.depth_ms = v * 20.0f; break;          // Depth 0〜20 ms
-    case 81: chorus_.wet = v; break;                        // Wet レベル
+    // ── Chorus (CC114-116) ──
+    case 114: chorus_.inc = (0.5 + v * 1.5) / sr_; break;  // Rate 0.5〜2 Hz
+    case 115: chorus_.depth_ms = v * 20.0f; break;          // Depth 0〜20 ms
+    case 116: chorus_.wet = v; break;                        // Wet レベル
     }
 }
 
@@ -163,6 +333,51 @@ void FxChain::process_tremolo(float* buf, int frames)
         buf[i * 2 + 1] *= mod_r;
         trem_.phase += trem_.inc;
         if (trem_.phase >= 1.0) trem_.phase -= 1.0;
+    }
+}
+
+// ─── フェイザー（Small Stone 風 4段オールパス, ステレオ） ──────────
+void FxChain::process_phaser(float* buf, int frames)
+{
+    const float min_fc = 200.0f;
+    const float max_fc = 4000.0f;
+    const float log_min = std::log(min_fc);
+    const float log_max = std::log(max_fc);
+    const float depth = phaser_.depth;
+    const float fb = phaser_.feedback;
+    const double phase_inc = static_cast<double>(phaser_.rate) / sr_;
+
+    for (int i = 0; i < frames; ++i) {
+        for (int ch = 0; ch < 2; ++ch) {
+            double phase = (ch == 0) ? phaser_.lfo_phase_l : phaser_.lfo_phase_r;
+            float lfo = lut(phase);  // -1..1
+
+            // 指数スケールで fc をスイープ
+            float log_fc = log_min + (log_max - log_min) * (0.5f + 0.5f * lfo * depth);
+            float fc = std::exp(log_fc);
+            float wc = 2.0f * static_cast<float>(M_PI) * fc / sr_;
+            float a = (1.0f - wc) / (1.0f + wc);
+
+            float x = buf[i * 2 + ch] + phaser_.fb_state[ch] * fb;
+
+            // 4段カスケードオールパス
+            for (int s = 0; s < 4; ++s) {
+                float y = -a * x + phaser_.ap_x[ch][s] + a * phaser_.ap_y[ch][s];
+                phaser_.ap_x[ch][s] = x;
+                phaser_.ap_y[ch][s] = y;
+                x = y;
+            }
+
+            phaser_.fb_state[ch] = x;
+
+            // dry/wet ミックス
+            buf[i * 2 + ch] = buf[i * 2 + ch] * (1.0f - depth * 0.5f) + x * depth * 0.5f;
+        }
+
+        phaser_.lfo_phase_l += phase_inc;
+        phaser_.lfo_phase_r += phase_inc;
+        if (phaser_.lfo_phase_l >= 1.0) phaser_.lfo_phase_l -= 1.0;
+        if (phaser_.lfo_phase_r >= 1.0) phaser_.lfo_phase_r -= 1.0;
     }
 }
 

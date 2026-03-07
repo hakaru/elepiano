@@ -5,6 +5,7 @@ Wants=bluetooth.target
 
 [Service]
 Type=simple
+Environment=PYTHONUNBUFFERED=1
 ExecStart=/usr/bin/python3 /home/hakaru/elepiano/ble/ble_bridge.py
 WorkingDirectory=/home/hakaru/elepiano/ble
 Restart=on-failure

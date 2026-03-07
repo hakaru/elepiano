@@ -5,11 +5,11 @@
 #include <atomic>
 
 struct MidiEvent {
-    enum class Type { NOTE_ON, NOTE_OFF, CC, PROGRAM_CHANGE, OTHER };
+    enum class Type { NOTE_ON, NOTE_OFF, CC, PROGRAM_CHANGE, PITCH_BEND, OTHER };
     Type type     = Type::OTHER;
     int  channel  = 0;
     int  note     = 0;  // CC: cc_number, PC: program number
-    int  velocity = 0;  // CC: cc_value
+    int  velocity = 0;  // CC: cc_value, PitchBend: 14-bit value (0-16383, center=8192)
 };
 
 class MidiInput {

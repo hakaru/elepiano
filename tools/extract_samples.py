@@ -180,33 +180,43 @@ def _find_sync(data: bytes, start: int = 0) -> int:
 
 def _find_encrypted_frame1(data: bytes, search_start: int,
                             max_scan: int = 200_000,
-                            expected_byte2: int = -1) -> tuple[int, int]:
+                            expected_byte2: int = -1,
+                            max_candidates: int = 5) -> list[tuple[int, int]]:
     """
-    XOR 暗号化された FLAC フレーム同期ワードを探す（Sustain サンプル用）。
+    XOR 暗号化された FLAC フレーム同期ワードの候補を探す。
 
-    data[pos] ^ XOR_BASE_KEY[rot] == 0xFF かつ
-    data[pos+1] ^ XOR_BASE_KEY[(rot+1)%4] が 0xF8 または 0xF9
-    になる (pos, rot) を返す。見つからなければ (-1, -1)。
-
-    expected_byte2 >= 0 の場合、復号後の byte2 が一致するフレームのみマッチ。
-    それ以外は bs_code >= 1 かつ sr_code が有効 (1-14) であればマッチとする。
+    CRC-8 ヘッダ検証を通過した (pos, rot) のリストを返す（最大 max_candidates 件）。
+    CRC-8 は偽陽性率が ~1/256 のため、最初の候補が正しいとは限らない。
+    呼び出し元で dr_flac デコード検証して正しい候補を選択する。
     """
     search_end = min(len(data) - 4, search_start + max_scan)
+    candidates: list[tuple[int, int]] = []
     for pos in range(search_start, search_end):
         for rot in range(4):
             b0 = data[pos]     ^ XOR_BASE_KEY[rot]
             b1 = data[pos + 1] ^ XOR_BASE_KEY[(rot + 1) % 4]
             if b0 == 0xFF and (b1 & 0xFE) == 0xF8:
                 b2 = data[pos + 2] ^ XOR_BASE_KEY[(rot + 2) % 4]
-                if expected_byte2 >= 0:
-                    if b2 == expected_byte2:
-                        return pos, rot
-                else:
-                    bs_code = (b2 >> 4) & 0x0F
-                    sr_code = b2 & 0x0F
-                    if bs_code >= 1 and sr_code >= 1 and sr_code != 15:
-                        return pos, rot
-    return -1, -1
+                # byte2 の基本チェック
+                bs_code = (b2 >> 4) & 0x0F
+                sr_code = b2 & 0x0F
+                if bs_code < 1 or sr_code < 1 or sr_code == 15:
+                    continue
+                if expected_byte2 >= 0 and b2 != expected_byte2:
+                    continue
+                # XOR 復号してフレームヘッダ全体の CRC-8 を検証
+                key = XOR_BASE_KEY[rot:] + XOR_BASE_KEY[:rot]
+                max_hdr = min(20, len(data) - pos)
+                dec_hdr = bytes(data[pos + j] ^ key[j % 4] for j in range(max_hdr))
+                hdr_len = _flac_header_len(dec_hdr, 0)
+                if hdr_len < 0 or hdr_len > max_hdr:
+                    continue
+                computed_crc8 = _flac_crc8(dec_hdr[:hdr_len - 1])
+                if computed_crc8 == dec_hdr[hdr_len - 1]:
+                    candidates.append((pos, rot))
+                    if len(candidates) >= max_candidates:
+                        return candidates
+    return candidates
 
 
 def _find_frame_header_size(data: bytes, pos: int) -> int:
@@ -253,6 +263,106 @@ def _find_frame_header_size(data: bytes, pos: int) -> int:
     return idx - pos
 
 
+def _flac_crc8(data: bytes) -> int:
+    crc = 0
+    for b in data:
+        crc ^= b
+        for _ in range(8):
+            crc = ((crc << 1) ^ 0x07) if (crc & 0x80) else (crc << 1)
+            crc &= 0xFF
+    return crc
+
+
+def _flac_crc16(data: bytes) -> int:
+    crc = 0
+    for b in data:
+        crc ^= b << 8
+        for _ in range(8):
+            crc = ((crc << 1) ^ 0x8005) if (crc & 0x8000) else (crc << 1)
+            crc &= 0xFFFF
+    return crc
+
+
+def _flac_header_len(data: bytes, pos: int) -> int:
+    """FLAC フレームヘッダの長さ（CRC-8 含む）。不正なら -1"""
+    avail = len(data) - pos
+    if avail < 6:
+        return -1
+    length = 4
+    first = data[pos + 4]
+    if (first & 0x80) == 0:      utf8_len = 1
+    elif (first & 0xE0) == 0xC0: utf8_len = 2
+    elif (first & 0xF0) == 0xE0: utf8_len = 3
+    elif (first & 0xF8) == 0xF0: utf8_len = 4
+    elif (first & 0xFC) == 0xF8: utf8_len = 5
+    elif (first & 0xFE) == 0xFC: utf8_len = 6
+    elif first == 0xFE:          utf8_len = 7
+    else: return -1
+    length += utf8_len
+    bs_code = (data[pos + 2] >> 4) & 0x0F
+    if bs_code == 6: length += 1
+    elif bs_code == 7: length += 2
+    sr_code = data[pos + 2] & 0x0F
+    if sr_code == 12: length += 1
+    elif sr_code in (13, 14): length += 2
+    length += 1  # CRC-8
+    if length > avail:
+        return -1
+    return length
+
+
+def _fix_flac_crc16(data: bytearray) -> bytearray:
+    """FLAC データの全フレームの CRC-16 を正しく再計算する"""
+    # メタデータブロックをスキップ
+    if len(data) < 8 or data[:4] != b'fLaC':
+        return data
+    pos = 4
+    while pos + 4 <= len(data):
+        is_last = (data[pos] & 0x80) != 0
+        blen = (data[pos+1] << 16) | (data[pos+2] << 8) | data[pos+3]
+        pos += 4 + blen
+        if is_last:
+            break
+    audio_start = pos
+
+    # フレーム境界検出（CRC-8 ヘッダ検証）
+    frame_starts = []
+    i = audio_start
+    while i + 6 < len(data):
+        if data[i] == 0xFF and (data[i+1] & 0xFE) == 0xF8:
+            b2 = data[i+2]
+            b3 = data[i+3]
+            bs_code = (b2 >> 4) & 0x0F
+            sr_code = b2 & 0x0F
+            reserved = b3 & 0x01
+            if bs_code >= 1 and sr_code >= 1 and sr_code != 15 and reserved == 0:
+                hdr_len = _flac_header_len(data, i)
+                if hdr_len > 0:
+                    computed = _flac_crc8(bytes(data[i:i+hdr_len-1]))
+                    if computed == data[i+hdr_len-1]:
+                        frame_starts.append(i)
+        i += 1
+
+    # 各フレームの CRC-16 を修正
+    fixed = 0
+    for idx in range(len(frame_starts)):
+        fpos = frame_starts[idx]
+        next_pos = frame_starts[idx+1] if idx+1 < len(frame_starts) else len(data)
+        if next_pos - fpos < 6:
+            continue
+        frame_body = bytes(data[fpos:next_pos-2])
+        correct_crc = _flac_crc16(frame_body)
+        stored_crc = (data[next_pos-2] << 8) | data[next_pos-1]
+        if correct_crc != stored_crc:
+            data[next_pos-2] = (correct_crc >> 8) & 0xFF
+            data[next_pos-1] = correct_crc & 0xFF
+            fixed += 1
+
+    if fixed > 0:
+        pass  # サイレントに修正
+    return data
+
+
 def decode_spca(spca_bytes: bytes, encrypted: bool = False) -> bytes:
     """
     SpCA バイト列を FLAC バイト列に変換する。
@@ -269,8 +379,8 @@ def decode_spca(spca_bytes: bytes, encrypted: bool = False) -> bytes:
     result = bytearray(FLAC_MAGIC + spca_bytes[4:])
 
     if not encrypted:
-        # dr_flac (DR_FLAC_NO_CRC) は CRC 不要 — CRC修復は偽sync位置を破損させるためスキップ
-        return bytes(result)
+        # CRC-16 を正しく再計算（SpCA は CRC を意図的に壊している）
+        return bytes(_fix_flac_crc16(result))
 
     # --- Sustain: XOR 暗号化フレーム1を探して復号 ---
 
@@ -297,19 +407,61 @@ def decode_spca(spca_bytes: bytes, encrypted: bool = False) -> bytes:
     hdr_size    = _find_frame_header_size(result, frame0_pos)
     search_start = frame0_pos + max(hdr_size, 1)
 
-    # XOR 暗号化されたフレーム1を探す（frame0 と同じ bs/sr コードを要求）
-    enc_pos, enc_rot = _find_encrypted_frame1(bytes(result), search_start,
-                                               expected_byte2=frame0_byte2)
-    if enc_pos == -1:
+    # XOR 暗号化されたフレームの候補を探す（frame0 と同じ bs/sr コードを要求）
+    candidates = _find_encrypted_frame1(bytes(result), search_start,
+                                         expected_byte2=frame0_byte2)
+    if not candidates:
         # フレームが1つのみ（または解析不能）
         return bytes(result)
 
-    # フレーム1以降を XOR 復号（インプレース）
-    key = XOR_BASE_KEY[enc_rot:] + XOR_BASE_KEY[:enc_rot]
-    for i in range(enc_pos, len(result)):
-        result[i] ^= key[(i - enc_pos) % 4]
+    # 候補を順に試行: dr_flac で frame 0 以上をデコードできるものを採用
+    best_result = None
+    for enc_pos, enc_rot in candidates:
+        trial = bytearray(result)
+        key = XOR_BASE_KEY[enc_rot:] + XOR_BASE_KEY[:enc_rot]
+        for i in range(enc_pos, len(trial)):
+            trial[i] ^= key[(i - enc_pos) % 4]
 
-    return bytes(result)
+        # 候補が1つだけなら検証不要
+        if len(candidates) == 1:
+            return bytes(trial)
+
+        # dr_flac で簡易検証（フレーム0 以上デコードできるか）
+        try:
+            decoded_count = _drflac_quick_check(bytes(trial))
+            if decoded_count > 4096:
+                return bytes(trial)
+            if best_result is None:
+                best_result = bytes(trial)
+        except Exception:
+            if best_result is None:
+                best_result = bytes(trial)
+
+    # どの候補もフレーム0しかデコードできない場合、最初の候補を使用
+    return best_result if best_result else bytes(result)
+
+
+def _drflac_quick_check(flac_data: bytes) -> int:
+    """dr_flac でデコードし、デコードされたサンプル数を返す。"""
+    import subprocess
+    import tempfile
+    import os
+    with tempfile.NamedTemporaryFile(suffix='.flac', delete=False) as tmp:
+        tmp.write(flac_data)
+        tmp_path = tmp.name
+    try:
+        r = subprocess.run(
+            ['/tmp/drflac_decode', tmp_path, '/dev/null'],
+            capture_output=True, timeout=10
+        )
+        for line in r.stderr.decode().strip().split('\n'):
+            if 'decoded=' in line:
+                return int(line.split('decoded=')[1].split()[0])
+    except Exception:
+        pass
+    finally:
+        os.unlink(tmp_path)
+    return 0
 
 
 # ============================================================
@@ -413,27 +565,29 @@ def parse_clr_mchr03_name(name: str) -> SampleMeta | None:
 
 def parse_lacrm_name(name: str) -> SampleMeta | None:
     """
-    "RR01 lacrm 100 102.wav" → SampleMeta(midi_note=102, velocity_idx=100, round_robin=1)
+    "RR01 lacrm 45 102.wav" → SampleMeta(midi_note=45, velocity_idx=102, round_robin=1)
+    NUM1 = MIDI note, NUM2 = velocity index (FFT検証済み)
     """
     m = LACRM_RE.search(name)
     if not m:
         return None
     rr   = int(m.group(1))
-    vel  = int(m.group(2))
-    note = int(m.group(3))
+    note = int(m.group(2))
+    vel  = int(m.group(3))
     return SampleMeta(midi_note=note, velocity_idx=vel, round_robin=rr, file_entry=None)
 
 
 def parse_lacr_rel_name(name: str) -> SampleMeta | None:
     """
-    "RR01 lacr 100 109 rel.wav" → SampleMeta(midi_note=109, velocity_idx=100, round_robin=1)
+    "RR01 lacr 45 109 rel.wav" → SampleMeta(midi_note=45, velocity_idx=109, round_robin=1)
+    NUM1 = MIDI note, NUM2 = velocity index (attack と同じ順序)
     """
     m = LACR_REL_RE.search(name)
     if not m:
         return None
     rr   = int(m.group(1))
-    vel  = int(m.group(2))
-    note = int(m.group(3))
+    note = int(m.group(2))
+    vel  = int(m.group(3))
     return SampleMeta(midi_note=note, velocity_idx=vel, round_robin=rr, file_entry=None)
 
 
@@ -597,11 +751,11 @@ def extract(db_path: Path, output_dir: Path, mode: str = "pattern1") -> None:
         label     = "Rhodes CLR Mchr03 (Mechanical Attack)"
     elif mode == "rhodes-la-attack":
         parse_fn  = parse_lacrm_name
-        encrypted = False
+        encrypted = True
         label     = "Rhodes LA Custom Attack"
     elif mode == "rhodes-la-rel":
         parse_fn  = parse_lacr_rel_name
-        encrypted = False
+        encrypted = True
         label     = "Rhodes LA Custom Release"
     elif mode == "c7grand-attack":
         parse_fn  = parse_lacppu_name

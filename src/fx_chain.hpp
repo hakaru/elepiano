@@ -1,11 +1,14 @@
 #pragma once
 #include <cstring>
 #include <memory>
+#include <vector>
 #include "spsc_queue.hpp"
 
 #ifdef ELEPIANO_ENABLE_LV2
 class Lv2Host;
+typedef struct LilvWorldImpl LilvWorld;
 #endif
+class IrConvolver;
 
 // Rhodes FX チェーン: トレモロ → プリアンプ → EQ → コーラス → テープディレイ
 // ステレオ float バッファ（インターリーブ L,R,L,R...）をインプレース処理
@@ -19,14 +22,39 @@ public:
 
 private:
     int sr_;
+
+    // LV2 プラグインチェーン + IR 畳み込み
 #ifdef ELEPIANO_ENABLE_LV2
-    std::unique_ptr<Lv2Host> lv2_;
+    LilvWorld* lilv_world_ = nullptr;                       // 共有 LilvWorld
+    std::vector<std::unique_ptr<Lv2Host>> lv2_pre_chain_;   // IR 前の LV2 チェーン
+    std::vector<std::unique_ptr<Lv2Host>> lv2_post_chain_;  // IR 後の LV2 チェーン
 #endif
+    std::unique_ptr<IrConvolver> ir_conv_;                   // キャビネット IR 畳み込み
+    bool use_lv2_pre_ = false;                               // pre チェーン有効
+    bool use_lv2_post_ = false;                              // post チェーン有効
 
     // ── MIDI→オーディオ スレッド間パラメータ転送 ──
     struct FxEvent { int cc; int value; };
     SpscQueue<FxEvent, 32> param_queue_;
     void apply_param(int cc, int value);    // オーディオスレッド内でパラメータ適用
+
+    // ── モジュレーション（Tremolo / Phaser 排他切替） ──
+    enum class ModMode { TREMOLO, PHASER };
+    ModMode mod_mode_ = ModMode::TREMOLO;
+
+    // ── フェイザー（Small Stone 風 4段オールパス） ──
+    struct {
+        float rate = 1.0f;          // LFO Hz
+        float depth = 0.8f;         // sweep depth 0..1
+        float feedback = 0.5f;      // resonance 0..0.9
+        double lfo_phase_l = 0.0;
+        double lfo_phase_r = 0.25;  // 90° offset for stereo
+        float fb_state[2] = {};     // feedback 状態 [L/R]
+        // 4段 allpass 状態 (L/R 各4)
+        float ap_y[2][4] = {};      // [ch][stage]
+        float ap_x[2][4] = {};
+    } phaser_;
+    void process_phaser(float* buf, int frames);
 
     // ── トレモロ（AM変調, L/R 90° 位相差） ──
     struct {

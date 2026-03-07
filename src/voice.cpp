@@ -34,13 +34,14 @@ void Voice::note_off()
     }
 }
 
-bool Voice::mix(float* buf, int frames)
+bool Voice::mix(float* buf, int frames, float bend_ratio)
 {
     if (state == State::IDLE || !sample || sample->pcm.empty()) return true;
 
     const auto& pcm = sample->pcm;
     const double pcm_len_d = static_cast<double>(pcm.size());
     const int    pcm_len   = static_cast<int>(pcm.size());
+    static constexpr float kInt16ToFloat = 1.0f / 32767.0f;
 
     for (int i = 0; i < frames; ++i) {
         if (state == State::RELEASING) {
@@ -61,15 +62,15 @@ bool Voice::mix(float* buf, int frames)
         float frac = static_cast<float>(position - p0);
         int   p1   = p0 + 1;
 
-        float s0 = pcm[p0];
-        float s1 = (p1 < pcm_len) ? pcm[p1] : 0.0f;
+        float s0 = static_cast<float>(pcm[p0]) * kInt16ToFloat;
+        float s1 = (p1 < pcm_len) ? static_cast<float>(pcm[p1]) * kInt16ToFloat : 0.0f;
         float sample_val = s0 + frac * (s1 - s0);
 
         float out = sample_val * gain * release_gain;
         buf[i * 2 + 0] += out;
         buf[i * 2 + 1] += out;
 
-        position += pitch_ratio;
+        position += pitch_ratio * bend_ratio;
     }
 
     return false;

@@ -1,6 +1,7 @@
 #include "sample_db.hpp"
 #include "synth_engine.hpp"
 #include "organ_engine.hpp"
+#include "setbfree_engine.hpp"
 #include "midi_input.hpp"
 #include "audio_output.hpp"
 #include "fx_chain.hpp"
@@ -71,7 +72,7 @@ struct EngineGuard {
 };
 
 // MIDI/Audio スレッド管理の共通部分
-static void run_engine(AudioOutput& audio, MidiInput& midi)
+static void run_engine(AudioOutput& audio, MidiInput& midi, std::function<void()> on_tick = nullptr)
 {
     EngineGuard guard(audio, midi);
 
@@ -108,6 +109,8 @@ static void run_engine(AudioOutput& audio, MidiInput& midi)
             fprintf(stderr, "[AudioOutput] underrun count: %u\n", xruns);
             last_xruns = xruns;
         }
+
+        if (on_tick) on_tick();
 
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
@@ -160,6 +163,7 @@ struct ProgramDef {
     const char* name;
     const char* attack_json;
     const char* release_json;  // nullptr = release なし
+    bool        is_organ = false;
 };
 
 // ─── ピアノモード ────────────────────────────────────────────
@@ -172,11 +176,22 @@ static int run_piano(const std::vector<ProgramDef>& programs,
     }
     fprintf(stderr, "  device: %s\n", alsa_device);
 
-    // 全音色のサンプルをロード
+    // オルガンプログラムがあるか確認
+    int organ_program = -1;
+    for (size_t i = 0; i < programs.size(); ++i) {
+        if (programs[i].is_organ) { organ_program = static_cast<int>(i); break; }
+    }
+
+    // 全音色のサンプルをロード（オルガンはスキップ）
     std::vector<std::unique_ptr<SampleDB>> attack_dbs;
     std::vector<std::unique_ptr<SampleDB>> release_dbs;
 
     for (const auto& pg : programs) {
+        if (pg.is_organ) {
+            attack_dbs.push_back(nullptr);
+            release_dbs.push_back(nullptr);
+            continue;
+        }
         attack_dbs.push_back(std::make_unique<SampleDB>(pg.attack_json));
         if (pg.release_json)
             release_dbs.push_back(std::make_unique<SampleDB>(pg.release_json));
@@ -184,9 +199,15 @@ static int run_piano(const std::vector<ProgramDef>& programs,
             release_dbs.push_back(nullptr);
     }
 
+    // 最初の非オルガン SampleDB からサンプルレートを取得
+    int requested_rate = 44100;
+    for (const auto& db : attack_dbs) {
+        if (db) { requested_rate = db->sample_rate(); break; }
+    }
+
     AudioOutput::Config acfg;
     acfg.device        = alsa_device;
-    acfg.sample_rate   = attack_dbs[0]->sample_rate();
+    acfg.sample_rate   = requested_rate;
     acfg.channels      = 2;
     acfg.period_size   = g_period_size;
     acfg.periods       = g_periods;
@@ -197,16 +218,30 @@ static int run_piano(const std::vector<ProgramDef>& programs,
     SynthEngine synth(actual_rate);
 
     for (size_t i = 0; i < programs.size(); ++i) {
+        if (programs[i].is_organ) continue;  // オルガンは SynthEngine に登録しない
         synth.add_program(static_cast<int>(i),
                           attack_dbs[i].get(),
                           release_dbs[i].get(),
                           programs[i].name);
     }
 
+    // setBfree オルガンエンジン（PG にオルガンがある場合のみ生成）
+    std::unique_ptr<SetBfreeEngine> organ;
+    if (organ_program >= 0) {
+        organ = std::make_unique<SetBfreeEngine>(actual_rate);
+    }
+
+    // 現在のプログラム番号（MIDI/audio スレッド間共有）
+    std::atomic<int> current_pg{0};
+
     FxChain fx(actual_rate);
 
     audio.set_callback([&](float* buf, int frames) {
-        synth.mix(buf, frames);
+        if (organ && current_pg.load(std::memory_order_relaxed) == organ_program) {
+            organ->mix(buf, frames);
+        } else {
+            synth.mix(buf, frames);
+        }
         fx.process(buf, frames);
     });
 
@@ -221,52 +256,33 @@ static int run_piano(const std::vector<ProgramDef>& programs,
         log_midi_event(ev);
         if (ev.type == MidiEvent::Type::CC)
             fx.set_param(ev.note, ev.velocity);
-        synth.push_event(ev);
+
+        // プログラムチェンジを追跡
+        if (ev.type == MidiEvent::Type::PROGRAM_CHANGE) {
+            int pg = ev.note;
+            if (pg >= 0 && pg < static_cast<int>(programs.size())) {
+                current_pg.store(pg, std::memory_order_relaxed);
+                fprintf(stderr, "[Main] Program Change: %d (%s)%s\n",
+                        pg + 1, programs[pg].name,
+                        programs[pg].is_organ ? " [ORGAN]" : "");
+            }
+        }
+
+        // 適切なエンジンにルーティング
+        if (organ && current_pg.load(std::memory_order_relaxed) == organ_program) {
+            organ->push_event(ev);
+        } else {
+            synth.push_event(ev);
+        }
     });
 
     // run_engine にステータス更新を組み込む
-    {
-        EngineGuard guard(audio, midi);
-        fprintf(stderr, "起動完了。Ctrl+C で終了。\n");
-
-        uint32_t last_xruns = 0;
-        while (!g_quit.load()) {
-            while (auto ev = g_midi_log_queue.pop()) {
-                switch (ev->type) {
-                case MidiEvent::Type::NOTE_ON:
-                    fprintf(stderr, "[MIDI] NOTE ON  ch=%d note=%d vel=%d\n",
-                            ev->channel, ev->note, ev->velocity);
-                    break;
-                case MidiEvent::Type::NOTE_OFF:
-                    fprintf(stderr, "[MIDI] NOTE OFF ch=%d note=%d\n",
-                            ev->channel, ev->note);
-                    break;
-                case MidiEvent::Type::CC:
-                    fprintf(stderr, "[MIDI] CC       ch=%d cc=%d val=%d\n",
-                            ev->channel, ev->note, ev->velocity);
-                    break;
-                case MidiEvent::Type::PROGRAM_CHANGE:
-                    fprintf(stderr, "[MIDI] PG CHG   ch=%d pg=%d\n",
-                            ev->channel, ev->note + 1);
-                    break;
-                default: break;
-                }
-            }
-
-            uint32_t xruns = audio.underrun_count();
-            if (xruns != last_xruns) {
-                fprintf(stderr, "[AudioOutput] underrun count: %u\n", xruns);
-                last_xruns = xruns;
-            }
-
-            if (status) {
-                status->update(synth, audio);
-            }
-
-            std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    run_engine(audio, midi, [&]() {
+        if (status) {
+            status->update(synth, audio);
         }
-        fprintf(stderr, "\n終了中...\n");
-    }
+    });
+
     return 0;
 }
 
@@ -329,19 +345,31 @@ int main(int argc, char* argv[])
     while (i < argc) {
         std::string arg(argv[i]);
         if (arg == "--pg" && i + 1 < argc) {
-            ProgramDef pg;
-            pg.name = argv[i + 1];
-            pg.attack_json = argv[i + 1];
-            pg.release_json = nullptr;
-            i += 2;
-            // 次の引数が --pg でも alsa デバイスでもなければ release_json
-            if (i < argc && std::string(argv[i]) != "--pg" &&
-                std::string(argv[i]).find("hw:") == std::string::npos &&
-                std::string(argv[i]) != "default") {
-                pg.release_json = argv[i];
-                ++i;
+            std::string next(argv[i + 1]);
+            if (next == "--organ") {
+                // --pg --organ → オルガンプログラム
+                ProgramDef pg;
+                pg.name = "Organ";
+                pg.attack_json = nullptr;
+                pg.release_json = nullptr;
+                pg.is_organ = true;
+                i += 2;
+                programs.push_back(pg);
+            } else {
+                ProgramDef pg;
+                pg.name = argv[i + 1];
+                pg.attack_json = argv[i + 1];
+                pg.release_json = nullptr;
+                i += 2;
+                // 次の引数が --pg でも alsa デバイスでもなければ release_json
+                if (i < argc && std::string(argv[i]) != "--pg" &&
+                    std::string(argv[i]).find("hw:") == std::string::npos &&
+                    std::string(argv[i]) != "default") {
+                    pg.release_json = argv[i];
+                    ++i;
+                }
+                programs.push_back(pg);
             }
-            programs.push_back(pg);
         } else {
             // 最後の引数は alsa_device
             // それ以外は旧形式互換

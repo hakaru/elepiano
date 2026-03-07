@@ -3,7 +3,7 @@
 
 import asyncio
 import signal
-import sys
+import subprocess
 import json
 
 from alsa_midi_sender import AlsaMidiSender
@@ -25,18 +25,44 @@ class BleBridge:
 
     def on_cc(self, cc: int, value: int) -> None:
         """BLE CC 書き込み → ALSA MIDI CC 送信"""
+        print(f"[BLE→MIDI] CC {cc} = {value}")
         self.midi.send_cc(0, cc, value)
 
     def on_pc(self, program: int) -> None:
         """BLE Program Change → ALSA MIDI PC 送信"""
+        print(f"[BLE→MIDI] PC {program}")
         self.midi.send_program_change(0, program)
+
+    def on_command(self, cmd: str) -> None:
+        """BLE コマンド書き込み → systemctl 等の操作"""
+        print(f"[BLE→CMD] {cmd}")
+        if cmd == "restart_elepiano":
+            subprocess.Popen(
+                ["systemctl", "restart", "elepiano"],
+                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            )
+        elif cmd == "restart_ble_bridge":
+            subprocess.Popen(
+                ["systemctl", "restart", "ble-bridge"],
+                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            )
+        else:
+            print(f"[BLE→CMD] unknown command: {cmd}")
 
     def on_status(self, status: dict) -> None:
         """elepiano ステータス更新 → BLE Status Notify"""
+        # elepiano_connected フラグを追加
+        status["elepiano_connected"] = True
         if self.gatt:
             self.gatt.status_char.update_value(json.dumps(status))
             if "program" in status:
                 self.gatt.pc_char.update_value(status["program"] - 1)
+
+    def _send_disconnected_status(self) -> None:
+        """elepiano 未接続時のステータスを送信"""
+        if self.gatt:
+            status = {"elepiano_connected": False, "running": False}
+            self.gatt.status_char.update_value(json.dumps(status))
 
     async def run(self) -> None:
         print("elepiano BLE Bridge starting...")
@@ -48,6 +74,7 @@ class BleBridge:
         self.gatt = GattApplication(
             on_cc=self.on_cc,
             on_pc=self.on_pc,
+            on_command=self.on_command,
         )
         await self.gatt.register(bus)
 
@@ -57,10 +84,13 @@ class BleBridge:
 
         print("BLE Bridge running. Ctrl+C to stop.")
 
-        # メインループ
+        # メインループ — elepiano 未接続時は定期的に通知
         try:
             while self._running:
-                await asyncio.sleep(1.0)
+                await asyncio.sleep(2.0)
+                # elepiano 未接続なら disconnected ステータスを送信
+                if not self.status.last_status:
+                    self._send_disconnected_status()
         except asyncio.CancelledError:
             pass
         finally:

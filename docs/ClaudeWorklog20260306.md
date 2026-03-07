@@ -864,3 +864,136 @@
 決定事項: Pi5への接続確認・BLEブリッジ準備
 次のTODO: 接続確認
 ---
+
+---
+2026-03-06 23:34
+作業項目: iOS BLE接続後の動作デバッグ
+追加機能の説明: なし
+決定事項: BLE接続はできたがUIが遷移しない — 原因調査
+次のTODO: Pi側ログ確認 + iOS側の問題切り分け
+---
+
+---
+2026-03-06 23:40
+作業項目: BLE CC/PC 送受信確認完了
+追加機能の説明:
+  - alsa_midi_sender.py: elepiano自動接続追加（aconnect不要に）
+  - ble_bridge.py: CC/PCログ追加
+  - gatt_service.py: ObjectManager実装（BlueZ RegisterApplication対応）
+  - GattService1実装追加
+決定事項:
+  - BLE→GATT→ble-bridge→ALSA MIDI→elepiano のパイプライン動作確認
+  - CC7 (Volume), PC (Program Change) の送受信をログで確認
+  - iOS CCControlView 表示OK、Status Notify (Rhodes/Wurlitzer) 受信OK
+次のTODO: 弾きながらスライダー操作でエフェクト変化を確認
+---
+
+---
+2026-03-06 23:50
+作業項目: ALSA MIDI CC送信バグ修正 — E2E動作確認完了
+追加機能の説明:
+  - alsa_midi_sender.py 根本修正:
+    1. snd_seq_ev_ctrl_t 構造体修正 (c_uint→c_uint8+pad+c_uint32+c_int32 = 12B)
+    2. dest を SUBSCRIBERS(253:253) → elepiano直接(128:0) に変更
+    3. snd_seq_connect_to API で接続
+    4. flags = 0 (TICK + FIXED) に修正
+決定事項:
+  - 根本原因: SUBSCRIBERS 宛の output_direct が rc=-2 (ENOENT) で失敗していた
+  - dest に直接 elepiano の client:port を指定することで解決
+  - iPhone CC1 (Tremolo) → ble-bridge → elepiano に正常到達確認
+次のTODO: 弾きながらスライダー操作で音の変化を確認、コミット
+---
+
+---
+2026-03-06 23:54
+作業項目: iOS アプリにサービス状態表示 + リスタート機能を追加
+追加機能の説明:
+  - ble-bridge: elepiano/ble-bridge の systemd サービス状態を Status JSON に含める
+  - ble-bridge: CommandCharacteristic (UUID 0006) 追加 — restart コマンド受付
+  - iOS: StatusView に起動状態インジケーター表示（not running / loading / ready）
+  - iOS: サービスリスタートボタン追加
+  - iOS: BLEManager に commandCharacteristic + sendCommand 追加
+決定事項:
+  - elepiano 接続状態は ble-bridge が判定（UNIX socket 接続可否）
+  - restart は ble-bridge が systemctl restart elepiano を実行
+  - C++ 側変更なし（status JSON は既存のまま）
+次のTODO: 実装→ビルド→テスト
+---
+
+---
+2026-03-07 00:54
+作業項目: GitHub Issues 評価・クローズ
+追加機能の説明: なし（評価のみ）
+決定事項:
+  - #29 (FxChain データ競合) close — SpscQueue 導入で修正済み
+  - #21 (BLE-MIDI スロットリング) close — iOS ccMinInterval=0.025s で実装済み
+  - #27 (SampleDB::find RT-safe) close — reserve(16) + clear() で RT-safe
+  - #20 (パストラバーサル) close — weakly_canonical + relative で保護済み
+  - #19 (SpCA XOR security) close — runtime に SpCA 処理なし、不要
+  - #28 (analyze_noise.py メモリ) close — 現状で十分
+  - #31 (PCM cache int16) — 低優先（メモリ逼迫時のみ）
+  - #30 (sanitize_flac) — 低優先（tools 側、堅牢性は十分）
+  - #26 (WAV dump fwrite) — 低優先（標準無効、使用時のみ改善推奨）
+次のTODO: 修正済み・不要 issue をクローズ
+---
+
+---
+2026-03-07 00:56
+作業項目: #31 PCM キャッシュ int16 化
+追加機能の説明:
+  - CACHE_VERSION 5→6
+  - save_cache: float→int16 変換して書き込み（ディスク容量 50% 削減）
+  - load_cache: int16→float 変換して読み込み
+  - SampleData::pcm は float のまま（オーディオスレッド互換）
+決定事項:
+  - Rhodes: 1.4GB→708MB, Wurlitzer: 1.3GB→643MB (50%削減)
+  - 3音色復活が可能（合計~2.8GB < Pi5 8GB）
+  - Pi ビルド・デプロイ・キャッシュ再生成完了
+次のTODO: 3音色構成テスト
+---
+
+---
+2026-03-07 01:00
+作業項目: Vintage Vibe 復活 — 3 音色構成
+追加機能の説明:
+  - elepiano.service に --pg data/vintage-vibe-ep/samples.json 追加
+  - iOS CCControlView に "Vintage Vibe" ボタン追加（PG3）
+決定事項:
+  - 3音色で起動成功: PG1=Rhodes, PG2=Wurlitzer, PG3=Vintage Vibe
+  - メモリ: used=5.5GB, free=174MB, swap=33MB — ギリギリだが安定
+  - キャッシュ: Rhodes 708MB + Rel 27MB + Wurl 643MB + VV 1.2GB = 2.6GB (int16)
+  - 旧float32だと 5.5GB → OOM だった。int16化で3音色復活
+  - iOS アプリ更新・iPhone デプロイ完了
+次のTODO: PG3 に切り替えて Vintage Vibe 演奏テスト
+---
+
+---
+2026-03-07 01:06
+作業項目: Wurlitzer → Rhodes LA Custom 入れ替え
+追加機能の説明:
+  - Rhodes LA Custom (2985 attack + 1408 release) FLAC を Pi に転送 (2.0GB + 47MB)
+  - elepiano.service: PG2 を Wurlitzer → LA Custom + release に変更
+  - iOS CCControlView: "Wurlitzer" → "LA Custom" に変更
+決定事項:
+  - PG1=Rhodes Classic, PG2=Rhodes LA Custom, PG3=Vintage Vibe
+  - 3音色で起動成功: used=4.5GB, available=3.5GB — 安定
+  - LA Custom attack 2985→キャッシュ生成完了、release 1201サンプル
+  - iOS アプリ更新・デプロイ完了
+次のTODO: PG2 に切り替えて LA Custom 演奏テスト
+---
+
+---
+2026-03-07 01:12
+作業項目: LA Custom サンプル全数ロード修正
+追加機能の説明:
+  - MAX_SAMPLE_FRAMES 441000→882000 (10s→20s) — 長いサンプルがカットされていた
+  - flac_decoder.cpp: CRC-16 エラーが50%超なら SpCA仕様と判断しミュートスキップ
+  - 根本原因: SpCA の CRC-16 が意図的に壊されている（暗号化なしでも）
+  - mute_bad_frames が全フレームゼロ化→「全サンプル同一値」でスキップされていた
+  - CACHE_VERSION 6→8
+決定事項:
+  - LA Custom: 142→2985 全数ロード成功
+  - LA Custom release: 1201→1760 全数ロード成功
+  - 3音色で起動OK (used=6.7GB, swap=874MB)
+次のTODO: PG2 に切り替えて LA Custom 演奏テスト
+---

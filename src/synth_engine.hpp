@@ -93,6 +93,7 @@ private:
     void _note_on(int midi_note, int velocity);
     void _note_off(int midi_note);
     void _cc(int cc_num, int cc_val);
+    void _pitch_bend(int value);
     void _program_change(int program);
     void _start_release_voice(int midi_note, int velocity);
     int  oldest_voice_idx() const;
@@ -107,6 +108,7 @@ private:
     float     release_time_s_ = 0.050f;  // CC74 で調整 (0ms〜200ms, default 50ms)
     float     volume_     = 1.0f;       // CC7: Volume (0〜1)
     float     expression_ = 1.0f;       // CC11: Expression (0〜1)
+    float     bend_ratio_ = 1.0f;       // ピッチベンド係数 (±2半音)
 
     std::array<Voice, MAX_VOICES> voices_;
     SpscQueue<MidiEvent, 256>     event_queue_;

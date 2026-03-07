@@ -190,6 +190,8 @@ void SynthEngine::mix(float* buf, int frames)
             _note_off(ev->note);
         } else if (ev->type == MidiEvent::Type::CC) {
             _cc(ev->note, ev->velocity);
+        } else if (ev->type == MidiEvent::Type::PITCH_BEND) {
+            _pitch_bend(ev->velocity);
         } else if (ev->type == MidiEvent::Type::PROGRAM_CHANGE) {
             _program_change(ev->note);
         }
@@ -197,13 +199,13 @@ void SynthEngine::mix(float* buf, int frames)
 
     for (auto& v : voices_) {
         if (v.state != Voice::State::IDLE) {
-            v.mix(buf, frames);
+            v.mix(buf, frames, bend_ratio_);
         }
     }
 
     // ペダル音（弦共鳴 + クリック）
-    pedal_resonance_.mix(buf, frames);
-    pedal_click_.mix(buf, frames);
+    // pedal_resonance_.mix(buf, frames);
+    // pedal_click_.mix(buf, frames);
 
     // マスターゲイン (CC7 × CC11) + クリッピング防止
     const float master = volume_ * expression_;
@@ -254,9 +256,6 @@ void SynthEngine::_note_off(int midi_note)
                 v.sustained = true;
                 continue;
             }
-            if (release_db_) {
-                _start_release_voice(midi_note, v.velocity);
-            }
             v.note_off();
         }
     }
@@ -264,78 +263,27 @@ void SynthEngine::_note_off(int midi_note)
 
 void SynthEngine::_cc(int cc_num, int cc_val)
 {
-    // CC7: Volume
-    if (cc_num == 7) {
+    // CC102: Volume
+    if (cc_num == 102) {
         volume_ = cc_val / 127.0f;
         return;
     }
-    // CC11: Expression
-    if (cc_num == 11) {
+    // CC103: Expression
+    if (cc_num == 103) {
         expression_ = cc_val / 127.0f;
         return;
     }
-    // CC74: リリースタイム調整 (0=0ms, 127=200ms, default=50ms)
-    if (cc_num == 74) {
+    // CC5: リリースタイム調整 (0=0ms, 127=200ms)
+    if (cc_num == 5) {
         release_time_s_ = (cc_val / 127.0f) * 0.200f;
-        return;
-    }
-
-    // ── ペダル共鳴 (CC82-84) ──
-    if (cc_num == 82) {  // 共鳴音量 (0=off, 127=max)
-        resonance_vol_ = cc_val / 127.0f * 0.30f;
-        return;
-    }
-    if (cc_num == 83) {  // 共鳴アタック (0=即, 127=200ms)
-        pedal_resonance_.attack_ms = (cc_val / 127.0f) * 200.0f;
-        return;
-    }
-    if (cc_num == 84) {  // 共鳴リリース (0=100ms, 127=800ms)
-        pedal_resonance_.release_ms = 100.0f + (cc_val / 127.0f) * 700.0f;
-        return;
-    }
-    // ── ペダルクリック (CC85-87) ──
-    if (cc_num == 85) {  // クリック音量 (0=off, 127=max)
-        click_vol_ = cc_val / 127.0f * 0.30f;
-        return;
-    }
-    if (cc_num == 86) {  // クリックアタック (0=即, 127=30ms)
-        pedal_click_.attack_ms = (cc_val / 127.0f) * 30.0f;
-        return;
-    }
-    if (cc_num == 87) {  // クリックリリース (0=10ms, 127=150ms)
-        pedal_click_.release_ms = 10.0f + (cc_val / 127.0f) * 140.0f;
         return;
     }
 
     if (cc_num == 64) {
         bool new_state = (cc_val >= 64);
-        // ペダル音（状態変化時のみ）
-        if (new_state != sustain_held_) {
-            if (new_state) {
-                // Pedal Down → 現在鳴っているノートで弦共鳴
-                int active_notes[MAX_VOICES];
-                int num_active = 0;
-                for (const auto& v : voices_) {
-                    if (v.state == Voice::State::PLAYING && !v.is_release_voice
-                        && num_active < MAX_VOICES) {
-                        active_notes[num_active++] = v.target_note;
-                    }
-                }
-                pedal_resonance_.volume = resonance_vol_;
-                pedal_resonance_.trigger_down(sample_rate_, active_notes, num_active);
-            } else {
-                // Pedal Up → 共鳴リリース + 機械クリック
-                pedal_resonance_.trigger_up();
-                pedal_click_.volume = click_vol_;
-                pedal_click_.trigger(sample_rate_);
-            }
-        }
         if (sustain_held_ && !new_state) {
             for (auto& v : voices_) {
                 if (v.sustained && v.state == Voice::State::PLAYING && !v.is_release_voice) {
-                    if (release_db_) {
-                        _start_release_voice(v.target_note, v.velocity);
-                    }
                     v.note_off();
                     v.sustained = false;
                 }
@@ -343,6 +291,13 @@ void SynthEngine::_cc(int cc_num, int cc_val)
         }
         sustain_held_ = new_state;
     }
+}
+
+void SynthEngine::_pitch_bend(int value)
+{
+    // value: 0..16383, center=8192, ±2 semitones
+    float semitones = ((value - 8192) / 8192.0f) * 2.0f;
+    bend_ratio_ = std::pow(2.0f, semitones / 12.0f);
 }
 
 void SynthEngine::_program_change(int program)

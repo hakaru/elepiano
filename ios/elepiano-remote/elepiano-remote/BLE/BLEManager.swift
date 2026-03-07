@@ -14,6 +14,7 @@ final class BLEManager: NSObject, ObservableObject {
     private var pcCharacteristic: CBCharacteristic?
     private var statusCharacteristic: CBCharacteristic?
     private var batchCCCharacteristic: CBCharacteristic?
+    private var commandCharacteristic: CBCharacteristic?
 
     // CC スロットリング: 同じ CC を短期間に送りすぎない
     private var lastCCSendTime: [Int: Date] = [:]
@@ -78,6 +79,12 @@ final class BLEManager: NSObject, ObservableObject {
         let data = Data([UInt8(program & 0x7F)])
         peripheral.writeValue(data, for: char, type: .withResponse)
     }
+
+    func sendCommand(_ command: String) {
+        guard let char = commandCharacteristic, let peripheral else { return }
+        guard let data = command.data(using: .utf8) else { return }
+        peripheral.writeValue(data, for: char, type: .withResponse)
+    }
 }
 
 // MARK: - CBCentralManagerDelegate
@@ -110,6 +117,7 @@ extension BLEManager: CBCentralManagerDelegate {
         _ central: CBCentralManager,
         didConnect peripheral: CBPeripheral
     ) {
+        print("[BLE] didConnect: \(peripheral.name ?? "?")")
         Task { @MainActor in
             isConnected = true
             peripheral.discoverServices([BLEConstants.serviceUUID])
@@ -128,6 +136,7 @@ extension BLEManager: CBCentralManagerDelegate {
             pcCharacteristic = nil
             statusCharacteristic = nil
             batchCCCharacteristic = nil
+            commandCharacteristic = nil
             status = nil
 
             // 自動再接続
@@ -159,8 +168,13 @@ extension BLEManager: CBPeripheralDelegate {
         error: Error?
     ) {
         Task { @MainActor in
-            guard let chars = service.characteristics else { return }
+            guard let chars = service.characteristics else {
+                print("[BLE] no characteristics found")
+                return
+            }
+            print("[BLE] discovered \(chars.count) characteristics")
             for char in chars {
+                print("[BLE]   char: \(char.uuid)")
                 switch char.uuid {
                 case BLEConstants.statusUUID:
                     statusCharacteristic = char
@@ -171,6 +185,8 @@ extension BLEManager: CBPeripheralDelegate {
                     pcCharacteristic = char
                 case BLEConstants.batchCCUUID:
                     batchCCCharacteristic = char
+                case BLEConstants.commandUUID:
+                    commandCharacteristic = char
                 default:
                     break
                 }

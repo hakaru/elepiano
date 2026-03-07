@@ -3,6 +3,7 @@
 #include <vector>
 #include <map>
 #include <cstddef>
+#include <cstdint>
 
 struct SampleData {
     int         midi_note;
@@ -12,8 +13,9 @@ struct SampleData {
     int         round_robin;
     std::string file_path;
 
-    // RAM に展開した PCM サンプル (float 正規化済み, -1.0 〜 +1.0, モノにダウンミックス済み)
-    std::vector<float> pcm;
+    // RAM に展開した PCM サンプル (int16 正規化済み, モノにダウンミックス済み)
+    // メモリ節約のため int16 で保持し、再生時に float に変換する
+    std::vector<int16_t> pcm;
     int sample_rate  = 44100;
     int num_channels = 1;
 };

@@ -1,9 +1,13 @@
-"""BlueZ D-Bus GATT サービス定義 (dbus-next)"""
+"""BlueZ D-Bus GATT サービス定義 (dbus-next)
+
+BlueZ の RegisterApplication は ObjectManager.GetManagedObjects() で
+GATT 階層を列挙するため、アプリケーションルートに ObjectManager を実装する。
+"""
 
 import json
 import asyncio
 from typing import Callable, Optional
-from dbus_next.service import ServiceInterface, method, dbus_property
+from dbus_next.service import ServiceInterface, method, dbus_property, signal
 from dbus_next.signature import Variant
 from dbus_next import BusType, PropertyAccess
 from dbus_next.aio import MessageBus
@@ -15,29 +19,43 @@ CC_CONTROL_UUID = "e1e00002-0001-4000-8000-00805f9b34fb"
 PROGRAM_CHANGE_UUID = "e1e00003-0001-4000-8000-00805f9b34fb"
 AUDIO_DEVICE_UUID = "e1e00004-0001-4000-8000-00805f9b34fb"
 BATCH_CC_UUID = "e1e00005-0001-4000-8000-00805f9b34fb"
+COMMAND_UUID = "e1e00006-0001-4000-8000-00805f9b34fb"
 
-# BlueZ D-Bus GATT interfaces
+# BlueZ D-Bus
 BLUEZ_SERVICE = "org.bluez"
 LE_ADVERTISING_MANAGER_IFACE = "org.bluez.LEAdvertisingManager1"
 GATT_MANAGER_IFACE = "org.bluez.GattManager1"
-ADAPTER_IFACE = "org.bluez.Adapter1"
+
+# Application root path
+APP_PATH = "/org/bluez/elepiano"
+SVC_PATH = f"{APP_PATH}/service0"
 
 
-class ElepianoCharacteristic:
-    """GATT キャラクタリスティックの共通ベース"""
+# ── ObjectManager ──────────────────────────────────────────────
+# BlueZ calls GetManagedObjects on the application root to discover
+# all services and characteristics.
 
-    def __init__(self, uuid: str, flags: list[str]):
-        self.uuid = uuid
-        self.flags = flags
-        self.value = bytearray()
+class ObjectManager(ServiceInterface):
+    """org.freedesktop.DBus.ObjectManager implementation"""
 
+    def __init__(self):
+        super().__init__("org.freedesktop.DBus.ObjectManager")
+        self._objects: dict[str, dict[str, dict[str, Variant]]] = {}
+
+    def add_object(self, path: str, iface: str, props: dict[str, Variant]):
+        if path not in self._objects:
+            self._objects[path] = {}
+        self._objects[path][iface] = props
+
+    @method()
+    def GetManagedObjects(self) -> "a{oa{sa{sv}}}":  # type: ignore  # noqa: N802
+        return self._objects
+
+
+# ── Advertisement ──────────────────────────────────────────────
 
 class Advertisement(ServiceInterface):
-    """BLE Advertisement (LEAdvertisement1)"""
-
-    def __init__(self, index: int = 0):
-        self._index = index
-        self._path = f"/org/bluez/elepiano/ad{index}"
+    def __init__(self):
         super().__init__("org.bluez.LEAdvertisement1")
 
     @dbus_property(access=PropertyAccess.READ)
@@ -61,11 +79,12 @@ class Advertisement(ServiceInterface):
         print("[Advertisement] Released")
 
 
-class GattService(ServiceInterface):
-    """GATT Service (GattService1)"""
+# ── GATT Service ──────────────────────────────────────────────
+
+class GattService1(ServiceInterface):
+    """org.bluez.GattService1"""
 
     def __init__(self):
-        self._path = "/org/bluez/elepiano/service0"
         super().__init__("org.bluez.GattService1")
 
     @dbus_property(access=PropertyAccess.READ)
@@ -77,14 +96,15 @@ class GattService(ServiceInterface):
         return True
 
 
-class StatusCharacteristic(ServiceInterface):
-    """Status (Read, Notify) - JSON ステータス"""
+# ── GATT Characteristics ──────────────────────────────────────
 
-    def __init__(self, service_path: str):
-        self._path = f"{service_path}/char0"
+class StatusCharacteristic(ServiceInterface):
+    """Status (Read, Notify)"""
+
+    def __init__(self):
+        super().__init__("org.bluez.GattCharacteristic1")
         self._value = bytearray()
         self._notifying = False
-        super().__init__("org.bluez.GattCharacteristic1")
 
     @dbus_property(access=PropertyAccess.READ)
     def UUID(self) -> "s":  # type: ignore  # noqa: N802
@@ -92,7 +112,7 @@ class StatusCharacteristic(ServiceInterface):
 
     @dbus_property(access=PropertyAccess.READ)
     def Service(self) -> "o":  # type: ignore  # noqa: N802
-        return "/org/bluez/elepiano/service0"
+        return SVC_PATH
 
     @dbus_property(access=PropertyAccess.READ)
     def Flags(self) -> "as":  # type: ignore  # noqa: N802
@@ -117,12 +137,11 @@ class StatusCharacteristic(ServiceInterface):
 
 
 class CCControlCharacteristic(ServiceInterface):
-    """CC Control (Write Without Response) - [cc, val] 2 bytes"""
+    """CC Control (Write Without Response) - [cc, val] 2B"""
 
-    def __init__(self, service_path: str, on_cc: Callable[[int, int], None]):
-        self._path = f"{service_path}/char1"
-        self._on_cc = on_cc
+    def __init__(self, on_cc: Callable[[int, int], None]):
         super().__init__("org.bluez.GattCharacteristic1")
+        self._on_cc = on_cc
 
     @dbus_property(access=PropertyAccess.READ)
     def UUID(self) -> "s":  # type: ignore  # noqa: N802
@@ -130,7 +149,7 @@ class CCControlCharacteristic(ServiceInterface):
 
     @dbus_property(access=PropertyAccess.READ)
     def Service(self) -> "o":  # type: ignore  # noqa: N802
-        return "/org/bluez/elepiano/service0"
+        return SVC_PATH
 
     @dbus_property(access=PropertyAccess.READ)
     def Flags(self) -> "as":  # type: ignore  # noqa: N802
@@ -139,8 +158,7 @@ class CCControlCharacteristic(ServiceInterface):
     @method()
     def WriteValue(self, value: "ay", options: "a{sv}") -> None:  # type: ignore  # noqa: N802
         if len(value) >= 2:
-            cc, val = value[0], value[1]
-            self._on_cc(cc, min(val, 127))
+            self._on_cc(value[0], min(value[1], 127))
 
     @method()
     def ReadValue(self, options: "a{sv}") -> "ay":  # type: ignore  # noqa: N802
@@ -148,13 +166,12 @@ class CCControlCharacteristic(ServiceInterface):
 
 
 class ProgramChangeCharacteristic(ServiceInterface):
-    """Program Change (Read, Write, Notify) - [pg] 1 byte"""
+    """Program Change (Read, Write, Notify) - [pg] 1B"""
 
-    def __init__(self, service_path: str, on_pc: Callable[[int], None]):
-        self._path = f"{service_path}/char2"
+    def __init__(self, on_pc: Callable[[int], None]):
+        super().__init__("org.bluez.GattCharacteristic1")
         self._on_pc = on_pc
         self._value = bytearray([0])
-        super().__init__("org.bluez.GattCharacteristic1")
 
     @dbus_property(access=PropertyAccess.READ)
     def UUID(self) -> "s":  # type: ignore  # noqa: N802
@@ -162,7 +179,7 @@ class ProgramChangeCharacteristic(ServiceInterface):
 
     @dbus_property(access=PropertyAccess.READ)
     def Service(self) -> "o":  # type: ignore  # noqa: N802
-        return "/org/bluez/elepiano/service0"
+        return SVC_PATH
 
     @dbus_property(access=PropertyAccess.READ)
     def Flags(self) -> "as":  # type: ignore  # noqa: N802
@@ -192,12 +209,11 @@ class ProgramChangeCharacteristic(ServiceInterface):
 
 
 class BatchCCCharacteristic(ServiceInterface):
-    """Batch CC (Write Without Response) - [cc1,v1,...ccN,vN] max 20 bytes"""
+    """Batch CC (Write Without Response) - [cc1,v1,...ccN,vN]"""
 
-    def __init__(self, service_path: str, on_cc: Callable[[int, int], None]):
-        self._path = f"{service_path}/char4"
-        self._on_cc = on_cc
+    def __init__(self, on_cc: Callable[[int, int], None]):
         super().__init__("org.bluez.GattCharacteristic1")
+        self._on_cc = on_cc
 
     @dbus_property(access=PropertyAccess.READ)
     def UUID(self) -> "s":  # type: ignore  # noqa: N802
@@ -205,7 +221,7 @@ class BatchCCCharacteristic(ServiceInterface):
 
     @dbus_property(access=PropertyAccess.READ)
     def Service(self) -> "o":  # type: ignore  # noqa: N802
-        return "/org/bluez/elepiano/service0"
+        return SVC_PATH
 
     @dbus_property(access=PropertyAccess.READ)
     def Flags(self) -> "as":  # type: ignore  # noqa: N802
@@ -213,14 +229,63 @@ class BatchCCCharacteristic(ServiceInterface):
 
     @method()
     def WriteValue(self, value: "ay", options: "a{sv}") -> None:  # type: ignore  # noqa: N802
-        # [cc1, val1, cc2, val2, ...]
         for i in range(0, len(value) - 1, 2):
-            cc, val = value[i], value[i + 1]
-            self._on_cc(cc, min(val, 127))
+            self._on_cc(value[i], min(value[i + 1], 127))
 
     @method()
     def ReadValue(self, options: "a{sv}") -> "ay":  # type: ignore  # noqa: N802
         return []
+
+
+class CommandCharacteristic(ServiceInterface):
+    """Command (Write) - UTF-8 コマンド文字列"""
+
+    def __init__(self, on_command: Callable[[str], None]):
+        super().__init__("org.bluez.GattCharacteristic1")
+        self._on_command = on_command
+
+    @dbus_property(access=PropertyAccess.READ)
+    def UUID(self) -> "s":  # type: ignore  # noqa: N802
+        return COMMAND_UUID
+
+    @dbus_property(access=PropertyAccess.READ)
+    def Service(self) -> "o":  # type: ignore  # noqa: N802
+        return SVC_PATH
+
+    @dbus_property(access=PropertyAccess.READ)
+    def Flags(self) -> "as":  # type: ignore  # noqa: N802
+        return ["write"]
+
+    @method()
+    def WriteValue(self, value: "ay", options: "a{sv}") -> None:  # type: ignore  # noqa: N802
+        try:
+            cmd = bytes(value).decode("utf-8").strip()
+            if cmd:
+                self._on_command(cmd)
+        except Exception as e:
+            print(f"[CommandChar] error: {e}")
+
+    @method()
+    def ReadValue(self, options: "a{sv}") -> "ay":  # type: ignore  # noqa: N802
+        return []
+
+
+# ── GattApplication ───────────────────────────────────────────
+
+def _char_props(uuid: str, service: str, flags: list[str]) -> dict[str, Variant]:
+    """GetManagedObjects 用の characteristic プロパティ dict"""
+    return {
+        "UUID": Variant("s", uuid),
+        "Service": Variant("o", service),
+        "Flags": Variant("as", flags),
+    }
+
+
+def _svc_props(uuid: str, primary: bool) -> dict[str, Variant]:
+    return {
+        "UUID": Variant("s", uuid),
+        "Primary": Variant("b", primary),
+    }
 
 
 class GattApplication:
@@ -230,38 +295,63 @@ class GattApplication:
         self,
         on_cc: Callable[[int, int], None],
         on_pc: Callable[[int], None],
+        on_command: Callable[[str], None] = lambda cmd: None,
     ):
-        self.service = GattService()
-        self.status_char = StatusCharacteristic(self.service._path)
-        self.cc_char = CCControlCharacteristic(self.service._path, on_cc)
-        self.pc_char = ProgramChangeCharacteristic(self.service._path, on_pc)
-        self.batch_cc_char = BatchCCCharacteristic(self.service._path, on_cc)
+        self.obj_mgr = ObjectManager()
+        self.gatt_svc = GattService1()
+        self.status_char = StatusCharacteristic()
+        self.cc_char = CCControlCharacteristic(on_cc)
+        self.pc_char = ProgramChangeCharacteristic(on_pc)
+        self.batch_cc_char = BatchCCCharacteristic(on_cc)
+        self.command_char = CommandCharacteristic(on_command)
         self.advertisement = Advertisement()
+
+        # ObjectManager に GATT 階層を登録
+        CHAR_IFACE = "org.bluez.GattCharacteristic1"
+        SVC_IFACE = "org.bluez.GattService1"
+
+        self.obj_mgr.add_object(SVC_PATH, SVC_IFACE,
+                                _svc_props(SERVICE_UUID, True))
+        self.obj_mgr.add_object(f"{SVC_PATH}/char0", CHAR_IFACE,
+                                _char_props(STATUS_UUID, SVC_PATH, ["read", "notify"]))
+        self.obj_mgr.add_object(f"{SVC_PATH}/char1", CHAR_IFACE,
+                                _char_props(CC_CONTROL_UUID, SVC_PATH, ["write-without-response"]))
+        self.obj_mgr.add_object(f"{SVC_PATH}/char2", CHAR_IFACE,
+                                _char_props(PROGRAM_CHANGE_UUID, SVC_PATH, ["read", "write", "notify"]))
+        self.obj_mgr.add_object(f"{SVC_PATH}/char3", CHAR_IFACE,
+                                _char_props(BATCH_CC_UUID, SVC_PATH, ["write-without-response"]))
+        self.obj_mgr.add_object(f"{SVC_PATH}/char4", CHAR_IFACE,
+                                _char_props(COMMAND_UUID, SVC_PATH, ["write"]))
 
     async def register(self, bus: MessageBus) -> None:
         """BlueZ に GATT サービスと Advertisement を登録する"""
-        # オブジェクトをエクスポート
-        bus.export(self.service._path, self.service)
-        bus.export(self.status_char._path, self.status_char)
-        bus.export(self.cc_char._path, self.cc_char)
-        bus.export(self.pc_char._path, self.pc_char)
-        bus.export(self.batch_cc_char._path, self.batch_cc_char)
-        bus.export(self.advertisement._path, self.advertisement)
+        # ObjectManager をアプリケーションルートにエクスポート
+        bus.export(APP_PATH, self.obj_mgr)
 
-        # BlueZ adapter を取得
+        # GattService1 をサービスパスにエクスポート
+        bus.export(SVC_PATH, self.gatt_svc)
+
+        # 各 characteristic をエクスポート（BlueZ が D-Bus メソッドを呼ぶため）
+        bus.export(f"{SVC_PATH}/char0", self.status_char)
+        bus.export(f"{SVC_PATH}/char1", self.cc_char)
+        bus.export(f"{SVC_PATH}/char2", self.pc_char)
+        bus.export(f"{SVC_PATH}/char3", self.batch_cc_char)
+        bus.export(f"{SVC_PATH}/char4", self.command_char)
+
+        # Advertisement
+        ad_path = f"{APP_PATH}/ad0"
+        bus.export(ad_path, self.advertisement)
+
+        # BlueZ adapter
         introspection = await bus.introspect(BLUEZ_SERVICE, "/org/bluez/hci0")
         proxy = bus.get_proxy_object(BLUEZ_SERVICE, "/org/bluez/hci0", introspection)
 
-        # GATT Manager に登録
+        # GATT Manager に登録（ObjectManager のあるパスを渡す）
         gatt_mgr = proxy.get_interface(GATT_MANAGER_IFACE)
-        await gatt_mgr.call_register_application(  # type: ignore
-            "/org/bluez/elepiano/service0", {}
-        )
+        await gatt_mgr.call_register_application(APP_PATH, {})  # type: ignore
         print("[GATT] application registered")
 
         # Advertisement を登録
         ad_mgr = proxy.get_interface(LE_ADVERTISING_MANAGER_IFACE)
-        await ad_mgr.call_register_advertisement(  # type: ignore
-            self.advertisement._path, {}
-        )
+        await ad_mgr.call_register_advertisement(ad_path, {})  # type: ignore
         print("[GATT] advertisement registered")

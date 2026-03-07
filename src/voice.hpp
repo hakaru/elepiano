@@ -23,5 +23,5 @@ struct Voice {
     void note_off();
 
     // buf に frames 分のサンプルを加算する。IDLE になったら true を返す
-    bool mix(float* buf, int frames);
+    bool mix(float* buf, int frames, float bend_ratio = 1.0f);
 };
