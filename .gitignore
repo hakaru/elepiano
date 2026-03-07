@@ -8,7 +8,7 @@ data/*/audio/
 data/*/.pcm_cache
 
 # Python cache
-tools/__pycache__/
+__pycache__/
 
 # macOS
 .DS_Store
